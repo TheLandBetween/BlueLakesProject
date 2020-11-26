@@ -1,0 +1,38 @@
+<!-- include the partial at the top of the file-->
+<%- include('partials/head')%>
+    <h1 class="text-center">Your Tailored Home Page</h1>
+    <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
+    <div class="row" style="height: 30vh;">
+        <div class="col-sm-1"></div>
+        <div class="col-sm bg-white border border-primary">statistics & graphs & stuff</div>
+        <div class="col-sm-1"></div>
+    </div>
+    <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY -->
+    <h3>Your Favourite Lakes</h3>
+    <ul>
+        <li>Lake a</li>
+        <li>Lake b</li>
+        <li>Lake c</li>
+        <li>Lake d</li>
+    </ul>
+    <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY-->
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm">
+            <!-- Link to submit new report-->
+            <a href="/reports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+    <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm">
+            <!-- Link to submit new report-->
+            <a href="/reports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+<!-- include footer partial -->
+<%- include('partials/foot')%>
+
