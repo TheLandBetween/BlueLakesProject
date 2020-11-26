@@ -75,7 +75,7 @@ app.post('/reports', (req, res) => {
     reports.push({date, health, id: uuid()});
     // redirect back to view all reports page
     // redirect to avoid form resubmission on refresh
-    res.redirect('/reports', {levelDeep: levelDeep = true});
+    res.redirect('/reports');
 });
 
 // show route
