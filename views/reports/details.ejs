@@ -1,0 +1,10 @@
+<!-- include the partial at the top of the file-->
+<%- include('../partials/head')%>
+<body>
+    <h1>Report Date: <%= foundReport.date %></h1>
+    <h2>Report Health: <%= foundReport.health %></h2>
+    <h3>Report ID: <%= foundReport.id%></h3>
+    <a href="/reports">Back to All Reports</a>
+    <a href="/reports/<%= foundReport.id%>/edit">Edit Report</a>
+    <!-- include footer partial -->
+<%- include('../partials/foot')%>
