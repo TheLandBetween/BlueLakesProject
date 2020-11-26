@@ -1,0 +1,19 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0 0;
+}
+
+.main-bg {
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
+    height: 100%;
+    padding-top: 75px; /* using px as this is the fixed navbar size */
+}
+
+.navbar {
+    -webkit-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.28);
+    box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.28);
+}
