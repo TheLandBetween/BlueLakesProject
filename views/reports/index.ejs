@@ -1,0 +1,28 @@
+<!-- include the partial at the top of the file-->
+<%- include('../partials/head')%>
+        <h1 class="text-center">All Recent Lake Health Reports</h1>
+            <div class="row" style="height: 20vh;">
+                <div class="col-sm-1"></div>
+                <div class="col-sm bg-white border border-primary">whhere@</div>
+                <div class="col-sm-1"></div>
+            </div>
+        <ul>
+            <% for (let report of reports) {%>
+                <li>
+                    <b><%= report.date %></b> - <%= report.health%>
+                    <a href="/reports/<%= report.id%>">details</a>
+                </li>
+            <% } %>
+        </ul>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm">
+                <!-- Link to submit new report-->
+                <a href="/reports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+<!-- include footer partial -->
+<%- include('../partials/foot')%>
+
