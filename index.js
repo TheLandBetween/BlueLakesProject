@@ -4,6 +4,7 @@ const app = express();
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identifiers
+let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 uuid();
 
 app.use(express.urlencoded({ extended: true }));
@@ -45,7 +46,7 @@ app.set('views', path.join(__dirname, "/views"));
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
 app.get('/', (req, res) => {
-    res.render('home')
+    res.render('home', {levelDeep: levelDeep = false})
 });
 
 
@@ -56,24 +57,25 @@ app.get('/', (req, res) => {
 // GET /reports - list all reports
 app.get('/reports', (req, res) => {
     // render index.ejs file with the reports 'database'
-    res.render('reports/index', { reports })
+    res.render('reports/index', { reports, levelDeep: levelDeep = true})
 });
 
 // create route
 // POST /reports - Create new report
 app.get('/reports/new', (req, res) => {
     // render new report page
-   res.render('reports/new');
+   res.render('reports/new', {levelDeep: levelDeep = true});
 });
 // on reports/new submission it posts to /reports
 app.post('/reports', (req, res) => {
     // strip date and health from submitted form
+    console.log("posted");
     const { date, health } = req.body;
     // TEMPORARY -- add to list, and add a uuid  to the listing
     reports.push({date, health, id: uuid()});
     // redirect back to view all reports page
     // redirect to avoid form resubmission on refresh
-    res.redirect('/reports');
+    res.redirect('/reports', {levelDeep: levelDeep = true});
 });
 
 // show route
@@ -84,7 +86,7 @@ app.get('/reports/:id', (req, res) => {
     const foundReport = reports.find(report => report.id === id);
 
     // send them to the page about the single report
-    res.render('reports/details', { foundReport });
+    res.render('reports/details', { foundReport, levelDeep: levelDeep = true });
 });
 
 // update route -- not sure if really required for our app. do we need to update a report once submitted?
@@ -108,7 +110,7 @@ app.patch('/reports/:id', (req, res) => {
 app.get('/reports/:id/edit', (req, res) => {
     const { id } = req.params;
     const foundReport = reports.find(report => report.id === id);
-    res.render('reports/edit', { foundReport })
+    res.render('reports/edit', { foundReport, levelDeep: levelDeep = true })
 });
 
 // delete route
