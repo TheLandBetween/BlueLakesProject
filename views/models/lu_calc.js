@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
-const lakeHealthReportSchema = new mongoose.Schema({
+const luCalcSchema = new mongoose.Schema({
     WBY_LID_pk: {
         type: Number,
         required: true
@@ -36,6 +36,6 @@ const lakeHealthReportSchema = new mongoose.Schema({
 });
 
 // assign it to a variable to create instances of the model
-const LakeHealthReport = mongoose.model('LakeHealthReport', lakeHealthReportSchema);
+const luCalc = mongoose.model('luCalc', luCalcSchema);
 
-module.exports = LakeHealthReport;
+module.exports = luCalc;
