@@ -4,11 +4,34 @@ const app = express();
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identifiers
-let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 uuid();
+let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+
+express.static(path.join(__dirname, "public"));
+//mongoose
+const mongoose = require('mongoose');
+const LakeHealthReport = require(path.join(__dirname, "views/models/lakehealthreport"));
+
+// connect to "test" database
+mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => {
+        console.log("connection open!")
+    }).catch(err => {
+        // error catch if connection to db fails
+        console.log("error")
+        console.log(err)
+    });
+
+
+
+// example, this is an instance of a report with these variables passed in
+const reportA = new LakeHealthReport({WBY_LID: 1, Date_Generated: 2012, Status: "Good", Summary: "Been good", Level_of_Concern: 2, Perc_Shore_Devd: 0, Avg_Temp: 20, Avg_DO_Conc: 20.2, Avg_Secchi_Depth: 1.20, Avg_Phosph: 200});
+
+
 
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
@@ -55,9 +78,11 @@ app.get('/', (req, res) => {
 
 // index route
 // GET /reports - list all reports
-app.get('/reports', (req, res) => {
+app.get('/reports', async (req, res) => {
+    // async callback to wait for health reports to be received, then respond with webpage
+    const healthReports = await LakeHealthReport.find({});
     // render index.ejs file with the reports 'database'
-    res.render('reports/index', { reports, levelDeep: levelDeep = true})
+    res.render('reports/index', { healthReports, levelDeep: levelDeep = true});
 });
 
 // create route
@@ -80,10 +105,13 @@ app.post('/reports', (req, res) => {
 
 // show route
 // GET /reports/:id - Get one report (using ID)
-app.get('/reports/:id', (req, res) => {
+app.get('/reports/:id', async (req, res) => {
     const { id } = req.params;
+    console.log(id);
     // search the list and match an id that is passed in
-    const foundReport = reports.find(report => report.id === id);
+    // look up the health report corresponding to the id passed in to the url
+    const foundReport = await LakeHealthReport.findById(id);
+    console.log(foundReport);
 
     // send them to the page about the single report
     res.render('reports/details', { foundReport, levelDeep: levelDeep = true });
