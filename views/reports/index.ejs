@@ -7,9 +7,9 @@
                 <div class="col-sm-1"></div>
             </div>
         <ul>
-            <% for (let report of reports) {%>
+            <% for (let report of healthReports) {%>
                 <li>
-                    <b><%= report.date %></b> - <%= report.health%>
+                    <b><%= report.WBY_LID %></b> - <%= report.Avg_Phosph %>
                     <a href="/reports/<%= report.id%>">details</a>
                 </li>
             <% } %>
