@@ -6,11 +6,11 @@ const lakeHealthReportSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    Date_Generated: {
+    date_generated: {
         type: String,
         required: String
     },
-    Status: {
+    status: {
         type: String,
         required: true
     },
