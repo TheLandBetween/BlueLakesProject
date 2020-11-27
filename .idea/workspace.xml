@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6edfe3cd-ab64-49ab-b641-a0ef21f89aab" name="Default Changelist" comment="fixed submit button on new report, posts to list now">
-      <change afterPath="$PROJECT_DIR$/views/models/GNE_TBL_1sqKm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/account.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/anglerDiaries.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/do_temp.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/fish_stocking.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/lakesDB.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/lt_lakes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/lu_calc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/phosphorous.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/secchi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/views/models/template.js" afterDir="false" />
+    <list default="true" id="6edfe3cd-ab64-49ab-b641-a0ef21f89aab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/models/lakehealthreport.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/models/lakehealthreport.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/models/lu_calc.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/models/lu_calc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/models/template.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +112,21 @@
       <option name="project" value="LOCAL" />
       <updated>1606432432253</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Modeling for rest of database complete in MongoDB">
+      <created>1606459606104</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1606459606104</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Modeling for rest of database complete in MongoDB">
+      <created>1606459646435</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1606459646435</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,13 +163,14 @@
     <MESSAGE value="Node.js &amp; Express Application for Blue Lakes&#10;- home page (kind of done)&#10;- all reports page&#10;- new report page&#10;- edit report page (not sure if necessary)&#10;&#10;lots added, first commit" />
     <MESSAGE value="added a fix for directory depth in serving the head which included file paths.&#10;&#10;Seems like a temporary solution, there's gotta be a better way to do it but it works for now." />
     <MESSAGE value="fixed submit button on new report, posts to list now" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed submit button on new report, posts to list now" />
+    <MESSAGE value="Modeling for rest of database complete in MongoDB" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modeling for rest of database complete in MongoDB" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="585" y="114" key="CommitChangelistDialog2" timestamp="1606459617633">
+    <state x="585" y="114" key="CommitChangelistDialog2" timestamp="1606459646021">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="585" y="114" key="CommitChangelistDialog2/-1200.-465.1200.1880/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1606459617633" />
+    <state x="585" y="114" key="CommitChangelistDialog2/-1200.-465.1200.1880/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1606459646021" />
     <state width="1877" height="101" key="GridCell.Tab.0.bottom" timestamp="1606457296937">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -182,10 +187,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="101" key="GridCell.Tab.0.right/-1200.-465.1200.1880/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1606457296937" />
-    <state x="552" y="241" key="Vcs.Push.Dialog.v2" timestamp="1606459612431">
+    <state x="552" y="241" key="Vcs.Push.Dialog.v2" timestamp="1606459650454">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="241" key="Vcs.Push.Dialog.v2/-1200.-465.1200.1880/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1606459612431" />
+    <state x="552" y="241" key="Vcs.Push.Dialog.v2/-1200.-465.1200.1880/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1606459650454" />
     <state x="616" y="173" width="670" height="676" key="search.everywhere.popup" timestamp="1606458086191">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
