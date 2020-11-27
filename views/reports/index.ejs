@@ -7,6 +7,7 @@
                 <div class="col-sm-1"></div>
             </div>
         <ul>
+            <!-- iterate through each matched report passed in and display in a li-->
             <% for (let report of healthReports) {%>
                 <li>
                     <b><%= report.WBY_LID %></b> - <%= report.Avg_Phosph %>
