@@ -1,9 +1,19 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
-    <h1>Report Date: <%= foundReport.date %></h1>
-    <h2>Report Health: <%= foundReport.health %></h2>
-    <h3>Report ID: <%= foundReport.id%></h3>
-    <a href="/reports">All Reports</a>
+    <h1>Report ID: <%= foundReport.WBY_LID %></h1>
+    <h2>Date Generated: <%= foundReport.Date_Generated %></h2>
+    <br>
+    <h1>Report Status: <%= foundReport.Status%></h1>
+    <h1>Report Summary: <%= foundReport.Summary %></h1>
+    <h1>Level of Concern: <%= foundReport.Level_of_Concern %></h1>
+    <h1>Perc_Shore_Devd: <%= foundReport.Perc_Shore_Devd%></h1>
+    <h2>Avg_Temp: <%= foundReport.Avg_Temp%></h2>
+    <h3>Avg_Do_Conc: <%= foundReport.Avg_DO_Conc%></h3>
+    <h3>Avg_Secchi_Depth: <%= foundReport.Avg_Secchi_Depth%></h3>
+    <h3>Avg_Phosphorous: <%= foundReport.Avg_Phosph%></h3>
+    <br>
+    <a href="/reports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+
 <!-- I dont think edit is really necessary, but im leaving the button here. surround foundReport.id in ejs tags-->
 <!--    <a href="/reports/foundReport.id/edit">Edit Report</a>-->
     <!-- include footer partial -->
