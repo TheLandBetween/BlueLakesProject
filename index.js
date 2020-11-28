@@ -105,14 +105,12 @@ app.post('/reports', (req, res) => {
 
 // show route
 // GET /reports/:id - Get one report (using ID)
+// TODO: Slugify link at some point, so instead of id in the url it can be something realative to the report (name / date)
 app.get('/reports/:id', async (req, res) => {
+    // pull id from url
     const { id } = req.params;
-    console.log(id);
-    // search the list and match an id that is passed in
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await LakeHealthReport.findById(id);
-    console.log(foundReport);
-
     // send them to the page about the single report
     res.render('reports/details', { foundReport, levelDeep: levelDeep = true });
 });
