@@ -7,14 +7,11 @@ const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identi
 uuid();
 let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
-
-
-
 express.static(path.join(__dirname, "public"));
+
 //mongoose
 const mongoose = require('mongoose');
 const LakeHealthReport = require(path.join(__dirname, "views/models/lakehealthreport"));
-
 // connect to "test" database
 mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
@@ -92,20 +89,11 @@ app.get('/reports/new', (req, res) => {
 app.post('/reports', async (req, res) => {
     // TODO: Error handle this acception of the req.body. not checking if extra is passed in (sanatize etc)
     // assigns passed in form to a lake health report object, saving to a variable
-    console.log(req.body);
     const newReport = new LakeHealthReport(req.body);
-
     await newReport.save();
-
-    console.log(newReport);
-
-    res.send("created new product");
-
-    // TEMPORARY -- add to list, and add a uuid  to the listing
-    reports.push({date, health, id: uuid()});
     // redirect back to view all reports page
     // redirect to avoid form resubmission on refresh
-    res.redirect('/reports');
+    res.redirect(`/reports/${newReport._id}`);
 });
 
 // show route
