@@ -16,7 +16,7 @@ const phosphorousSchema = new mongoose.Schema({
     average_p: {
         type: Number
     },
-    STN: {
+    stn: {
         type: Number
     }
 });

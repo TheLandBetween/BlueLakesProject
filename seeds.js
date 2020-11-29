@@ -3,7 +3,7 @@
 //mongoose
 const mongoose = require('mongoose');
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
-const LakeHealthReport = require(path.join(__dirname, "views/models/lakehealthreport.js"));
+const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report.js"));
 
 // connect to "test" database
 mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser: true, useUnifiedTopology: true})
@@ -16,15 +16,15 @@ mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser
 
 const report = new LakeHealthReport({
     WBY_LID: 2,
-    Date_Generated: "2020-11-26",
-    Status: "Great",
-    Summary: "Been fantastic",
-    Level_of_Concern: 33,
-    Perc_Shore_Devd: 2.02,
-    Avg_Temp: 20.1,
-    Avg_DO_Conc: 1.22,
-    Avg_Secchi_Depth: 200.22,
-    Avg_Phosph: 2020
+    date_generated: "2020-11-26",
+    status: "Great",
+    summary: "Been fantastic",
+    level_of_concern: 33,
+    perc_shore_devd: 2.02,
+    avg_temp: 20.1,
+    avg_do_conc: 1.22,
+    avg_secchi_depth: 200.22,
+    avg_phosph: 2020
 });
 console.log('here');
 report.save().then(report => {
@@ -37,63 +37,63 @@ report.save().then(report => {
 const seedReports = [
     {
         WBY_LID: 1,
-        Date_Generated: "2010-11-26",
-        Status: "bas",
-        Summary: "Been dsa",
-        Level_of_Concern: 13,
-        Perc_Shore_Devd: 2.22,
-        Avg_Temp: 2.1,
-        Avg_DO_Conc: 11.22,
-        Avg_Secchi_Depth: 20.22,
-        Avg_Phosph: 202
+        date_generated: "2010-11-26",
+        status: "bas",
+        summary: "Been dsa",
+        level_of_concern: 13,
+        perc_shore_devd: 2.22,
+        avg_temp: 2.1,
+        avg_do_conc: 11.22,
+        avg_secchi_depth: 20.22,
+        avg_phosph: 202
     },
     {
         WBY_LID: 2,
-        Date_Generated: "220-11-26",
-        Status: "yell",
-        Summary: "Bedsddsdsen fantastic",
-        Level_of_Concern: 332,
-        Perc_Shore_Devd: 2.032,
-        Avg_Temp: 20,
-        Avg_DO_Conc: 22,
-        Avg_Secchi_Depth: 200.222,
-        Avg_Phosph: 2000
+        date_generated: "220-11-26",
+        status: "yell",
+        summary: "Bedsddsdsen fantastic",
+        level_of_concern: 332,
+        perc_shore_devd: 2.032,
+        avg_temp: 20,
+        avg_do_conc: 22,
+        avg_secchi_depth: 200.222,
+        avg_phosph: 2000
     },
     {
         WBY_LID: 3,
-        Date_Generated: "1020-11-26",
-        Status: "bad",
-        Summary: "yep fantastic",
-        Level_of_Concern: 3,
-        Perc_Shore_Devd: 22.02,
-        Avg_Temp: 220.1,
-        Avg_DO_Conc: 12.22,
-        Avg_Secchi_Depth: 2200.22,
-        Avg_Phosph: 22020
+        date_generated: "1020-11-26",
+        status: "bad",
+        summary: "yep fantastic",
+        level_of_concern: 3,
+        perc_shore_devd: 22.02,
+        avg_temp: 220.1,
+        avg_do_conc: 12.22,
+        avg_secchi_depth: 2200.22,
+        avg_phosph: 22020
     },
     {
         WBY_LID: 4,
-        Date_Generated: "2020-222-26",
-        Status: "so good",
-        Summary: " fantastic",
-        Level_of_Concern: 323,
-        Perc_Shore_Devd: 2,
-        Avg_Temp: 2021,
-        Avg_DO_Conc: 1.222,
-        Avg_Secchi_Depth: 2020.22,
-        Avg_Phosph: 222020
+        date_generated: "2020-222-26",
+        status: "so good",
+        summary: " fantastic",
+        level_of_concern: 323,
+        perc_shore_devd: 2,
+        avg_temp: 2021,
+        avg_do_conc: 1.222,
+        avg_secchi_depth: 2020.22,
+        avg_phosph: 222020
     },
     {
         WBY_LID: 5,
-        Date_Generated: "2220-11-26",
-        Status: "dasuhduusada",
-        Summary: "Been dasdsa",
-        Level_of_Concern: 23,
-        Perc_Shore_Devd: 2.2,
-        Avg_Temp: 2123210.1,
-        Avg_DO_Conc: 1.2332,
-        Avg_Secchi_Depth: 200.3322,
-        Avg_Phosph: 2033320
+        date_generated: "2220-11-26",
+        status: "dasuhduusada",
+        summary: "Been dasdsa",
+        level_of_concern: 23,
+        perc_shore_devd: 2.2,
+        avg_temp: 2123210.1,
+        avg_do_conc: 1.2332,
+        avg_secchi_depth: 200.3322,
+        avg_phosph: 2033320
     }
 ];
 

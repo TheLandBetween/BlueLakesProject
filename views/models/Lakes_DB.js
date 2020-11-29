@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
-const secchiSchema = new mongoose.Schema({
-    id_pk: {
+const lakesDBSchema = new mongoose.Schema({
+    WBY_LID: {
         type: Number,
         required: true
     },
@@ -10,18 +10,18 @@ const secchiSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    approved: {
+    official_lake_name: {
         type: String
     },
-    average_s: {
-        type: Number
+    stocked: {
+        type: Boolean
     },
-    STN: {
-        type: Number
+    unofficial_name: {
+        type: String
     }
 });
 
 // assign it to a variable to create instances of the model
-const secchi = mongoose.model('secchi', secchiSchema);
+const Lakes_DB = mongoose.model('LakesDB', lakesDBSchema);
 
-module.exports = secchi;
+module.exports = Lakes_DB;
