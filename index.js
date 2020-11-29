@@ -7,8 +7,7 @@ const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identi
 uuid();
 let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
 
 
 express.static(path.join(__dirname, "public"));
@@ -25,13 +24,6 @@ mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser
         console.log("error")
         console.log(err)
     });
-
-
-
-// example, this is an instance of a report with these variables passed in
-const reportA = new LakeHealthReport({WBY_LID: 1, Date_Generated: 2012, Status: "Good", Summary: "Been good", Level_of_Concern: 2, Perc_Shore_Devd: 0, Avg_Temp: 20, Avg_DO_Conc: 20.2, Avg_Secchi_Depth: 1.20, Avg_Phosph: 200});
-
-
 
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
@@ -66,6 +58,11 @@ app.use(express.static(path.join(__dirname, "public")));
 // take current dir name, join it with /views to navigate to views folder
 app.set('views', path.join(__dirname, "/views"));
 
+// form submission assigned to using json
+const bodyParser = require('body-parser')
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
 app.get('/', (req, res) => {
@@ -92,10 +89,18 @@ app.get('/reports/new', (req, res) => {
    res.render('reports/new', {levelDeep: levelDeep = true});
 });
 // on reports/new submission it posts to /reports
-app.post('/reports', (req, res) => {
-    // strip date and health from submitted form
-    console.log("posted");
-    const { date, health } = req.body;
+app.post('/reports', async (req, res) => {
+    // TODO: Error handle this acception of the req.body. not checking if extra is passed in (sanatize etc)
+    // assigns passed in form to a lake health report object, saving to a variable
+    console.log(req.body);
+    const newReport = new LakeHealthReport(req.body);
+
+    await newReport.save();
+
+    console.log(newReport);
+
+    res.send("created new product");
+
     // TEMPORARY -- add to list, and add a uuid  to the listing
     reports.push({date, health, id: uuid()});
     // redirect back to view all reports page
