@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
 const accountSchema = new mongoose.Schema({
-    username_pk: {
+    email_pk: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
-    first_name: {
+    password: {
         type: String,
     },
-    last_name: {
+    name: {
         type: String,
     },
     date_created: {
@@ -17,16 +18,10 @@ const accountSchema = new mongoose.Schema({
     },
     favorites: {
         type: Number,
-    },
-    rank: {
-        type: String,
-    },
-    password: {
-        type: String,
     }
 });
 
 // assign it to a variable to create instances of the model
-const Account = mongoose.model('Account', accountSchema);
+const User_Account = mongoose.model('Account', accountSchema);
 
-module.exports = Account;
+module.exports = User_Account;

@@ -2,39 +2,39 @@ const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
 const lakeHealthReportSchema = new mongoose.Schema({
-    Date_Generated: {
+    date_generated: {
         type: String
     },
-    Status: {
+    status: {
         type: String
     },
-    Summary: {
+    summary: {
         type: String
     },
-    Level_of_Concern: {
+    level_of_concern: {
         type: Number,
         min: 0
         // if we wanted to do only between 0 and 10, would setup this way
         // enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     },
-    Perc_Shore_Devd: {
+    perc_shore_devd: {
         type: Number
     },
-    Avg_Temp: {
+    avg_temp: {
         type: Number
     },
-    Avg_DO_Conc: {
+    avg_do_conc: {
         type: Number
     },
-    Avg_Secchi_Depth: {
+    avg_secchi_depth: {
         type: Number
     },
-    Avg_Phosph: {
+    avg_phosph: {
         type: Number
     }
 });
 
 // assign it to a variable to create instances of the model
-const LakeHealthReport = mongoose.model('LakeHealthReport', lakeHealthReportSchema);
+const Lake_Health_Report = mongoose.model('LakeHealthReport', lakeHealthReportSchema);
 
-module.exports = LakeHealthReport;
+module.exports = Lake_Health_Report;
