@@ -9,15 +9,22 @@ const accountSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+        required:true
     },
-    name: {
+    display_name: {
         type: String,
+        required: true
     },
     date_created: {
         type: Date,
     },
     favorites: {
         type: Number,
+    },
+    permissions: {
+        type: Number,
+        default: 0,
+        enum: [0,1,2,3] //Permission levels: 0(guest), 1(angler), 2(lake health), 3(administrator)
     }
 });
 

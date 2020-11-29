@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
 const anglerDiariesSchema = new mongoose.Schema({
-    diary_id_pk: {
+    id_pk: {
         type: Number,
         required: true
     },
@@ -13,9 +13,6 @@ const anglerDiariesSchema = new mongoose.Schema({
     angler_name_fk: {
         type: String,
         required: true
-    },
-    approved: {
-        type: String
     },
     date: {
         type: Date
@@ -38,6 +35,6 @@ const anglerDiariesSchema = new mongoose.Schema({
 });
 
 // assign it to a variable to create instances of the model
-const Angler_Diaries = mongoose.model('AnglerDiaries', anglerDiariesSchema);
+const Angler_Report = mongoose.model('AnglerDiaries', anglerDiariesSchema);
 
-module.exports = Angler_Diaries;
+module.exports = Angler_Report;

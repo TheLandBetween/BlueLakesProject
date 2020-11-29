@@ -1,0 +1,12 @@
+<!-- I dont really think this is necessary tbh. get the report right when you submit it for the first time -->
+
+<!-- include the partial at the top of the file-->
+<%- include('../partials/head', {levelDeep: levelDeep})%>
+    <h1>Edit</h1>
+    <!--form to submit new date for a report -- path is /lakeReports/:id patch -->
+    <!-- this is using methodOverride middleware to ensure it uses PATCH as web browsers cant -->
+    <form method="POST" action="/reports/<%= foundReport.id %>?_method=PATCH">
+        <input type="text" name="date" placeholder="<%= foundReport.date %>">
+        <button >Save</button>
+    </form>
+<%- include('../partials/foot')%>
