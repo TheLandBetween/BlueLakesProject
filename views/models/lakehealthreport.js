@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
 const lakeHealthReportSchema = new mongoose.Schema({
-    WBY_LID: {
-        type: Number,
-        required: true
-    },
     Date_Generated: {
         type: String,
         required: String
