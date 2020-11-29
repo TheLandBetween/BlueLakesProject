@@ -1,7 +1,7 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
     <h1 class="text-center">Make a new Report</h1>
-    <form action="/reports" method="post" class="text-center" name="submit">
+    <form action="/lakeReports" method="post" class="text-center" name="submit">
         <div class="form-group">
             <!-- date input, sent under 'date' label-->
             <label for="Date_Generated">Date: </label>
@@ -59,7 +59,7 @@
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm">
-            <a href="/reports" class="btn btn-outline-secondary btn-block">All Reports</a>
+            <a href="/lakeReports" class="btn btn-outline-secondary btn-block">All Reports</a>
         </div>
         <div class="col-sm-2"></div>
     </div>

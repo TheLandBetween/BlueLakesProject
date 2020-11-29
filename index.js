@@ -56,9 +56,16 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set('views', path.join(__dirname, "/views"));
 
 // form submission assigned to using json
-const bodyParser = require('body-parser')
 app.use(express.urlencoded({ extended: true }));
+// pass in body as json on each request
 app.use(express.json());
+
+//Custom Middleware Example
+// every request that comes in gets logged to console and then next() proceeds to where the url should go normally
+// app.use((req, res, next) => {
+//     console.log("middleware");
+//     next();
+// });
 
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
@@ -71,47 +78,47 @@ app.get('/', (req, res) => {
 // BASIC CRUD
 
 // index route
-// GET /reports - list all reports
-app.get('/reports', async (req, res) => {
-    // async callback to wait for health reports to be received, then respond with webpage
+// GET /lakeReports - list all lakeReports
+app.get('/lakeReports', async (req, res) => {
+    // async callback to wait for health lakeReports to be received, then respond with webpage
     const healthReports = await LakeHealthReport.find({});
-    // render index.ejs file with the reports 'database'
-    res.render('reports/index', { healthReports, levelDeep: levelDeep = true});
+    // render index.ejs file with the lakeReports 'database'
+    res.render('lakeReports/index', { healthReports, levelDeep: levelDeep = true});
 });
 
 // create route
-// POST /reports - Create new report
-app.get('/reports/new', (req, res) => {
+// POST /lakeReports - Create new report
+app.get('/lakeReports/new', (req, res) => {
     // render new report page
-   res.render('reports/new', {levelDeep: levelDeep = true});
+   res.render('lakeReports/new', {levelDeep: levelDeep = true});
 });
-// on reports/new submission it posts to /reports
-app.post('/reports', async (req, res) => {
+// on lakeReports/new submission it posts to /lakeReports
+app.post('/lakeReports', async (req, res) => {
     // TODO: Error handle this acception of the req.body. not checking if extra is passed in (sanatize etc)
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new LakeHealthReport(req.body);
     await newReport.save();
-    // redirect back to view all reports page
+    // redirect back to view all lakeReports page
     // redirect to avoid form resubmission on refresh
-    res.redirect(`/reports/${newReport._id}`);
+    res.redirect(`/lakeReports/${newReport._id}`);
 });
 
 // show route
-// GET /reports/:id - Get one report (using ID)
+// GET /lakeReports/:id - Get one report (using ID)
 // TODO: Slugify link at some point, so instead of id in the url it can be something realative to the report (name / date)
-app.get('/reports/:id', async (req, res) => {
+app.get('/lakeReports/:id', async (req, res) => {
     // pull id from url
     const { id } = req.params;
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await LakeHealthReport.findById(id);
     // send them to the page about the single report
-    res.render('reports/details', { foundReport, levelDeep: levelDeep = true });
+    res.render('lakeReports/details', { foundReport, levelDeep: levelDeep = true });
 });
 
 // update route -- not sure if really required for our app. do we need to update a report once submitted?
-// PATCH /reports/:id - Update one report
+// PATCH /lakeReports/:id - Update one report
 // using patch as its used to partially modify something, rather than put a whole new report
-app.patch('/reports/:id', (req, res) => {
+app.patch('/lakeReports/:id', (req, res) => {
     // take id based on url
     const { id } = req.params;
     // save updated date sent in request
@@ -121,19 +128,19 @@ app.patch('/reports/:id', (req, res) => {
     // update report date
     foundReport.date = newReportDate;
     // send back to all comments
-    res.redirect('/reports');
+    res.redirect('/lakeReports');
 });
 
 // EDIT ROUTE
-// reports/:id/edit
-app.get('/reports/:id/edit', (req, res) => {
+// lakeReports/:id/edit
+app.get('/lakeReports/:id/edit', (req, res) => {
     const { id } = req.params;
     const foundReport = reports.find(report => report.id === id);
-    res.render('reports/edit', { foundReport, levelDeep: levelDeep = true })
+    res.render('lakeReports/edit', { foundReport, levelDeep: levelDeep = true })
 });
 
 // delete route
-// DELETE /reports/:id - Delete one report
+// DELETE /lakeReports/:id - Delete one report
 
 
 // catch all for /path that is not defined -- 404 page
