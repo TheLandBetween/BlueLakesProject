@@ -11,7 +11,7 @@ express.static(path.join(__dirname, "public"));
 
 //mongoose
 const mongoose = require('mongoose');
-const LakeHealthReport = require(path.join(__dirname, "views/models/lakehealthreport"));
+const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report"));
 // connect to "test" database
 mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
