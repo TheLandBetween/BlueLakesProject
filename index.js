@@ -9,7 +9,7 @@ let levelDeep; // think this is a temp solution, but is to deal with directory d
 
 express.static(path.join(__dirname, "public"));
 
-//mongoose
+//MONGOOSE
 const mongoose = require('mongoose');
 const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report"));
 // connect to "test" database
@@ -21,6 +21,17 @@ mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser
         console.log("error")
         console.log(err)
     });
+
+const AnglerReport = require(path.join(__dirname, "views/models/Angler_Report"));
+// connect to "test" database
+mongoose.connect('mongodb://localhost:27017/anglerReports', {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => {
+        console.log("connection open!")
+    }).catch(err => {
+    // error catch if connection to db fails
+    console.log("error")
+    console.log(err)
+});
 
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
@@ -77,6 +88,8 @@ app.get('/', (req, res) => {
 // we want to CRUD a lake health report report
 // BASIC CRUD
 
+
+//LAKE HEALTH REPORT ROUTING
 // index route
 // GET /lakeReports - list all lakeReports
 app.get('/lakeReports', async (req, res) => {
@@ -141,6 +154,72 @@ app.get('/lakeReports/:id/edit', (req, res) => {
 
 // delete route
 // DELETE /lakeReports/:id - Delete one report
+
+//ANGLER REPORT ROUTING
+// GET /anglerReports - list all anglerReports
+app.get('/anglerReports', async (req, res) => {
+    // async callback to wait for health lakeReports to be received, then respond with webpage
+    const anglerReports = await AnglerReport.find({});
+    // render index.ejs file with the lakeReports 'database'
+    res.render('anglerReports/index', { anglerReports, levelDeep: levelDeep = true});
+});
+
+// POST /anglerReports - Create new report
+app.get('/anglerReports/new', (req, res) => {
+    // render new report page
+    res.render('anglerReports/new', {levelDeep: levelDeep = true});
+});
+// on anglerReports/new submission it posts to /lakeReports
+app.post('/anglerReports', async (req, res) => {
+    // TODO: Error handle this acception of the req.body. not checking if extra is passed in (sanatize etc)
+    // assigns passed in form to a lake health report object, saving to a variable
+    const newReport = new AnglerReport(req.body);
+    await newReport.save();
+    // redirect back to view all lakeReports page
+    // redirect to avoid form resubmission on refresh
+    res.redirect(`/anglerReports/${newReport._id}`);
+});
+
+// show route
+// GET /anglerReports/:id - Get one report (using ID)
+// TODO: Slugify link at some point, so instead of id in the url it can be something realative to the report (name / date)
+app.get('/anglerReports/:id', async (req, res) => {
+    // pull id from url
+    const { id } = req.params;
+    // look up the health report corresponding to the id passed in to the url
+    const foundReport = await AnglerReport.findById(id);
+    // send them to the page about the single report
+    res.render('anglerReport/details', { foundReport, levelDeep: levelDeep = true });
+});
+
+// update route -- not sure if really required for our app. do we need to update a report once submitted?
+// PATCH /anglerReports/:id - Update one report
+// using patch as its used to partially modify something, rather than put a whole new report
+app.patch('/anglerReports/:id', (req, res) => {
+    // take id based on url
+    const { id } = req.params;
+    // save updated date sent in request
+    const newReportDate = req.body.date;
+    // match report in 'database' based on id in url
+    const foundReport = reports.find(report => report.id === id);
+    // update report date
+    foundReport.date = newReportDate;
+    // send back to all comments
+    res.redirect('/anglerReports');
+});
+
+// EDIT ROUTE
+// anglerReports/:id/edit
+app.get('/anglerReports/:id/edit', (req, res) => {
+    const { id } = req.params;
+    const foundReport = reports.find(report => report.id === id);
+    res.render('anglerReports/edit', { foundReport, levelDeep: levelDeep = true })
+});
+
+// delete route
+// DELETE /anglerReports/:id - Delete one report
+
+
 
 
 // catch all for /path that is not defined -- 404 page

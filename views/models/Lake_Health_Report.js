@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
 const lakeHealthReportSchema = new mongoose.Schema({
+    id_pk: {
+        type: Number,
+        required: true
+    },
     date_generated: {
         type: String
     },

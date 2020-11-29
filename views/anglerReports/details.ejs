@@ -1,0 +1,22 @@
+<!-- include the partial at the top of the file-->
+<%- include('../partials/head')%>
+    <h1>Report ID: <%= foundReport.id_pk %></h1>
+    <h1>Date Created: <%= foundReport.date %></h1>
+    <h2>Lake Town: <%= foundReport.lake_town_fk %></h2>
+    <br>
+    <h1>Angler Name: <%= foundReport.angler_name_fk%></h1>
+    <h2>Start Time: <%= foundReport.t_start%></h2>
+    <h2>End Time: <%= foundReport.t_end%></h2>
+    <br>
+    <div>
+        <h3>Species: <%= foundReport.species%></h3>
+        <h3>Length (cm): <%= foundReport.length%></h3>
+        <h3>Weight (lbs): <%= foundReport.weight%></h3>
+    </div>
+    <br>
+    <a href="/anglerReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+
+<!-- I dont think edit is really necessary, but im leaving the button here. surround foundReport.id in ejs tags-->
+<!--    <a href="/lakeReports/foundReport.id/edit">Edit Report</a>-->
+    <!-- include footer partial -->
+<%- include('../partials/foot')%>

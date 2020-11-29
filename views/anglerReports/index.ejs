@@ -1,7 +1,7 @@
 
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
-        <h1 class="text-center">All Recent Lake Health Reports</h1>
+        <h1 class="text-center">All Recent Angler Reports</h1>
             <div class="row" style="height: 20vh;">
                 <div class="col-sm-1"></div>
                 <div class="col-sm bg-white border border-primary">whhere@</div>
@@ -10,9 +10,9 @@
         <ul>
             <!-- iterate through each matched report passed in and display in a li-->
             <!--TODO: boostrap cards-->
-            <% for (let report of healthReports) {%>
+            <% for (let report of anglerReports) {%>
                 <li>
-                    <b><%= report._id %></b> - <%= report.avg_phosph %>
+                    <b><%= report._id %></b> - <%= report.id_pk %>
                     <a href="/reports/<%= report.id%>">details</a>
                 </li>
             <% } %>
@@ -21,7 +21,7 @@
             <div class="col-sm-2"></div>
             <div class="col-sm">
                 <!-- Link to submit new report-->
-                <a href="/lakeReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a>
+                <a href="/anglerReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a>
             </div>
             <div class="col-sm-2"></div>
         </div>

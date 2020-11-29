@@ -1,16 +1,16 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
-    <h1>Report ID: <%= foundReport._id %></h1>
-    <h2>Date Generated: <%= foundReport.Date_Generated %></h2>
+    <h1>Report ID: <%= foundReport.id_pk %></h1>
+    <h2>Date Generated: <%= foundReport.date_generated %></h2>
     <br>
-    <h1>Report Status: <%= foundReport.Status%></h1>
-    <h1>Report Summary: <%= foundReport.Summary %></h1>
-    <h1>Level of Concern: <%= foundReport.Level_of_Concern %></h1>
-    <h1>Perc_Shore_Devd: <%= foundReport.Perc_Shore_Devd%></h1>
-    <h2>Avg_Temp: <%= foundReport.Avg_Temp%></h2>
-    <h3>Avg_Do_Conc: <%= foundReport.Avg_DO_Conc%></h3>
-    <h3>Avg_Secchi_Depth: <%= foundReport.Avg_Secchi_Depth%></h3>
-    <h3>Avg_Phosphorous: <%= foundReport.Avg_Phosph%></h3>
+    <h1>Report Status: <%= foundReport.status%></h1>
+    <h1>Report Summary: <%= foundReport.summary %></h1>
+    <h1>Level of Concern: <%= foundReport.level_of_concern %></h1>
+    <h1>Perc_Shore_Devd: <%= foundReport.perc_shore_devd%></h1>
+    <h2>Avg_Temp: <%= foundReport.avg_temp%></h2>
+    <h3>Avg_Do_Conc: <%= foundReport.avg_do_conc%></h3>
+    <h3>Avg_Secchi_Depth: <%= foundReport.avg_secchi_depth%></h3>
+    <h3>Avg_Phosphorous: <%= foundReport.avg_phosph%></h3>
     <br>
     <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
 
