@@ -32,12 +32,12 @@ const anglerDiariesSchema = new mongoose.Schema({
     length: {
         type: Number
     },
-    width: {
+    weight: {
         type: Number
-    },
+    }
 });
 
 // assign it to a variable to create instances of the model
-const AnglerDiaries = mongoose.model('AnglerDiaries', anglerDiariesSchema);
+const Angler_Diaries = mongoose.model('AnglerDiaries', anglerDiariesSchema);
 
-module.exports = AnglerDiaries;
+module.exports = Angler_Diaries;
