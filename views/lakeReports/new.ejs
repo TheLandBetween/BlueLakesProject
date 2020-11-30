@@ -1,37 +1,36 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
     <h1 class="text-center">New Health Report</h1>
-    <!-- TODO: Mike, you renamed variables in model but didnt change in form submission. need to update id/for/name for each-->
     <form action="/lakeReports" method="post" class="text-center" name="submit">
         <div class="form-group">
             <!-- date input, sent under 'date' label-->
-            <label for="Date_Generated">Date: </label>
-            <input type="text" id="Date_Generated" placeholder="year-mo-dy" name="Date_Generated">
+            <label for="date_generated">Date: </label>
+            <input type="text" id="date_generated" placeholder="year-mo-dy" name="date_generated">
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
-            <label for="Status">Status: </label>
-            <input type="text" id="Status" placeholder="Status" name="Status">
+            <label for="status">Status: </label>
+            <input type="text" id="status" placeholder="Status" name="status">
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
-            <label for="Summary">Summary: </label>
-            <input type="text" id="Summary" placeholder="Summary" name="Summary">
+            <label for="summary">Summary: </label>
+            <input type="text" id="summary" placeholder="Summary" name="summary">
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
             <label for="Level_of_Concern">Level of Concern: </label>
-            <input type="text" id="Level_of_Concern" placeholder="level of concern" name="Level_of_Concern">
+            <input type="text" id="level_of_concern" placeholder="level of concern" name="level_of_concern">
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
-            <label for="Perc_Shore_Devd">Perc Shore Devd: </label>
-            <input type="text" id="Perc_Shore_Devd" placeholder="perc shore devd" name="Perc_Shore_Devd">
+            <label for="perc_shore_devd">Perc Shore Devd: </label>
+            <input type="text" id="perc_shore_devd" placeholder="perc shore devd" name="perc_shore_devd">
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
-            <label for="Avg_Temp">Average Temperature: </label>
-            <input type="text" id="Avg_Temp" placeholder="Temperature Value" name="Avg_Temp">
+            <label for="avg_temp">Average Temperature: </label>
+            <input type="text" id="avg_temp" placeholder="Temperature Value" name="avg_temp">
         </div>
         <!-- TODO: Also, are we storing this in the model? where is this going -->
         <div class="form-group">
@@ -42,18 +41,18 @@
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
-            <label for="Avg_DO_Conc">Average Do Conc: </label>
-            <input type="text" id="Avg_DO_Conc" placeholder="Dissolved Oxygen" name="Avg_DO_Conc">
+            <label for="avg_do_conc">Average Do Conc: </label>
+            <input type="text" id="avg_do_conc" placeholder="Dissolved Oxygen" name="avg_do_conc">
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
-            <label for="Avg_Secchi_Depth">Average Secchi Depth: </label>
-            <input type="text" id="Avg_Secchi_Depth" placeholder="Water Clarity" name="Avg_Secchi_Depth">
+            <label for="avg_secchi_depth">Average Secchi Depth: </label>
+            <input type="text" id="avg_secchi_depth" placeholder="Water Clarity" name="avg_secchi_depth">
         </div>
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
-            <label for="Avg_Phosphh">Average Phospherous: </label>
-            <input type="text" id="Avg_Phosph" placeholder="Phosphorus" name="Avg_Phosph">
+            <label for="Avg_Phosph">Average Phospherous: </label>
+            <input type="text" id="avg_phosph" placeholder="Phosphorus" name="avg_phosph">
         </div>
         <div class="row">
             <div class="col-sm-3"></div>
