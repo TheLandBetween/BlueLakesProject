@@ -12,26 +12,18 @@ express.static(path.join(__dirname, "public"));
 //MONGOOSE
 const mongoose = require('mongoose');
 const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report"));
-// connect to "test" database
-mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser: true, useUnifiedTopology: true})
+const AnglerReport = require(path.join(__dirname, "views/models/Angler_Report"));
+// connect to "BlueLakes" database
+mongoose.connect('mongodb://localhost:27017/BlueLakes', {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
         console.log("connection open!")
     }).catch(err => {
         // error catch if connection to db fails
-        console.log("error")
+        console.log("error");
         console.log(err)
     });
 
-const AnglerReport = require(path.join(__dirname, "views/models/Angler_Report"));
-// connect to "test" database
-mongoose.connect('mongodb://localhost:27017/anglerReports', {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {
-        console.log("connection open!")
-    }).catch(err => {
-    // error catch if connection to db fails
-    console.log("error")
-    console.log(err)
-});
+
 
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
@@ -72,8 +64,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Custom Middleware Example
-// every request that comes in gets logged to console and then next() proceeds to where the url should go normally
-// app.use((req, res, next) => {
+// every request that comes in to / gets logged to console and then next() proceeds to where the url should go normally
+// app.use('/', (req, res, next) => {
 //     console.log("middleware");
 //     next();
 // });

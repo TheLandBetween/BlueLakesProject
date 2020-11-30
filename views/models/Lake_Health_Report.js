@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 // create a template for the table (layed out in the db schema)
-const lakeHealthReportSchema = new mongoose.Schema({
-    id_pk: {
-        type: Number,
-        required: true
-    },
+const lakeHealthReportSchema = new Schema({
     date_generated: {
         type: String
     },
@@ -36,6 +33,18 @@ const lakeHealthReportSchema = new mongoose.Schema({
     avg_phosph: {
         type: Number
     }
+    // believe this is how we should implement links from the lake reports to the lake themselves
+    // want to keep these reports as seperate objects since we need to view all at once
+    // lake: {
+    //     type: Schema.Types.ObjectID,
+    //     ref: 'Lake'
+    // }
+    // ON LAKE SIDE PUT THIS: (DONT HAVE FILE YET)
+    // healthReports: {
+    //      type: Schema.Types.ObjectId,
+    //      ref: 'Lake_Health_Report'
+    //   }
+    // this creates a two way relationship
 });
 
 // assign it to a variable to create instances of the model
