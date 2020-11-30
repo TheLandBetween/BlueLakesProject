@@ -1,6 +1,7 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
     <h1 class="text-center">New Health Report</h1>
+    <!-- TODO: Mike, you renamed variables in model but didnt change in form submission. need to update id/for/name for each-->
     <form action="/lakeReports" method="post" class="text-center" name="submit">
         <div class="form-group">
             <!-- date input, sent under 'date' label-->
@@ -32,6 +33,7 @@
             <label for="Avg_Temp">Average Temperature: </label>
             <input type="text" id="Avg_Temp" placeholder="Temperature Value" name="Avg_Temp">
         </div>
+        <!-- TODO: Also, are we storing this in the model? where is this going -->
         <div class="form-group">
             <label for="Metric">Celsius: </label>
             <input type="radio" id="celsius" name="Metric" value="c">

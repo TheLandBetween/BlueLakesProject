@@ -21,6 +21,7 @@ const accountSchema = new mongoose.Schema({
     favorites: {
         type: Number,
     },
+    // equivalent to rank i think
     permissions: {
         type: Number,
         default: 0,
