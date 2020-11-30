@@ -11,8 +11,13 @@ express.static(path.join(__dirname, "public"));
 
 //MONGOOSE
 const mongoose = require('mongoose');
-const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report"));
+// setup lake health report model + route
+const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report")); // TODO: may not need this here
+const lakeReportRoutes = require('./routes/lakeReports');
+// setup angler report model + route
 const AnglerReport = require(path.join(__dirname, "views/models/Angler_Report"));
+// const anglerReportRoutes = require('./routes/anglerReports');
+
 // connect to "BlueLakes" database
 mongoose.connect('mongodb://localhost:27017/BlueLakes', {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
@@ -74,76 +79,12 @@ app.get('/', (req, res) => {
     res.render('home', {levelDeep: levelDeep = false})
 });
 
-
-// we want to CRUD a lake health report report
-// BASIC CRUD
-
-
 //LAKE HEALTH REPORT ROUTING
-// index route
-// GET /lakeReports - list all lakeReports
-app.get('/lakeReports', async (req, res) => {
-    // async callback to wait for health lakeReports to be received, then respond with webpage
-    const healthReports = await LakeHealthReport.find({});
-    // render index.ejs file with the lakeReports 'database'
-    res.render('lakeReports/index', { healthReports, levelDeep: levelDeep = true});
-});
+app.use('/lakeReports', lakeReportRoutes);
 
-// create route
-// POST /lakeReports - Create new report
-app.get('/lakeReports/new', (req, res) => {
-    // render new report page
-   res.render('lakeReports/new', {levelDeep: levelDeep = true});
-});
-// on lakeReports/new submission it posts to /lakeReports
-app.post('/lakeReports', async (req, res) => {
-    // TODO: Error handle this acception of the req.body. not checking if extra is passed in (sanatize etc)
-    // assigns passed in form to a lake health report object, saving to a variable
-    const newReport = new LakeHealthReport(req.body);
-    await newReport.save();
-    // redirect back to view all lakeReports page
-    // redirect to avoid form resubmission on refresh
-    res.redirect(`/lakeReports/${newReport._id}`);
-});
-
-// show route
-// GET /lakeReports/:id - Get one report (using ID)
-// TODO: Slugify link at some point, so instead of id in the url it can be something realative to the report (name / date)
-app.get('/lakeReports/:id', async (req, res) => {
-    // pull id from url
-    const { id } = req.params;
-    // look up the health report corresponding to the id passed in to the url
-    const foundReport = await LakeHealthReport.findById(id);
-    // send them to the page about the single report
-    res.render('lakeReports/details', { foundReport, levelDeep: levelDeep = true });
-});
-
-// update route -- not sure if really required for our app. do we need to update a report once submitted?
-// PATCH /lakeReports/:id - Update one report
-// using patch as its used to partially modify something, rather than put a whole new report
-app.patch('/lakeReports/:id', (req, res) => {
-    // take id based on url
-    const { id } = req.params;
-    // save updated date sent in request
-    const newReportDate = req.body.date;
-    // match report in 'database' based on id in url
-    const foundReport = reports.find(report => report.id === id);
-    // update report date
-    foundReport.date = newReportDate;
-    // send back to all comments
-    res.redirect('/lakeReports');
-});
-
-// EDIT ROUTE
-// lakeReports/:id/edit
 app.get('/lakeReports/:id/edit', (req, res) => {
-    const { id } = req.params;
-    const foundReport = reports.find(report => report.id === id);
-    res.render('lakeReports/edit', { foundReport, levelDeep: levelDeep = true })
-});
 
-// delete route
-// DELETE /lakeReports/:id - Delete one report
+});
 
 //ANGLER REPORT ROUTING
 // GET /anglerReports - list all anglerReports
