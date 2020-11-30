@@ -13,7 +13,7 @@
             <% for (let report of healthReports) {%>
                 <li>
                     <b><%= report._id %></b> - <%= report.avg_phosph %>
-                    <a href="/reports/<%= report.id%>">details</a>
+                    <a href="/lakeReports/<%= report.id%>">details</a>
                 </li>
             <% } %>
         </ul>
