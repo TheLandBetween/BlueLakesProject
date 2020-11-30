@@ -12,7 +12,7 @@
             <!--TODO: boostrap cards-->
             <% for (let report of healthReports) {%>
                 <li>
-                    <b><%= report._id %></b> - <%= report.avg_phosph %>
+                    <b><%= report._id %></b> - <%= report.status %>
                     <a href="/lakeReports/<%= report.id%>">details</a>
                 </li>
             <% } %>
