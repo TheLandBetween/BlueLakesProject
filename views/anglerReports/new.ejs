@@ -3,25 +3,32 @@
     <h1 class="text-center">New Angler Report</h1>
     <form action="/anglerReports" method="post" class="text-center" name="submit">
         <div class="form-group">
-            <!-- date input, sent under 'date' label-->
-            <label for="Date_Generated">Date: </label>
-            <input type="text" id="Date_Generated" placeholder="year-mo-dy" name="Date_Generated">
+            <label for="lake_town_fk">Lake Town: </label>
+            <input type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk">
         </div>
         <div class="form-group">
-            <label for="Time_In">Time In: </label>
-            <input type="text" id="Time_In" placeholder="hh:mm" name="Time_In">
+            <label for="angler_name_fk">Your Name: </label>
+            <input type="text" id="angler_name_fk" placeholder="Patrick" name="angler_name_fk">
         </div>
         <div class="form-group">
-            <label for="Time_Out">Time Out: </label>
-            <input type="text" id="Time_Out" placeholder="hh:mm" name="Time_Out">
+            <label for="date">Date: </label>
+            <input type="text" id="date" placeholder="year-mo-dy" name="date">
         </div>
         <div class="form-group">
-            <label for="Species">Time Out: </label>
-            <input type="text" id="Species" placeholder="Species of Fish" name="Species">
+            <label for="t_start">Time In: </label>
+            <input type="text" id="t_start" placeholder="hh:mm" name="t_start">
         </div>
         <div class="form-group">
-            <label for="Length">Length: </label>
-            <input type="text" id="Length" placeholder="Length of Fish" name="Length">
+            <label for="t_end">Time Out: </label>
+            <input type="text" id="t_end" placeholder="hh:mm" name="t_end">
+        </div>
+        <div class="form-group">
+            <label for="species">Time Out: </label>
+            <input type="text" id="species" placeholder="Species of Fish" name="species">
+        </div>
+        <div class="form-group">
+            <label for="length">Length: </label>
+            <input type="text" id="length" placeholder="Length of Fish" name="length">
         </div>
         <div class="form-group">
             <label for="Length_Metric">Centimeters: </label>
@@ -30,8 +37,8 @@
             <input type="radio" id="inches" name="Length_Metric" value="i">
         </div>
         <div class="form-group">
-            <label for="Species">Weight: </label>
-            <input type="text" id="Weight" placeholder="Weight of Fish" name="Weight">
+            <label for="weight">Weight: </label>
+            <input type="text" id="weight" placeholder="Weight of Fish" name="weight">
         </div>
         <div class="form-group">
             <label for="Weight_Metric">LB: </label>

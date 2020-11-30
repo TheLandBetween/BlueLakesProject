@@ -26,6 +26,9 @@ const accountSchema = new mongoose.Schema({
         type: Number,
         default: 0,
         enum: [0,1,2,3] //Permission levels: 0(guest), 1(angler), 2(lake health), 3(administrator)
+    },
+    upgrade_key: {
+        type: Number
     }
 });
 
