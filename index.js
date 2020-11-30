@@ -23,8 +23,6 @@ mongoose.connect('mongodb://localhost:27017/BlueLakes', {useNewUrlParser: true, 
         console.log(err)
     });
 
-
-
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
 
