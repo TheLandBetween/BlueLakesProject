@@ -32,13 +32,12 @@ const lakeHealthReportSchema = new Schema({
     },
     avg_phosph: {
         type: Number
-    }
-    // believe this is how we should implement links from the lake reports to the lake themselves
+    },
     // want to keep these reports as seperate objects since we need to view all at once
-    // lake: {
-    //     type: Schema.Types.ObjectID,
-    //     ref: 'Lake'
-    // }
+    lake: {
+        type: Schema.Types.ObjectID,
+        ref: 'Lake'
+    }
     // ON LAKE SIDE PUT THIS: (DONT HAVE FILE YET)
     // healthReports: {
     //      type: Schema.Types.ObjectId,
