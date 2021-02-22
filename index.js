@@ -5,6 +5,7 @@ const path = require('path'); // initiate path to ensure proper navigation no ma
 const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identifiers
 const session = require('express-session'); // express session instance
+const flash = require('connect-flash');
 uuid();
 let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
@@ -37,7 +38,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // take current dir name, join it with /views to navigate to views folder
 app.set('views', path.join(__dirname, "/views"));
 
-
+// Session, and sending to user
 const sessionConfig = {
     secret: 'thisshouldbebetter',
     resave: false,
@@ -46,8 +47,11 @@ const sessionConfig = {
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,// Date.now provides in ms, this is to expire in a week
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
-}
-app.use(session(sessionConfig))
+};
+app.use(session(sessionConfig));
+
+// used for flashing messages to users, ie succesfully created
+app.use(flash());
 
 // form submission assigned to using json
 app.use(express.urlencoded({ extended: true }));
@@ -60,6 +64,15 @@ app.use(express.json());
 //     console.log("middleware");
 //     next();
 // });
+
+// Middleware for the connect-flash library
+// will check each request for a tag from flash(), and if its present pass into the local vars of the template loaded as
+// a correspoding variable.
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success'); // a success message, pass it over
+    res.locals.error = req.flash('error'); // an error message, pass it over
+    next();
+});
 
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine

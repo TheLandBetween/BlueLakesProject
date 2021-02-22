@@ -24,9 +24,10 @@ router.post('/', async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new LakeHealthReport(req.body);
     await newReport.save();
+    // save success trigger
+    req.flash('success', "Successfully submitted a new Lake Health Report");
     // redirect back to view all lakeReports page
-    // redirect to avoid form resubmission on refresh
-    res.redirect(`/lakeReports/${newReport._id}`);
+    res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 });
 
 // show route
