@@ -4,6 +4,7 @@ const app = express();
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identifiers
+const session = require('express-session'); // express session instance
 uuid();
 let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
@@ -12,7 +13,6 @@ express.static(path.join(__dirname, "public"));
 //MONGOOSE
 const mongoose = require('mongoose');
 // setup lake health report model + route
-const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report")); // TODO: may not need this here
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
 // setup angler report model + route
@@ -30,35 +30,24 @@ mongoose.connect('mongodb://localhost:27017/BlueLakes', {useNewUrlParser: true, 
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
 
-const reports = [
-    {
-        id: uuid(),
-        date: "12-01-1999",
-        health: "great"
-    },
-    {
-        id: uuid(),
-        date: "10-01-1999",
-        health: "ok"
-    },
-    {
-        id: uuid(),
-        date: "8-01-1999",
-        health: "terrible"
-    },
-    {
-        id: uuid(),
-        date: "6-01-1999",
-        health: "not good"
-    }
-];
-
 // assign ejs as the templating language
 app.set('view engine', 'ejs');
 //serve public directory for css & js files
 app.use(express.static(path.join(__dirname, "public")));
 // take current dir name, join it with /views to navigate to views folder
 app.set('views', path.join(__dirname, "/views"));
+
+
+const sessionConfig = {
+    secret: 'thisshouldbebetter',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,// Date.now provides in ms, this is to expire in a week
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+app.use(session(sessionConfig))
 
 // form submission assigned to using json
 app.use(express.urlencoded({ extended: true }));
