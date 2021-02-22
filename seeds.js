@@ -5,14 +5,9 @@ const mongoose = require('mongoose');
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report.js"));
 
-// connect to "test" database
-mongoose.connect('mongodb://localhost:27017/lakeHealthReports', {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {
-        console.log("connection open!")
-    }).catch(err => {
-    // error catch if connection to db fails
-    console.log(err);
-});
+const connectDB = require('./Database/Connection')
+connectDB();
+
 
 const report = new LakeHealthReport({
     WBY_LID: 2,
