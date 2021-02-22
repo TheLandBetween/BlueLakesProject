@@ -24,9 +24,8 @@ router.post('/', async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
     await newReport.save();
-    // redirect back to view all lakeReports page
-    // redirect to avoid form resubmission on refresh
-    res.redirect(`/anglerReports/${newReport._id}`);
+    req.flash('success', "Successfully submitted a new Angling Report");
+    res.redirect(`/anglerReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 });
 
 // show route
@@ -65,5 +64,10 @@ router.patch('/:id', (req, res) => {
 //     const foundReport = reports.find(report => report.id === id);
 //     res.render('anglerReports/edit', { foundReport, levelDeep: levelDeep = true })
 // })
-
+// below part not done
+// router.put('/:id', async(req, res) => {
+//     const { id } = req.params;
+//     const report = await AnglerReport.findByIdAndUpdate(id);
+//     req.flash('success', 'Successfully updated the Angling Report')
+// })
 module.exports = router;
