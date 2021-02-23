@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const path = require('path'); // duplicated in index.js, need to replace with partial that includes
 const catchAsync = require('../utils/catchAsync');
+const ExpressError = require('../utils/ExpressError');
+
 
 
 const LakeHealthReport = require(path.join(__dirname, "../views/models/Lake_Health_Report"));
@@ -22,12 +24,17 @@ router.get('/new', (req, res) => {
 });
 // on lakeReports/new submission it posts to /lakeReports
 router.post('/', catchAsync(async (req, res) => {
-    // TODO: sanatize
+    // server side catch for incorrect submissions to the form
+    // is currently only checking that it's filled, but will deal with later fully.
+    // if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
+    // TODO: still need to sanatize kinda
+    if (!req.body.lakeReport) throw new ExpressError('Invalid Report Data', 400);
+
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new LakeHealthReport(req.body);
     await newReport.save();
     // save success trigger
-    req.flash('success', "Successfully submitted a new Lake Health Report");
+    req.flash('success', req.body);
     // redirect back to view all lakeReports page
     res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 }));
