@@ -6,6 +6,7 @@ const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identifiers
 const session = require('express-session'); // express session instance
 const flash = require('connect-flash');
+const ExpressError = require('./utils/ExpressError');
 uuid();
 let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
@@ -83,14 +84,19 @@ app.use('/anglerReports', anglerReportRoutes);
 app.get('/anglerReports/:id/edit', (req, res) => {
 });
 
-// catch all for /path that is not defined -- 404 page
-app.get("*", (req, res) => {
-    res.send("Path not found")
+// 404 error page, request a link that doesnt exist
+// will send new error object to our app.use error handler and allow it to display accordingly.
+app.all('*', (req, res, next) => {
+    // send new ExpressError object with page not found message + code
+    next(new ExpressError('Page Not Found', 404))
 });
 
 // error handling, called after catchAsync throws an error for the async function call
 app.use((err, req, res, next) => {
-    res.send("Something went wrong!")
+    const { statusCode = 500 } = err; // pull statusCode from ExpressError object, set to 500 default
+    if (!err.message) err.message = "Something went wrong!";
+    // pull statusCode and message from ExpressError class passed in
+    res.status(statusCode).render('error', { err, levelDeep: levelDeep = false }) // pass error object to error page
 });
 
 // start the server on port 3000
