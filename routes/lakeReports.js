@@ -3,8 +3,23 @@ const router = express.Router();
 const path = require('path'); // duplicated in index.js, need to replace with partial that includes
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
+const { lakeReportSchema } = require('../schemas');
 
-
+// server side catch for incorrect submissions to the form
+// is currently only checking that it's filled, but will deal with later fully.
+// if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
+const validateLakeReport = (req, res, next) => {
+    // run that schema through joi's validate function, which will return an object
+    const { error } = lakeReportSchema.validate(req.body);
+    // if that object contains error details, throw an ExpressError
+    if(error){
+        // strip the details array inside the error field in object, and append them to the message being sent to the error
+        const message = error.details.map(elem => elem.message).join(',');
+        throw new ExpressError(message, 400)
+    } else {
+        next();
+    }
+};
 
 const LakeHealthReport = require(path.join(__dirname, "../views/models/Lake_Health_Report"));
 
@@ -23,18 +38,12 @@ router.get('/new', (req, res) => {
     res.render('lakeReports/new', {levelDeep: levelDeep = true});
 });
 // on lakeReports/new submission it posts to /lakeReports
-router.post('/', catchAsync(async (req, res) => {
-    // server side catch for incorrect submissions to the form
-    // is currently only checking that it's filled, but will deal with later fully.
-    // if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
-    // TODO: still need to sanatize kinda
-    if (!req.body.lakeReport) throw new ExpressError('Invalid Report Data', 400);
-
+router.post('/', validateLakeReport, catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
-    const newReport = new LakeHealthReport(req.body);
+    const newReport = new LakeHealthReport(req.body.lakeReport);
     await newReport.save();
     // save success trigger
-    req.flash('success', req.body);
+    req.flash('success', req.body.lakeReport['avg_phosph']);
     // redirect back to view all lakeReports page
     res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 }));
