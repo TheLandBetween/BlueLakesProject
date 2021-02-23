@@ -58,13 +58,6 @@ app.use(express.urlencoded({ extended: true }));
 // pass in body as json on each request
 app.use(express.json());
 
-//Custom Middleware Example
-// every request that comes in to / gets logged to console and then next() proceeds to where the url should go normally
-// app.use('/', (req, res, next) => {
-//     console.log("middleware");
-//     next();
-// });
-
 // Middleware for the connect-flash library
 // will check each request for a tag from flash(), and if its present pass into the local vars of the template loaded as
 // a correspoding variable.
@@ -93,6 +86,11 @@ app.get('/anglerReports/:id/edit', (req, res) => {
 // catch all for /path that is not defined -- 404 page
 app.get("*", (req, res) => {
     res.send("Path not found")
+});
+
+// error handling, called after catchAsync throws an error for the async function call
+app.use((err, req, res, next) => {
+    res.send("Something went wrong!")
 });
 
 // start the server on port 3000
