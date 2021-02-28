@@ -15,8 +15,6 @@ const lakeHealthReportSchema = new Schema({
     level_of_concern: {
         type: Number,
         min: 0
-        // if we wanted to do only between 0 and 10, would setup this way
-        // enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     },
     perc_shore_devd: {
         type: Number
@@ -38,12 +36,6 @@ const lakeHealthReportSchema = new Schema({
         type: Schema.Types.ObjectID,
         ref: 'Lake'
     }
-    // ON LAKE SIDE PUT THIS: (DONT HAVE FILE YET)
-    // healthReports: {
-    //      type: Schema.Types.ObjectId,
-    //      ref: 'Lake_Health_Report'
-    //   }
-    // this creates a two way relationship
 });
 
 // assign it to a variable to create instances of the model
