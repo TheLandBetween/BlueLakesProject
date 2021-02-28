@@ -1,6 +1,15 @@
 // pull in express and set it up, assigned to app var
 const express = require("express");
+const connectDB = require('./Database/Connection')
 const app = express();
+
+connectDB();
+
+const seed = require('./seeds') //TEST SEEDING THE REMOTE DATABASE
+
+app.use(express.json({ extended: false }));
+const Port = process.env.Port || 3000;
+
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identifiers
@@ -15,43 +24,14 @@ const mongoose = require('mongoose');
 const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report")); // TODO: may not need this here
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
+const loginRoutes = require('./routes/login');
+const registerRoutes = require('./routes/register');
 // setup angler report model + route
 
-// connect to "BlueLakes" database
-mongoose.connect('mongodb://localhost:27017/BlueLakes', {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {
-        console.log("connection open!")
-    }).catch(err => {
-        // error catch if connection to db fails
-        console.log("error");
-        console.log(err)
-    });
+
 
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
-
-const reports = [
-    {
-        id: uuid(),
-        date: "12-01-1999",
-        health: "great"
-    },
-    {
-        id: uuid(),
-        date: "10-01-1999",
-        health: "ok"
-    },
-    {
-        id: uuid(),
-        date: "8-01-1999",
-        health: "terrible"
-    },
-    {
-        id: uuid(),
-        date: "6-01-1999",
-        health: "not good"
-    }
-];
 
 // assign ejs as the templating language
 app.set('view engine', 'ejs');
@@ -93,8 +73,10 @@ app.get("*", (req, res) => {
     res.send("Path not found")
 });
 
-// start the server on port 3000
-app.listen(3000, () => {
-    console.log("Listening on 3000");
-});
+
+app.listen(Port, () => console.log('Server started'));
+// // start the server on port 3000
+// app.listen(3000, () => {
+//     console.log("Listening on 3000");
+// });
 
