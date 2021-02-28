@@ -7,9 +7,12 @@ const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identi
 const session = require('express-session'); // express session instance
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
-uuid();
+// const passport = require('passport');
+// const LocalStrategy = require('passport-local');
+// const User_Account = require("./views/models/User_Account");
 let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
+uuid();
 express.static(path.join(__dirname, "public"));
 
 //MONGOOSE
@@ -39,6 +42,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // take current dir name, join it with /views to navigate to views folder
 app.set('views', path.join(__dirname, "/views"));
 
+
+
 // Session, and sending to user
 const sessionConfig = {
     secret: 'thisshouldbebetter',
@@ -53,6 +58,16 @@ app.use(session(sessionConfig));
 
 // used for flashing messages to users, ie succesfully created
 app.use(flash());
+
+// start passport user authentication
+// app.use(passport.initialize());
+// app.use(passport.session()); // needs to be used after app.use(session())
+//
+// passport.use(new LocalStrategy(User_Account.authenticate())); // pass current users session into passport and check if still valid
+//
+// // define how to store + unstore user auth, which is stored in the user account (provided by passport)
+// passport.serializeUser(User_Account.serializeUser());
+// passport.deserializeUser(User_Account.deserializeUser());
 
 // form submission assigned to using json
 app.use(express.urlencoded({ extended: true }));
