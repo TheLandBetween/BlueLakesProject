@@ -24,6 +24,8 @@ const mongoose = require('mongoose');
 const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report")); // TODO: may not need this here
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
+const loginRoutes = require('./routes/login');
+const registerRoutes = require('./routes/register');
 // setup angler report model + route
 
 

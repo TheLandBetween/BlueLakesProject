@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const LakeHealthReport = require(path.join(__dirname, "views/models/Lake_Health_Report.js"));
 
-const connectDB = require('./Database/Connection')
+const connectDB = require('./Database/Connection');
 connectDB();
 
 
