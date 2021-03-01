@@ -103,7 +103,7 @@ app.get('/anglerReports/:id/edit', (req, res) => {
 });
 
 //USER ACCOUNT ROUTING
-app.use('/userAccount', userAccountRoutes);
+app.use('/userAccounts', userAccountRoutes);
 app.get('/anglerReports/:id/edit', (req, res) => {
 });
 

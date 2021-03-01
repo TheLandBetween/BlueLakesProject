@@ -19,6 +19,10 @@ router.get('/fakeUser', catchAsync(async (req, res) => {
     res.send(newUser);
 }));
 
+router.get('/register', catchAsync(async (req, res) => {
+    res.render('userAccounts/register', {levelDeep: levelDeep = true});
+}));
+
 // /register - FORM
 // POST /register - create user
 
