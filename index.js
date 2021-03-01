@@ -2,12 +2,14 @@
 const express = require("express");
 const connectDB = require('./Database/Connection')
 const app = express();
+const bcrypt = require('bcrypt');
 
 connectDB();
 
 const seed = require('./seeds') //TEST SEEDING THE REMOTE DATABASE
 
 app.use(express.json({ extended: false }));
+app.use(express.urlencoded({extended: false }));
 const Port = process.env.Port || 3000;
 const catchAsync = require('./utils/catchAsync');
 
@@ -108,21 +110,38 @@ app.get('/register', catchAsync(async (req, res) => {
     res.render('userAccounts/register', {levelDeep: levelDeep = true});
 }));
 app.post('/register', catchAsync(async (req, res) => {
-    const newAccount = new User_Account(req.body);
-    await newAccount.save();
-    req.flash('success', "Successfully registered an account");
-    res.redirect('/login'); // redirect to avoid form resubmission on refresh
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+        const newAccount = new UserAccount({
+            username: req.body.username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            password: hashedPassword
+        });
+
+        await newAccount.save();
+
+        res.redirect('/login')
+    } catch {
+        res.redirect('/register')
+    }
 }));
 
 app.get('/login', catchAsync(async (req, res) => {
     res.render('userAccounts/login', {levelDeep: levelDeep = true});
 }));
 app.post('/login', catchAsync(async (req, res) => {
+    try {
+
+    } catch {
+        res.redirect('/login')
+    }
+
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    if (UserAccount.find({"email" : email}))
-        console.log("Hello its chef");
+
     window.sessionStorage.setItem("user", username);
 
     //res.redirect('/'); // redirect to avoid form resubmission on refresh
