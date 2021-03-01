@@ -1,5 +1,8 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
+<%- include('../partials/navbar')%>
+<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
+    <div class="container">
     <%- include('../partials/flash')%>
 
     <h1>Report ID: <%= foundReport._id %></h1> <!-- _id is mongoose variable for auto assigned uuid. do not change -->

@@ -2,6 +2,9 @@
 
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head', {levelDeep: levelDeep})%>
+<%- include('../partials/navbar')%>
+<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
+    <div class="container">
     <h1>Edit</h1>
     <!--form to submit new date for a report -- path is /lakeReports/:id patch -->
     <!-- this is using methodOverride middleware to ensure it uses PATCH as web browsers cant -->
