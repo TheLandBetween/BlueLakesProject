@@ -29,8 +29,6 @@ const mongoose = require('mongoose');
 // setup lake health report model + route
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
-const loginRoutes = require('./routes/login');
-const registerRoutes = require('./routes/register');
 // setup angler report model + route
 
 
