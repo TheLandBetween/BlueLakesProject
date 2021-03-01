@@ -26,6 +26,10 @@ router.get('/register', catchAsync(async (req, res) => {
 // /register - FORM
 // POST /register - create user
 
+router.post('/login', catchAsync(async (req, res) => {
+    res.render('/', {levelDeep: levelDeep = true});
+}));
+
 
 
 module.exports = router;

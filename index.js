@@ -9,6 +9,7 @@ const seed = require('./seeds') //TEST SEEDING THE REMOTE DATABASE
 
 app.use(express.json({ extended: false }));
 const Port = process.env.Port || 3000;
+const catchAsync = require('./utils/catchAsync');
 
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const methodOverride = require('method-override');
@@ -101,9 +102,31 @@ app.get('/anglerReports/:id/edit', (req, res) => {
 });
 
 //USER ACCOUNT ROUTING
-app.use('/userAccounts', userAccountRoutes);
-app.get('/anglerReports/:id/edit', (req, res) => {
-});
+const UserAccount = require(path.join(__dirname, "./views/models/User_Account"));
+
+app.get('/register', catchAsync(async (req, res) => {
+    res.render('userAccounts/register', {levelDeep: levelDeep = true});
+}));
+app.post('/register', catchAsync(async (req, res) => {
+    const newAccount = new User_Account(req.body);
+    await newAccount.save();
+    req.flash('success', "Successfully registered an account");
+    res.redirect('/login'); // redirect to avoid form resubmission on refresh
+}));
+
+app.get('/login', catchAsync(async (req, res) => {
+    res.render('userAccounts/login', {levelDeep: levelDeep = true});
+}));
+app.post('/login', catchAsync(async (req, res) => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (UserAccount.find({"email" : email}))
+        console.log("Hello its chef");
+    window.sessionStorage.setItem("user", username);
+
+    //res.redirect('/'); // redirect to avoid form resubmission on refresh
+}));
 
 // 404 error page, request a link that doesnt exist
 // will send new error object to our app.use error handler and allow it to display accordingly.
