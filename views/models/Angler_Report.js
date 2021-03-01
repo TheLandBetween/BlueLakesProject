@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 // create a template for the table (layed out in the db schema)
 const anglerDiariesSchema = new mongoose.Schema({
-    id_pk: {
-        type: Number,
-        required: true
-    },
     lake_town_fk: { //Should it be the town name, or the lake itself?
         type: String,
         required: true

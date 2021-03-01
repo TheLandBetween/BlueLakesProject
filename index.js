@@ -30,8 +30,6 @@ const mongoose = require('mongoose');
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
 const userAccountRoutes = require('./routes/User_Account');
-const loginRoutes = require('./routes/login');
-const registerRoutes = require('./routes/register');
 // setup angler report model + route
 
 
