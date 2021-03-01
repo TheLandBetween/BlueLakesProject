@@ -1,40 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form id="reg-form">
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <input type="submit" value="Submit Form">
-    </form>
-
-    <script>
-        const form = document.getElementById('reg-form')
-        form.addEventListener('submit', registerUser)
-
-        // Send data as JSON
-        async function registerUser(event) {
-            event.preventDefault()
-            const username = document.getElementById('username').value
-            const password = document.getElementById('password').value
-
-            const result = await fetch('/routes/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username,
-                    password
-                })
-            }).then((res) => res.json())
-
-            console.log(result)
-        }
-
-    </script>
-</body>
-</html>
+<%- include('../partials/head')%>
+<%- include('../partials/navbar')%>
+<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
+    <div class="container">
+        <h1>Register</h1>
+        <form action="/userAccounts" method="POST" class="needs-validation" name="username" novalidate>
+            <div class="form-group">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="username">Email: </label>
+                <input type="text" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="firstName">First Name: </label>
+                <input type="text" id="firstName" placeholder="Jane" name="firstName" class="form-control" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="lastName">Last Name: </label>
+                <input type="text" id="lastName" placeholder="Doe" name="lastName" class="form-control" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="password">Password: </label>
+                <input type="password" id="password" placeholder="Doe" name="password" class="form-control" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-outline-primary btn-block">Register</button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </form>
