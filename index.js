@@ -29,6 +29,7 @@ const mongoose = require('mongoose');
 // setup lake health report model + route
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
+const userAccountRoutes = require('./routes/User_Account');
 const loginRoutes = require('./routes/login');
 const registerRoutes = require('./routes/register');
 // setup angler report model + route
@@ -98,6 +99,11 @@ app.get('/lakeReports/:id/edit', (req, res) => {
 
 //ANGLER REPORT ROUTING
 app.use('/anglerReports', anglerReportRoutes);
+app.get('/anglerReports/:id/edit', (req, res) => {
+});
+
+//USER ACCOUNT ROUTING
+app.use('/userAccount', userAccountRoutes);
 app.get('/anglerReports/:id/edit', (req, res) => {
 });
 
