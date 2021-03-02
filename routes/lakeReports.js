@@ -6,7 +6,6 @@ const ExpressError = require('../utils/ExpressError');
 const { lakeReportSchema } = require('../schemas');
 
 // server side catch for incorrect submissions to the form
-// is currently only checking that it's filled, but will deal with later fully.
 // if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
 const validateLakeReport = (req, res, next) => {
     // run that schema through joi's validate function, which will return an object

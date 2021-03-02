@@ -18,3 +18,14 @@ module.exports.lakeReportSchema = Joi.object({
         avg_phosph: Joi.number().required()
     }).required()
 });
+
+module.exports.userAccountSchema = Joi.object({
+    // expect a lakeReport object to be submitted from the form
+    userAccount: Joi.object({
+        // This is where all the Joi validation is done.
+        username: Joi.string().required(), // says this must be a string and is required
+        firstName: Joi.string().required(),
+        lastName: Joi.string().required(),
+        password: Joi.number().required()
+    }).required()
+});

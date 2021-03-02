@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 connectDB();
 
-const seed = require('./seeds') //TEST SEEDING THE REMOTE DATABASE
+const seed = require('./seeds'); //TEST SEEDING THE REMOTE DATABASE
 
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({extended: false }));
@@ -29,11 +29,29 @@ express.static(path.join(__dirname, "public"));
 
 //MONGOOSE
 const mongoose = require('mongoose');
-// setup lake health report model + route
+// setup Routes
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
-const userAccountRoutes = require('./routes/User_Account');
-// setup angler report model + route
+
+// JOI Validation Schemas
+const { userAccountSchema } = require('./schemas');
+
+// server side catch for incorrect submissions to a user account
+// if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
+const validateUserAccount = (req, res, next) => {
+    // run that schema through joi's validate function, which will return an object
+    const { error } = userAccountSchema.validate(req.body);
+    // if that object contains error details, throw an ExpressError
+    if(error){
+        console.log("erroring in user account");
+        // strip the details array inside the error field in object, and append them to the message being sent to the error
+        const message = error.details.map(elem => elem.message).join(',');
+        throw new ExpressError(message, 400)
+    } else {
+        next();
+    }
+};
+
 
 
 
@@ -110,22 +128,13 @@ app.get('/register', catchAsync(async (req, res) => {
     res.render('userAccounts/register', {levelDeep: levelDeep = true});
 }));
 app.post('/register', catchAsync(async (req, res) => {
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const { username, firstName, lastName, password } = req.body;
 
-        const newAccount = new UserAccount({
-            username: req.body.username,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            password: hashedPassword
-        });
-
-        await newAccount.save();
-
-        res.redirect('/login')
-    } catch {
-        res.redirect('/register')
-    }
+    const newUser = new UserAccount({username, firstName, lastName});
+    const registeredUser = await UserAccount.register(newUser, password);
+    console.log(registeredUser);
+    req.flash("Welcome!");
+    res.redirect("/");
 }));
 
 app.get('/login', catchAsync(async (req, res) => {

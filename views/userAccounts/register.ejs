@@ -3,11 +3,11 @@
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
         <h1>Register</h1>
-        <form action="/register" method="POST" class="needs-validation" name="username" novalidate>
+        <form action="/register" method="POST" class="needs-validation" name="submit" novalidate>
             <div class="form-group">
                 <!-- date input, sent under 'date' label-->
-                <label class='form-label' for="username">username: </label>
-                <input type="text" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
+                <label class='form-label' for="username">Email: </label>
+                <input type="email" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
                 <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                 <div class="valid-feedback">
                     Looks good!
@@ -48,3 +48,24 @@
                 <div class="col-sm-3"></div>
             </div>
         </form>
+
+
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function() {
+                'use strict';
+
+                const forms = document.querySelectorAll('.needs-validation')
+
+                Array.from(forms).forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+            })();
+        </script>
