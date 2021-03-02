@@ -128,13 +128,18 @@ app.get('/register', catchAsync(async (req, res) => {
     res.render('userAccounts/register', {levelDeep: levelDeep = true});
 }));
 app.post('/register', catchAsync(async (req, res) => {
-    const { username, firstName, lastName, password } = req.body;
+    try {
+        const { username, firstName, lastName, password } = req.body;
+        const newUser = new UserAccount({username, firstName, lastName});
+        const registeredUser = await UserAccount.register(newUser, password);
 
-    const newUser = new UserAccount({username, firstName, lastName});
-    const registeredUser = await UserAccount.register(newUser, password);
-    console.log(registeredUser);
-    req.flash("Welcome!");
-    res.redirect("/");
+        console.log(registeredUser);
+        req.flash("success", "Welcome!");
+        res.redirect("/");
+    } catch (error) {
+        req.flash("error", error.message);
+        res.redirect('register')
+    }
 }));
 
 app.get('/login', catchAsync(async (req, res) => {
