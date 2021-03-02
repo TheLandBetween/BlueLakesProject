@@ -146,20 +146,55 @@ app.get('/login', catchAsync(async (req, res) => {
     res.render('userAccounts/login', {levelDeep: levelDeep = true});
 }));
 app.post('/login', catchAsync(async (req, res) => {
-    try {
+}));
 
-    } catch {
-        res.redirect('/login')
+//Forgot password
+const crypto = require('crypto');
+const { promisify } = require('util');
+const nodemailer = require('nodemailer');
+const nodemailerSendgrid = require('nodemailer-sendgrid');
+
+const SENDGRID_API_KEY = '';
+
+const transport = nodemailer.createTransport(nodemailerSendgrid({
+    apiKey: SENDGRID_API_KEY,
+}));
+app.get('/forgot', catchAsync(async (req, res) => {
+    res.render('userAccounts/forgot', {levelDeep: levelDeep = true});
+}));
+app.post('/forgot', catchAsync(async (req, res) => {
+    const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
+    const user = MONGODB.find(u => u.email === req.body.email)
+
+    if (!user) {
+        req.flash('error', 'No account with that email address exists.');
+        return res.redirect('/forgot');
     }
 
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000;
 
+    const resetEmail = {
+        to: user.username,
+        from: 'passwordreset@example.com',
+        subject: 'Angler Diaries Password Reset',
+        text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.' +
+            'Please click on the following link, or paste into your web broswer to complete this process:' +
+            'http//{req.headers.host}/reset/${token}' +
+            'If you did not request this, please ignore this email and your password will remain unchanged.'
+    };
 
-    window.sessionStorage.setItem("user", username);
-
-    //res.redirect('/'); // redirect to avoid form resubmission on refresh
+    await transport.sendMail(resetEmail); //149
 }));
+
+
+
+
+
+
+
+
+
 
 // 404 error page, request a link that doesnt exist
 // will send new error object to our app.use error handler and allow it to display accordingly.
