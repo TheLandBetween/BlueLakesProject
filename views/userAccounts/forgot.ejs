@@ -1,11 +1,11 @@
 <%- include('../partials/head')%>
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
-        <h1>Login</h1>
-        <form action="/login" method="POST" class="needs-validation" name="login" novalidate>
+        <h1>Account Recovery</h1>
+        <form action="/forgot" method="POST" class="needs-validation" name="login" novalidate>
             <div class="form-group">
                 <!-- date input, sent under 'date' label-->
-                <label class='form-label' for="username">username: </label>
+                <label class='form-label' for="username">Account Email: </label>
                 <input type="text" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
                 <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                 <div class="valid-feedback">
@@ -16,9 +16,9 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm">
-                    <button type="submit" class="btn btn-outline-primary btn-block">Login</button>
+                    <button type="submit" class="btn btn-outline-primary btn-block">Send Email</button>
                 </div>
                 <div class="col-sm-3"></div>
             </div>
         </form>
-        <a href="/login">Login</a>
+        <a href="/login">Back to Login</a>

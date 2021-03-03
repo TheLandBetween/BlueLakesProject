@@ -135,10 +135,10 @@ app.post('/register', catchAsync(async (req, res) => {
 
         console.log(registeredUser);
         req.flash("success", "Welcome!");
-        res.redirect("/");
+        res.redirect('/login');
     } catch (error) {
         req.flash("error", error.message);
-        res.redirect('register')
+        res.redirect('/register')
     }
 }));
 
@@ -154,17 +154,22 @@ const { promisify } = require('util');
 const nodemailer = require('nodemailer');
 const nodemailerSendgrid = require('nodemailer-sendgrid');
 
-const SENDGRID_API_KEY = '';
-
-const transport = nodemailer.createTransport(nodemailerSendgrid({
-    apiKey: SENDGRID_API_KEY,
-}));
+const transport = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    auth: {
+        user: 'bluelakesproject',
+        pass: '3dLfWMQ1GF6m'
+    }
+});
 app.get('/forgot', catchAsync(async (req, res) => {
     res.render('userAccounts/forgot', {levelDeep: levelDeep = true});
 }));
 app.post('/forgot', catchAsync(async (req, res) => {
     const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
-    const user = MONGODB.find(u => u.email === req.body.email)
+    //const user = MONGODB.find(u => u.email === req.body.email)
+
+    const user = 'mtdnichol@gmail.com'
 
     if (!user) {
         req.flash('error', 'No account with that email address exists.');
@@ -175,18 +180,28 @@ app.post('/forgot', catchAsync(async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000;
 
     const resetEmail = {
-        to: user.username,
+        //to: user.username,
+        to: 'mtdnichol@gmail.com',
         from: 'passwordreset@example.com',
         subject: 'Angler Diaries Password Reset',
-        text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.' +
-            'Please click on the following link, or paste into your web broswer to complete this process:' +
-            'http//{req.headers.host}/reset/${token}' +
-            'If you did not request this, please ignore this email and your password will remain unchanged.'
+        text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.\n' +
+            'Please click on the following link, or paste into your web broswer to complete this process:\n' +
+            'Token: ' + token +
+            '\nLink: http//' + req.headers.host + '/recover/$' + token +
+            '\n\nIf you did not request this, please ignore this email and your password will remain unchanged.'
     };
 
     await transport.sendMail(resetEmail); //149
+
+    res.redirect('/recover');
 }));
 
+app.get('/recover', catchAsync(async (req, res) => {
+    res.render('userAccounts/recover', {levelDeep: levelDeep = true});
+}));
+app.post('/recover', catchAsync(async (req, res) => {
+
+}));
 
 
 
