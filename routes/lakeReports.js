@@ -2,23 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path'); // duplicated in index.js, need to replace with partial that includes
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
-const { lakeReportSchema } = require('../schemas');
-
-// server side catch for incorrect submissions to the form
-// if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
-const validateLakeReport = (req, res, next) => {
-    // run that schema through joi's validate function, which will return an object
-    const { error } = lakeReportSchema.validate(req.body);
-    // if that object contains error details, throw an ExpressError
-    if(error){
-        // strip the details array inside the error field in object, and append them to the message being sent to the error
-        const message = error.details.map(elem => elem.message).join(',');
-        throw new ExpressError(message, 400)
-    } else {
-        next();
-    }
-};
+const { isLoggedIn, validateLakeReport } = require('../middleware');
 
 const LakeHealthReport = require(path.join(__dirname, "../views/models/Lake_Health_Report"));
 
@@ -31,14 +15,16 @@ router.get('/',  catchAsync(async (req, res) => {
     res.render('lakeReports/index', { healthReports, levelDeep: levelDeep = true});
 }));
 
+
 // create route
 // POST /lakeReports - Create new report
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('lakeReports/new', {levelDeep: levelDeep = true});
 });
 // on lakeReports/new submission it posts to /lakeReports
-router.post('/', validateLakeReport, catchAsync(async (req, res) => {
+router.post('/', catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
+    res.send(req.body);
     const newReport = new LakeHealthReport(req.body.lakeReport);
     await newReport.save();
     // save success trigger
