@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 connectDB();
 
-const seed = require('./seeds'); //TEST SEEDING THE REMOTE DATABASE
+//const seed = require('./seeds'); //TEST SEEDING THE REMOTE DATABASE
 
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({extended: false }));
@@ -166,7 +166,7 @@ app.get('/forgot', catchAsync(async (req, res) => {
     res.render('userAccounts/forgot', {levelDeep: levelDeep = true});
 }));
 app.post('/forgot', catchAsync(async (req, res) => {
-    const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
+    const token = (await promisify(crypto.randomBytes)(5)).toString('hex');
     //const user = MONGODB.find(u => u.email === req.body.email)
 
     const user = 'mtdnichol@gmail.com'
@@ -187,7 +187,7 @@ app.post('/forgot', catchAsync(async (req, res) => {
         text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.\n' +
             'Please click on the following link, or paste into your web broswer to complete this process:\n' +
             'Token: ' + token +
-            '\nLink: http//' + req.headers.host + '/recover/$' + token +
+            '\nLink: http//' + req.headers.host + '/recover?code=' + token +
             '\n\nIf you did not request this, please ignore this email and your password will remain unchanged.'
     };
 
@@ -200,7 +200,6 @@ app.get('/recover', catchAsync(async (req, res) => {
     res.render('userAccounts/recover', {levelDeep: levelDeep = true});
 }));
 app.post('/recover', catchAsync(async (req, res) => {
-
 }));
 
 
