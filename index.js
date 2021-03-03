@@ -145,7 +145,9 @@ app.post('/register', catchAsync(async (req, res) => {
 app.get('/login', catchAsync(async (req, res) => {
     res.render('userAccounts/login', {levelDeep: levelDeep = true});
 }));
-app.post('/login', catchAsync(async (req, res) => {
+app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(async (req, res) => {
+    req.flash('success', "Welcome back!");
+    res.redirect('/');
 }));
 
 //Forgot password
