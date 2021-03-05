@@ -6,7 +6,7 @@
         <%- include('../partials/flash') %>
 
         <h1 class="text-center">Edit Lake Health Report</h1>
-        <form action="/lakeReports/<%= lakeReport.id %>?_method=PATCH" method="post" class="text-center needs-validation" name="submit" novalidate>
+        <form action="/lakeReports/<%= lakeReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
             <div class="form-group">
                 <!-- date input, sent under 'date' label-->
                 <label class='form-label' for="date_generated">Date: </label>
