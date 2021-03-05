@@ -14,6 +14,12 @@ const UserSchema = new Schema({
     lastName: {
         type: String,
         required: true
+    },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpires: {
+        type: Number
     }
 });
 

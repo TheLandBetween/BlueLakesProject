@@ -4,9 +4,12 @@ const connectDB = require('./Database/Connection')
 const app = express();
 const bcrypt = require('bcrypt');
 
+//Connect to the remote database
 connectDB();
 
-const seed = require('./seeds'); //TEST SEEDING THE REMOTE DATABASE
+
+
+//const seed = require('./seeds'); //TEST SEEDING THE REMOTE DATABASE
 
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({extended: false }));
@@ -32,12 +35,33 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //MONGOOSE
 const mongoose = require('mongoose');
+
+//MONGO
+const mongo = require('mongodb');
+const assert = require('assert');
+const URI = 'mongodb+srv://bluelakes:pbTk3KiYV2yg6LQ4@cluster0.xk0y2.mongodb.net/BlueLakes?retryWrites=true&w=majority'
+
 // setup Routes
 const lakeReportRoutes = require('./routes/lakeReports');
 const anglerReportRoutes = require('./routes/anglerReports');
 
 // JOI Validation Schemas
 const { userAccountSchema } = require('./schemas');
+
+//Import all models
+// import User_Account from './views/models/User_Account.js'
+const UserAccount = require(path.join(__dirname, "./views/models/User_Account"));
+const AnglerReport = require(path.join(__dirname, "./views/models/Angler_Report"));
+const DOTemp = require(path.join(__dirname, "./views/models/DO_Temp"));
+const FishStocking = require(path.join(__dirname, "./views/models/Fish_Stocking"));
+const GNETBL1SQKM = require(path.join(__dirname, "./views/models/GNE_TBL_1sqKm"));
+const Lake = require(path.join(__dirname, "./views/models/Lake"));
+const LakeHealthReport = require(path.join(__dirname, "./views/models/Lake_Health_Report"));
+const LakesDB = require(path.join(__dirname, "./views/models/Lakes_DB"));
+const LTLakes = require(path.join(__dirname, "./views/models/LT_Lakes"));
+const LUCalc = require(path.join(__dirname, "./views/models/LU_Calc"));
+const Phosphorous = require(path.join(__dirname, "./views/models/Phosphorous"));
+const Secchi = require(path.join(__dirname, "./views/models/Secchi"));
 
 // server side catch for incorrect submissions to a user account
 // if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
@@ -125,8 +149,6 @@ app.get('/anglerReports/:id/edit', (req, res) => {
 });
 
 //USER ACCOUNT ROUTING
-const UserAccount = require(path.join(__dirname, "./views/models/User_Account"));
-
 app.get('/register', catchAsync(async (req, res) => {
     res.render('userAccounts/register', {levelDeep: levelDeep = true});
 }));
@@ -157,7 +179,6 @@ app.post('/login', passport.authenticate('local', {failureFlash: true, failureRe
 const crypto = require('crypto');
 const { promisify } = require('util');
 const nodemailer = require('nodemailer');
-const nodemailerSendgrid = require('nodemailer-sendgrid');
 
 const transport = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -171,10 +192,12 @@ app.get('/forgot', catchAsync(async (req, res) => {
     res.render('userAccounts/forgot', {levelDeep: levelDeep = true});
 }));
 app.post('/forgot', catchAsync(async (req, res) => {
-    const token = (await promisify(crypto.randomBytes)(20)).toString('hex');
-    //const user = MONGODB.find(u => u.email === req.body.email)
+    const token = (await promisify(crypto.randomBytes)(5)).toString('hex');
+    //const user = UserAccount.find(u => u.email === req.body.email)
 
-    const user = 'mtdnichol@gmail.com'
+    const user = 'mtdnichol@gmail.com';
+
+    console.log(UserAccount.findOne({'username' : 'mtdnichol@gmail.com'}));
 
     if (!user) {
         req.flash('error', 'No account with that email address exists.');
@@ -192,11 +215,11 @@ app.post('/forgot', catchAsync(async (req, res) => {
         text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.\n' +
             'Please click on the following link, or paste into your web broswer to complete this process:\n' +
             'Token: ' + token +
-            '\nLink: http//' + req.headers.host + '/recover/$' + token +
+            '\nLink: http//' + req.headers.host + '/recover?code=' + token +
             '\n\nIf you did not request this, please ignore this email and your password will remain unchanged.'
     };
 
-    await transport.sendMail(resetEmail); //149
+    //await transport.sendMail(resetEmail); 149
 
     res.redirect('/recover');
 }));
@@ -205,7 +228,6 @@ app.get('/recover', catchAsync(async (req, res) => {
     res.render('userAccounts/recover', {levelDeep: levelDeep = true});
 }));
 app.post('/recover', catchAsync(async (req, res) => {
-
 }));
 
 
