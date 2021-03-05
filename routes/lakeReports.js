@@ -15,17 +15,16 @@ router.get('/',  catchAsync(async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const healthReports = await LakeHealthReport.find({});
     // render index.ejs file with the lakeReports 'database'
-    res.render('lakeReports/index', { healthReports, levelDeep: levelDeep = true});
+    res.render('lakeReports/index', { healthReports, levelDeep: levelDeep = 1});
 }));
-
 
 // create route
 // POST /lakeReports - Create new report
 router.get('/new', isLoggedIn, (req, res) => {
-    res.render('lakeReports/new', {levelDeep: levelDeep = true});
+    res.render('lakeReports/new', {levelDeep: levelDeep = 1});
 });
 // on lakeReports/new submission it posts to /lakeReports
-router.post('/', catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     res.send(req.body.lakeReport);
     const newReport = new LakeHealthReport(req.body.lakeReport);
@@ -39,30 +38,54 @@ router.post('/', catchAsync(async (req, res) => {
 // show route
 // GET /lakeReports/:id - Get one report (using ID)
 // TODO: Slugify link at some point, so instead of id in the url it can be something realative to the report (name / date)
-router.get('/:id',  catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
     // pull id from url
     const { id } = req.params;
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await LakeHealthReport.findById(id);
     // send them to the page about the single report
-    res.render('lakeReports/details', { foundReport, levelDeep: levelDeep = true });
+    res.render('lakeReports/details', { foundReport, levelDeep: levelDeep = 1 });
+}));
+
+// edit route
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
+    const lakeReport = await LakeHealthReport.findById(req.params.id);
+    if(!lakeReport) {
+        req.flash('error', "Could not find that lake report.");
+        return res.redirect('/lakeReports');
+    }
+    res.render("lakeReports/edit", { lakeReport, levelDeep: levelDeep = 2 });
+}));
+router.put('/:id', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body.lakeReport });
+    req.flash('success', "Successfully updated Lake Report");
+    res.redirect(`/lakeReport/${lakeReport._id}`);
+}));
+
+// DELETE route
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+    const { id } = req.params;
+    await LakeHealthReport.findByIdAndDelete(id);
+    req.flash('success', "Successfully deleted Lake Report");
+    res.redirect('/lakeReports');
 }));
 
 // update route -- not sure if really required for our app. do we need to update a report once submitted?
 // PATCH /lakeReports/:id - Update one report
 // using patch as its used to partially modify something, rather than put a whole new report
-router.patch('/:id', (req, res) => {
-    // take id based on url
-    const { id } = req.params;
-    // save updated date sent in request
-    const newReportDate = req.body.date;
-    // match report in 'database' based on id in url
-    const foundReport = reports.find(report => report.id === id);
-    // update report date
-    foundReport.date = newReportDate;
-    // send back to all comments
-    res.redirect('/lakeReports');
-});
+// router.patch('/:id', (req, res) => {
+//     // take id based on url
+//     const { id } = req.params;
+//     // save updated date sent in request
+//     const newReportDate = req.body.date;
+//     // match report in 'database' based on id in url
+//     const foundReport = reports.find(report => report.id === id);
+//     // update report date
+//     foundReport.date = newReportDate;
+//     // send back to all comments
+//     res.redirect('/lakeReports');
+// });
 
 // EDIT ROUTE
 // lakeReports/:id/edit

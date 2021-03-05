@@ -135,7 +135,7 @@ app.use((req, res, next) => {
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
 app.get('/', (req, res) => {
-    res.render('home', {levelDeep: levelDeep = false})
+    res.render('home', {levelDeep: levelDeep = 0})
 });
 
 //LAKE HEALTH REPORT ROUTING
@@ -150,7 +150,7 @@ app.get('/anglerReports/:id/edit', (req, res) => {
 
 //USER ACCOUNT ROUTING
 app.get('/register', catchAsync(async (req, res) => {
-    res.render('userAccounts/register', {levelDeep: levelDeep = true});
+    res.render('userAccounts/register', {levelDeep: levelDeep = 1});
 }));
 app.post('/register', catchAsync(async (req, res) => {
     try {
@@ -168,7 +168,7 @@ app.post('/register', catchAsync(async (req, res) => {
 }));
 
 app.get('/login', catchAsync(async (req, res) => {
-    res.render('userAccounts/login', {levelDeep: levelDeep = true});
+    res.render('userAccounts/login', {levelDeep: levelDeep = 1});
 }));
 app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(async (req, res) => {
     req.flash('success', "Welcome back!");
@@ -189,7 +189,7 @@ const transport = nodemailer.createTransport({
     }
 });
 app.get('/forgot', catchAsync(async (req, res) => {
-    res.render('userAccounts/forgot', {levelDeep: levelDeep = true});
+    res.render('userAccounts/forgot', {levelDeep: levelDeep = 1});
 }));
 app.post('/forgot', catchAsync(async (req, res) => {
     const token = (await promisify(crypto.randomBytes)(10)).toString('hex');
@@ -224,7 +224,7 @@ app.post('/forgot', catchAsync(async (req, res) => {
 }));
 
 app.get('/recover', catchAsync(async (req, res) => {
-    res.render('userAccounts/recover', {levelDeep: levelDeep = true});
+    res.render('userAccounts/recover', {levelDeep: levelDeep = 1});
 }));
 app.post('/recover', catchAsync(async (req, res) => {
     const { recoveryToken, password, password_verify } = req.body;
@@ -278,7 +278,7 @@ app.use((err, req, res, next) => {
     const { statusCode = 500 } = err; // pull statusCode from ExpressError object, set to 500 default
     if (!err.message) err.message = "Something went wrong!";
     // pull statusCode and message from ExpressError class passed in
-    res.status(statusCode).render('error', { err, levelDeep: levelDeep = false }) // pass error object to error page
+    res.status(statusCode).render('error', { err, levelDeep: levelDeep = 0 }) // pass error object to error page
 });
 
 //Starts application on port 3000

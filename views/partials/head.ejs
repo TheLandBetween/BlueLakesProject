@@ -4,15 +4,7 @@
     <meta charset="UTF-8">
     <title>Blue Lakes</title>
     <!--include the path to the stylesheet-->
-    <% if (levelDeep === true) { %>
-        <!--one lower than as css/js directories -->
-        <link rel="stylesheet" href="../css/bootstrap.min.css">
-        <link rel="stylesheet" href="../css/style.css">
-
-        <!--include path to jquery and boostraps js-->
-        <script src="../js/jquery.min.js"></script>
-        <script src="../js/bootstrap.min.js"></script>
-    <% } else { %>
+    <% if (levelDeep === 0) { %>
         <!--on same level as css/js directories -->
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <link rel="stylesheet" href="/css/style.css">
@@ -20,6 +12,22 @@
         <!--include path to jquery and boostraps js-->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+    <% } else if (levelDeep === 1) { %>
+        <!--one lower than as css/js directories -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/style.css">
+
+        <!--include path to jquery and boostraps js-->
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+    <% } else if (levelDeep === 2) { %>
+        <!--two lower  level as css/js directories -->
+        <link rel="stylesheet" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" href="../../css/style.css">
+
+        <!--include path to jquery and boostraps js-->
+        <script src="../../js/jquery.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
     <% } %>
 </head>
 <body>
