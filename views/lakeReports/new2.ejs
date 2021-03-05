@@ -1,0 +1,65 @@
+<!-- include the partial at the top of the file-->
+<%- include('../partials/head')%>
+<%- include('../partials/navbar')%>
+
+<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
+    <div class="container">
+        <%- include('../partials/flash') %>
+
+        <h1 class="text-center">Edit Lake Health Report</h1>
+        <form action="/lakeReports" method="POST" novalidate class="needs-validation text-center">
+            <div class="form-group">
+                <label class=form-label" for="date_generated">Date Generation</label>
+                <input type="text" id="date_generated" name="date_generated]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group">
+                <label class=form-label" for="status">Status</label>
+                <input type="text" id="status" name="lakeReport[status]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </form>
+        <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm">
+                <a href="/lakeReports" class="btn btn-outline-secondary btn-block">All Reports</a>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+</div>
+
+<!-- include footer partial -->
+<%- include('../partials/foot')%>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+
+        const forms = document.querySelectorAll('.needs-validation')
+
+        Array.from(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })();
+</script>

@@ -15,7 +15,6 @@ app.use(express.json({ extended: false }));
 app.use(express.urlencoded({extended: false }));
 const Port = process.env.Port || 3000;
 const catchAsync = require('./utils/catchAsync');
-
 const path = require('path'); // initiate path to ensure proper navigation no matter where run from
 const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid'); // initiate uuid for unique listing identifiers
@@ -51,17 +50,7 @@ const { userAccountSchema } = require('./schemas');
 //Import all models
 // import User_Account from './views/models/User_Account.js'
 const UserAccount = require(path.join(__dirname, "./views/models/User_Account"));
-const AnglerReport = require(path.join(__dirname, "./views/models/Angler_Report"));
-const DOTemp = require(path.join(__dirname, "./views/models/DO_Temp"));
-const FishStocking = require(path.join(__dirname, "./views/models/Fish_Stocking"));
-const GNETBL1SQKM = require(path.join(__dirname, "./views/models/GNE_TBL_1sqKm"));
-const Lake = require(path.join(__dirname, "./views/models/Lake"));
-const LakeHealthReport = require(path.join(__dirname, "./views/models/Lake_Health_Report"));
-const LakesDB = require(path.join(__dirname, "./views/models/Lakes_DB"));
-const LTLakes = require(path.join(__dirname, "./views/models/LT_Lakes"));
-const LUCalc = require(path.join(__dirname, "./views/models/LU_Calc"));
-const Phosphorous = require(path.join(__dirname, "./views/models/Phosphorous"));
-const Secchi = require(path.join(__dirname, "./views/models/Secchi"));
+
 
 // server side catch for incorrect submissions to a user account
 // if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func

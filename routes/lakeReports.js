@@ -2,12 +2,26 @@ const express = require('express');
 const router = express.Router();
 const path = require('path'); // duplicated in index.js, need to replace with partial that includes
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn, validateLakeReport } = require('../middleware');
+const { isLoggedIn } = require('../middleware');
 const bodyParser = require('body-parser'); // TODO: trying to figure out reports
 // const { app } = require('../index');
 router.use(bodyParser.urlencoded({ extended: true })); // TODO: same above
 
 const LakeHealthReport = require(path.join(__dirname, "../views/models/Lake_Health_Report"));
+
+// server side validation for lake health reports
+const { lakeReportSchema } = require('../schemas'); // JOI schema, not mongodb schema
+const ExpressError = require('../utils/ExpressError');
+const validateLakeReport = (req, res, next) => {
+    const { error } = lakeReportSchema.validate(req.body);
+
+    if (error) {
+        const errorMessage = error.details.map(el => el.message).join(',');
+        throw new ExpressError(errorMessage, 400)
+    } else {
+        next();
+    }
+};
 
 // index route
 // GET /lakeReports - list all lakeReports
@@ -26,11 +40,10 @@ router.get('/new', isLoggedIn, (req, res) => {
 // on lakeReports/new submission it posts to /lakeReports
 router.post('/', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
-    res.send(req.body.lakeReport);
-    const newReport = new LakeHealthReport(req.body.lakeReport);
+    const newReport = new LakeHealthReport(req.body);
     await newReport.save();
     // save success trigger
-    req.flash('success', req.body.lakeReport['avg_phosph']);
+    req.flash('success', 'Successfully Created Report');
     // redirect back to view all lakeReports page
     res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 }));
@@ -58,6 +71,7 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
 }));
 router.put('/:id', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
     const { id } = req.params;
+    res.send('its here');
     const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body.lakeReport });
     req.flash('success', "Successfully updated Lake Report");
     res.redirect(`/lakeReport/${lakeReport._id}`);
