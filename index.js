@@ -181,51 +181,79 @@ app.get('/forgot', catchAsync(async (req, res) => {
     res.render('userAccounts/forgot', {levelDeep: levelDeep = 1});
 }));
 app.post('/forgot', catchAsync(async (req, res) => {
-    const token = (await promisify(crypto.randomBytes)(5)).toString('hex');
-    //const user = UserAccount.find(u => u.email === req.body.email)
+    const token = (await promisify(crypto.randomBytes)(10)).toString('hex');
 
-    const user = 'mtdnichol@gmail.com';
+    const username = req.body.username;
 
-    console.log(UserAccount.findOne({'username' : 'mtdnichol@gmail.com'}));
+    const user = (await UserAccount.findOne({username : username},{}));
 
     if (!user) {
         req.flash('error', 'No account with that email address exists.');
-        return res.redirect('/forgot');
+        res.redirect('/forgot');
+    } else {
+        await UserAccount.updateOne({username: username},
+            {$set: {
+                    resetPasswordToken: token,
+                    resetPasswordExpires: Date.now() + 3600000
+                }});
+        const resetEmail = {
+            to: username,
+            from: 'passwordreset@example.com',
+            subject: 'Angler Diaries Password Reset',
+            text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.\n' +
+                'Please click on the following link, or paste into your web broswer to complete this process:\n' +
+                'Token: ' + token +
+                '\n\nIf you did not request this, please ignore this email and your password will remain unchanged.'
+        };
+
+        await transport.sendMail(resetEmail);
+
+        res.redirect('/recover');
     }
-
-    user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + 3600000;
-
-    const resetEmail = {
-        //to: user.username,
-        to: 'mtdnichol@gmail.com',
-        from: 'passwordreset@example.com',
-        subject: 'Angler Diaries Password Reset',
-        text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.\n' +
-            'Please click on the following link, or paste into your web broswer to complete this process:\n' +
-            'Token: ' + token +
-            '\nLink: http//' + req.headers.host + '/recover?code=' + token +
-            '\n\nIf you did not request this, please ignore this email and your password will remain unchanged.'
-    };
-
-    //await transport.sendMail(resetEmail); 149
-
-    res.redirect('/recover');
 }));
 
 app.get('/recover', catchAsync(async (req, res) => {
     res.render('userAccounts/recover', {levelDeep: levelDeep = 1});
 }));
 app.post('/recover', catchAsync(async (req, res) => {
+    const { recoveryToken, password, password_verify } = req.body;
+
+    const user = await (UserAccount.findOne({resetPasswordToken : recoveryToken},{}));
+
+    if (!user) {
+        req.flash('error', 'Password reset token is invalid or expired.')
+        return res.redirect('/recover');
+    }
+
+    if (user.resetPasswordExpires < Date.now()) {
+        req.flash('error', 'Password reset token is invalid or expired.')
+        return res.redirect('/recover');
+    }
+
+    if (!(password === password_verify)) {
+        req.flash('error', "Passwords don't match.");
+        return res.redirect('/recover');
+    }
+
+    await user.updateOne({resetPasswordToken : recoveryToken},
+        {$set: {
+                password: password,
+                resetPasswordToken: null,
+                resetPasswordExpires: null
+            }});
+
+    const resetEmail = {
+        to: user.username,
+        from: 'passwordreset@example.com',
+        subject: 'Angler Diaries Password Changed',
+        text: 'This is a confirmation that the password for your account ' + user.username + ' has been changed.'
+    };
+
+    await transport.sendMail(resetEmail);
+
+    req.flash('success', 'Success!  Your password has been changed.')
+    res.redirect('/login');
 }));
-
-
-
-
-
-
-
-
 
 // 404 error page, request a link that doesnt exist
 // will send new error object to our app.use error handler and allow it to display accordingly.
@@ -242,10 +270,5 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err, levelDeep: levelDeep = 0 }) // pass error object to error page
 });
 
-
-app.listen(Port, () => console.log('Server started'));
-// // start the server on port 3000
-// app.listen(3000, () => {
-//     console.log("Listening on 3000");
-// });
-
+//Starts application on port 3000
+app.listen(Port, () => console.log('Server started on localhost:3000'));
