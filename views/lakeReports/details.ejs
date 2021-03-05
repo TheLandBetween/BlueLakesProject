@@ -17,6 +17,7 @@
     <h3>Avg_Secchi_Depth: <%= foundReport.avg_secchi_depth%></h3>
     <h3>Avg_Phosphorous: <%= foundReport.avg_phosph%></h3>
     <br>
+    <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
     <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
 
 <!-- I dont think edit is really necessary, but im leaving the button here. surround foundReport.id in ejs tags-->

@@ -11,13 +11,13 @@ router.get('/',  catchAsync(async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const anglerReports = await AnglerReport.find({});
     // render index.ejs file with the lakeReports 'database'
-    res.render('anglerReports/index', { anglerReports, levelDeep: levelDeep = true});
+    res.render('anglerReports/index', { anglerReports, levelDeep: levelDeep = 1});
 }));
 
 // create route
 // POST /anglerReports - Create new report
 router.get('/new', (req, res) => {
-    res.render('anglerReports/new', {levelDeep: levelDeep = true});
+    res.render('anglerReports/new', {levelDeep: levelDeep = 1});
 });
 // on anglerReports/new submission it posts to /anglerReports
 router.post('/', catchAsync(async (req, res) => {
@@ -38,7 +38,7 @@ router.get('/:id',  catchAsync(async (req, res) => {
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await AnglerReport.findById(id);
     // send them to the page about the single report
-    res.render('anglerReports/details', { foundReport, levelDeep: levelDeep = true });
+    res.render('anglerReports/details', { foundReport, levelDeep: levelDeep = 1 });
 }));
 
 // update route -- not sure if really required for our app. do we need to update a report once submitted?
