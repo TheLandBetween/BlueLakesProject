@@ -3,6 +3,9 @@ const router = express.Router();
 const path = require('path'); // duplicated in index.js, need to replace with partial that includes
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, validateLakeReport } = require('../middleware');
+const bodyParser = require('body-parser'); // TODO: trying to figure out reports
+// const { app } = require('../index');
+router.use(bodyParser.urlencoded({ extended: true })); // TODO: same above
 
 const LakeHealthReport = require(path.join(__dirname, "../views/models/Lake_Health_Report"));
 
@@ -24,7 +27,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 // on lakeReports/new submission it posts to /lakeReports
 router.post('/', catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
-    res.send(req.body);
+    res.send(req.body.lakeReport);
     const newReport = new LakeHealthReport(req.body.lakeReport);
     await newReport.save();
     // save success trigger

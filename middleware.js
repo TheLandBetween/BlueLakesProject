@@ -10,6 +10,7 @@ module.exports.isLoggedIn = (req, res, next) => {
 // if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
 const { lakeReportSchema } = require('./schemas');
 const ExpressError = require('./utils/ExpressError');
+const bodyParser = require('body-parser');
 module.exports.validateLakeReport = (req, res, next) => {
     // run that schema through joi's validate function, which will return an object
     const { error } = lakeReportSchema.validate(req.body);

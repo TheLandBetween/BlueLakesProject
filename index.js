@@ -27,6 +27,9 @@ let levelDeep; // think this is a temp solution, but is to deal with directory d
 uuid();
 express.static(path.join(__dirname, "public"));
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
 //MONGOOSE
 const mongoose = require('mongoose');
 // setup Routes
