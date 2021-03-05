@@ -24,13 +24,12 @@ router.get('/new', isLoggedIn, (req, res) => {
     res.render('lakeReports/new', {levelDeep: levelDeep = 1});
 });
 // on lakeReports/new submission it posts to /lakeReports
-router.post('/', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
-    res.send(req.body.lakeReport);
-    const newReport = new LakeHealthReport(req.body.lakeReport);
+    const newReport = new LakeHealthReport(req.body);
     await newReport.save();
     // save success trigger
-    req.flash('success', req.body.lakeReport['avg_phosph']);
+    req.flash('success', 'Successfully Created Report');
     // redirect back to view all lakeReports page
     res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 }));
