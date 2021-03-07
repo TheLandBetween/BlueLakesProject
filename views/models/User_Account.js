@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     firstName: {
         type: String,
@@ -20,6 +21,10 @@ const UserSchema = new Schema({
     },
     resetPasswordExpires: {
         type: Number
+    },
+    rank: {
+        type: Number,
+        required: true
     }
 });
 
