@@ -17,7 +17,7 @@ const ExpressError = require('../utils/ExpressError');
 // GET /lakeReports - list all lakeReports
 router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
-    const healthReports = await LakeHealthReport.find({});
+    const healthReports = await LakeHealthReport.find({}).populate('creator');
     // render index.ejs file with the lakeReports 'database'
     res.render('lakeReports/index', { healthReports, levelDeep: levelDeep = 1});
 }));
