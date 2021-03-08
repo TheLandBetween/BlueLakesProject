@@ -25,7 +25,7 @@ const validateLakeReport = (req, res, next) => {
 
 // index route
 // GET /lakeReports - list all lakeReports
-router.get('/', catchAsync(async (req, res) => {
+router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const healthReports = await LakeHealthReport.find({});
     // render index.ejs file with the lakeReports 'database'
