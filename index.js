@@ -164,6 +164,12 @@ app.post('/login', passport.authenticate('local', {failureFlash: true, failureRe
     res.redirect('/');
 }));
 
+app.get('/logout', (req, res) => {
+    req.logout();
+    req.flash("Success", "Goodbye");
+    res.redirect('/');
+});
+
 //Forgot password
 const crypto = require('crypto');
 const { promisify } = require('util');

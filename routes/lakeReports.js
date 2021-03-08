@@ -71,10 +71,9 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
 }));
 router.put('/:id', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
     const { id } = req.params;
-    res.send('its here');
-    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body.lakeReport });
+    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body });
     req.flash('success', "Successfully updated Lake Report");
-    res.redirect(`/lakeReport/${lakeReport._id}`);
+    res.redirect(`/lakeReports/${lakeReport._id}`);
 }));
 
 // DELETE route
