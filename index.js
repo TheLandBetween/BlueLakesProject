@@ -116,6 +116,7 @@ app.use(express.json());
 // will check each request for a tag from flash(), and if its present pass into the local vars of the template loaded as
 // a correspoding variable.
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user; // pass over the user data to each page so we can access it for styling
     res.locals.success = req.flash('success'); // a success message, pass it over
     res.locals.error = req.flash('error'); // an error message, pass it over
     next();
@@ -166,7 +167,7 @@ app.post('/login', passport.authenticate('local', {failureFlash: true, failureRe
 
 app.get('/logout', (req, res) => {
     req.logout();
-    req.flash("Success", "Goodbye");
+    req.flash("success", "Goodbye");
     res.redirect('/');
 });
 
