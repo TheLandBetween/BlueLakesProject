@@ -5,7 +5,8 @@ const { Schema } = mongoose;
 const lakeHealthReportSchema = new Schema({
     creator: {
         type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'User_Account'
     },
     date_generated: {
         type: String

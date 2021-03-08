@@ -56,8 +56,9 @@ router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
     // pull id from url
     const { id } = req.params;
     // look up the health report corresponding to the id passed in to the url
-    const foundReport = await LakeHealthReport.findById(id);
+    const foundReport = await LakeHealthReport.findById(id).populate('creator'); // passing in creator field from
     // send them to the page about the single report
+    console.log(foundReport);
     res.render('lakeReports/details', { foundReport, levelDeep: levelDeep = 1 });
 }));
 

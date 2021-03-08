@@ -6,7 +6,7 @@
     <%- include('../partials/flash')%>
 
     <h2>Date Generated: <%= foundReport.date_generated %></h2>
-    <h2>Creator:</h2>
+    <h2>Creator: <%= foundReport.creator.firstName %></h2>
     <br>
     <h4>Report Status: <%= foundReport.status%></h4>
     <h4>Report Summary: <%= foundReport.summary %></h4>
