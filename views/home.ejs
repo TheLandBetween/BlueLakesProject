@@ -14,10 +14,12 @@
     <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY -->
     <h3>Your Lake Reports</h3>
     <ul>
-        <li>Lake a</li>
-        <li>Lake b</li>
-        <li>Lake c</li>
-        <li>Lake d</li>
+        <% for (let report of healthReports) {%>
+            <li>
+                <b><%= report.status %></b> - <%= report.date_generated %>
+                <a href="/lakeReports/<%= report.id%>">details</a>
+            </li>
+        <% } %>
     </ul>
     <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY-->
     <div class="row">
