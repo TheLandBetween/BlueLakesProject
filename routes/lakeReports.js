@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path'); // duplicated in index.js, need to replace with partial that includes
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, isCreator, validateLakeReport } = require('../middleware');
 const bodyParser = require('body-parser'); // TODO: trying to figure out reports
 // const { app } = require('../index');
 router.use(bodyParser.urlencoded({ extended: true })); // TODO: same above
@@ -12,16 +12,6 @@ const LakeHealthReport = require(path.join(__dirname, "../views/models/Lake_Heal
 // server side validation for lake health reports
 const { lakeReportSchema } = require('../schemas'); // JOI schema, not mongodb schema
 const ExpressError = require('../utils/ExpressError');
-const validateLakeReport = (req, res, next) => {
-    const { error } = lakeReportSchema.validate(req.body);
-
-    if (error) {
-        const errorMessage = error.details.map(el => el.message).join(',');
-        throw new ExpressError(errorMessage, 400)
-    } else {
-        next();
-    }
-};
 
 // index route
 // GET /lakeReports - list all lakeReports
@@ -62,31 +52,19 @@ router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
 }));
 
 // edit route
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isCreator, catchAsync(async (req, res) => {
     const { id } = req.params;
-
     const lakeReport = await LakeHealthReport.findById(id);
     if(!lakeReport) {
         req.flash('error', "Could not find that lake report.");
         return res.redirect('/lakeReports');
     }
-    if (!lakeReport.creator.equals(req.user._id)) {
-        req.flash('error', "You do not have permission to do that");
-        return res.redirect(`/lakeReports/${id}`);
-    }
     res.render("lakeReports/edit", { lakeReport, levelDeep: levelDeep = 2 });
 }));
-router.put('/:id', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isCreator, validateLakeReport, catchAsync(async (req, res) => {
     const { id } = req.params;
     // find campground with given id
-
-    const lakeReport = await LakeHealthReport.findById(id);
-    // if user is not authorized to update (same as creator), redirect and flash error
-    if (!lakeReport.creator.equals(req.user._id)) {
-        req.flash('error', "You do not have permission to do that");
-        res.redirect(`/lakeReports/${id}`);
-    }
-    const test = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body });
+    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body });
     req.flash('success', "Successfully updated Lake Report");
     res.redirect(`/lakeReports/${lakeReport._id}`);
 }));
