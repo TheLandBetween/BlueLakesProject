@@ -4,7 +4,7 @@
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
     <%- include('partials/flash') %>
-    <h1 class="text-center">Your Tailored Home Page</h1>
+    <h1 class="text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></h1>
     <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
     <div class="row" style="height: 30vh;">
         <div class="col-sm-1"></div>

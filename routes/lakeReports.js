@@ -25,7 +25,7 @@ const validateLakeReport = (req, res, next) => {
 
 // index route
 // GET /lakeReports - list all lakeReports
-router.get('/', catchAsync(async (req, res) => {
+router.get('/', isLoggedIn, catchAsync(async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const healthReports = await LakeHealthReport.find({});
     // render index.ejs file with the lakeReports 'database'
@@ -41,6 +41,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 router.post('/', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new LakeHealthReport(req.body);
+    newReport.creator = req.user._id;
     await newReport.save();
     // save success trigger
     req.flash('success', 'Successfully Created Report');

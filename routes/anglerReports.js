@@ -4,10 +4,11 @@ const path = require('path'); // duplicated in index.js, need to replace with pa
 const catchAsync = require('../utils/catchAsync');
 
 const AnglerReport = require(path.join(__dirname, "../views/models/Angler_Report"));
+const {isLoggedIn} = require("../middleware");
 
 // index route
 // GET /anglerReports - list all anglerReports
-router.get('/',  catchAsync(async (req, res) => {
+router.get('/', isLoggedIn,  catchAsync(async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const anglerReports = await AnglerReport.find({});
     // render index.ejs file with the lakeReports 'database'
@@ -16,7 +17,7 @@ router.get('/',  catchAsync(async (req, res) => {
 
 // create route
 // POST /anglerReports - Create new report
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('anglerReports/new', {levelDeep: levelDeep = 1});
 });
 // on anglerReports/new submission it posts to /anglerReports
@@ -32,7 +33,7 @@ router.post('/', catchAsync(async (req, res) => {
 // show route
 // GET /anglerReports/:id - Get one report (using ID)
 // TODO: Slugify link at some point, so instead of id in the url it can be something realative to the report (name / date)
-router.get('/:id',  catchAsync(async (req, res) => {
+router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
     // pull id from url
     const { id } = req.params;
     // look up the health report corresponding to the id passed in to the url

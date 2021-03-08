@@ -3,6 +3,7 @@ const express = require("express");
 const connectDB = require('./Database/Connection')
 const app = express();
 const bcrypt = require('bcrypt');
+const {isLoggedIn} = require("./middleware");
 
 //Connect to the remote database
 connectDB();
@@ -124,18 +125,18 @@ app.use((req, res, next) => {
 
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
-app.get('/', (req, res) => {
+app.get('/', isLoggedIn,(req, res) => {
     res.render('home', {levelDeep: levelDeep = 0})
 });
 
 //LAKE HEALTH REPORT ROUTING
 app.use('/lakeReports', lakeReportRoutes);
-app.get('/lakeReports/:id/edit', (req, res) => {
+app.get('/lakeReports/:id/edit',isLoggedIn , (req, res) => {
 });
 
 //ANGLER REPORT ROUTING
 app.use('/anglerReports', anglerReportRoutes);
-app.get('/anglerReports/:id/edit', (req, res) => {
+app.get('/anglerReports/:id/edit', isLoggedIn, (req, res) => {
 });
 
 //USER ACCOUNT ROUTING
@@ -176,13 +177,14 @@ app.post('/login', passport.authenticate('local', {failureFlash: true, failureRe
 app.get('/logout', (req, res) => {
     req.logout();
     req.flash("success", "Goodbye");
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 //FORGOT PASSWORD ROUTING
 const crypto = require('crypto');
 const { promisify } = require('util');
 const nodemailer = require('nodemailer');
+
 
 const transport = nodemailer.createTransport({
     host: 'smtp.gmail.com', //Use gmail as SMTP transport client
