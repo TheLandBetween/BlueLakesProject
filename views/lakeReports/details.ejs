@@ -17,10 +17,13 @@
     <h4>Avg_Secchi_Depth: <%= foundReport.avg_secchi_depth%></h4>
     <h4>Avg_Phosphorous: <%= foundReport.avg_phosph%></h4>
     <br>
+    <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
     <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
+    <a href="#" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Delete Report</a>
+    <% } %>
     <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
 
-<!-- I dont think edit is really necessary, but im leaving the button here. surround foundReport.id in ejs tags-->
+        <!-- I dont think edit is really necessary, but im leaving the button here. surround foundReport.id in ejs tags-->
 <!--    <a href="/lakeReports/foundReport.id/edit">Edit Report</a>-->
     <!-- include footer partial -->
 <%- include('../partials/foot')%>

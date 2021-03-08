@@ -58,22 +58,35 @@ router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await LakeHealthReport.findById(id).populate('creator'); // passing in creator field from
     // send them to the page about the single report
-    console.log(foundReport);
     res.render('lakeReports/details', { foundReport, levelDeep: levelDeep = 1 });
 }));
 
 // edit route
 router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
-    const lakeReport = await LakeHealthReport.findById(req.params.id);
+    const { id } = req.params;
+
+    const lakeReport = await LakeHealthReport.findById(id);
     if(!lakeReport) {
         req.flash('error', "Could not find that lake report.");
         return res.redirect('/lakeReports');
+    }
+    if (!lakeReport.creator.equals(req.user._id)) {
+        req.flash('error', "You do not have permission to do that");
+        return res.redirect(`/lakeReports/${id}`);
     }
     res.render("lakeReports/edit", { lakeReport, levelDeep: levelDeep = 2 });
 }));
 router.put('/:id', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body });
+    // find campground with given id
+
+    const lakeReport = await LakeHealthReport.findById(id);
+    // if user is not authorized to update (same as creator), redirect and flash error
+    if (!lakeReport.creator.equals(req.user._id)) {
+        req.flash('error', "You do not have permission to do that");
+        res.redirect(`/lakeReports/${id}`);
+    }
+    const test = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body });
     req.flash('success', "Successfully updated Lake Report");
     res.redirect(`/lakeReports/${lakeReport._id}`);
 }));
