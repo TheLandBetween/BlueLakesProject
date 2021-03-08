@@ -142,15 +142,19 @@ app.get('/anglerReports/:id/edit', (req, res) => {
 app.get('/register', catchAsync(async (req, res) => {
     res.render('userAccounts/register', {levelDeep: levelDeep = 1});
 }));
-app.post('/register', catchAsync(async (req, res) => {
+app.post('/register', catchAsync(async (req, res, next) => {
     try {
+        let rank = 1;
         const { username, firstName, lastName, password } = req.body;
-        const newUser = new UserAccount({username, firstName, lastName});
+        const newUser = new UserAccount({username, firstName, lastName, rank});
         const registeredUser = await UserAccount.register(newUser, password);
-
-        console.log(registeredUser);
-        req.flash("success", "Welcome!");
-        res.redirect('/login');
+        // never really a case where this should raise an error as we are awaiting the user account
+        // to be registered and have an error catcher on thr async function, but passport requires it
+        req.login(registeredUser, error => {
+            if (error) return next(error);
+            req.flash("success", "Welcome!");
+            res.redirect('/');
+        });
     } catch (error) {
         req.flash("error", error.message);
         res.redirect('/register')
@@ -162,7 +166,9 @@ app.get('/login', catchAsync(async (req, res) => {
 }));
 app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(async (req, res) => {
     req.flash('success', "Welcome back!");
-    res.redirect('/');
+    const redirectURL = req.session.returnTo || '/'; // set to url if navigated from page, or send to home page if not
+    delete req.session.returnTo; // clear from session
+    res.redirect(redirectURL);
 }));
 
 app.get('/logout', (req, res) => {
