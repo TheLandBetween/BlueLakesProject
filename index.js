@@ -175,7 +175,7 @@ app.post('/login', passport.authenticate('local', {failureFlash: true, failureRe
 app.get('/logout', (req, res) => {
     req.logout();
     req.flash("success", "Goodbye");
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 //FORGOT PASSWORD ROUTING

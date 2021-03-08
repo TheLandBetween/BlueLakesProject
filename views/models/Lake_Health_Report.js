@@ -3,6 +3,10 @@ const { Schema } = mongoose;
 
 // create a template for the table (layed out in the db schema)
 const lakeHealthReportSchema = new Schema({
+    creator: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     date_generated: {
         type: String
     },

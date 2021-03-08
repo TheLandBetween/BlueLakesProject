@@ -41,6 +41,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 router.post('/', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new LakeHealthReport(req.body);
+    newReport.creator = req.user._id;
     await newReport.save();
     // save success trigger
     req.flash('success', 'Successfully Created Report');

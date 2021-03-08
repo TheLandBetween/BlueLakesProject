@@ -5,17 +5,17 @@
     <div class="container">
     <%- include('../partials/flash')%>
 
-    <h1>Report ID: <%= foundReport._id %></h1> <!-- _id is mongoose variable for auto assigned uuid. do not change -->
-    <h2>Date Generated: <%= foundReport.date_generated %></h2>
+    <h2>Report ID: <%= foundReport._id %></h2> <!-- _id is mongoose variable for auto assigned uuid. do not change -->
+    <h3>Date Generated: <%= foundReport.date_generated %></h3>
     <br>
-    <h1>Report Status: <%= foundReport.status%></h1>
-    <h1>Report Summary: <%= foundReport.summary %></h1>
-    <h1>Level of Concern: <%= foundReport.level_of_concern %></h1>
-    <h1>Perc_Shore_Devd: <%= foundReport.perc_shore_devd%></h1>
-    <h2>Avg_Temp: <%= foundReport.avg_temp%></h2>
-    <h3>Avg_Do_Conc: <%= foundReport.avg_do_conc%></h3>
-    <h3>Avg_Secchi_Depth: <%= foundReport.avg_secchi_depth%></h3>
-    <h3>Avg_Phosphorous: <%= foundReport.avg_phosph%></h3>
+    <h4>Report Status: <%= foundReport.status%></h4>
+    <h4>Report Summary: <%= foundReport.summary %></h4>
+    <h4>Level of Concern: <%= foundReport.level_of_concern %></h4>
+    <h4>Perc_Shore_Devd: <%= foundReport.perc_shore_devd%></h4>
+    <h4>Avg_Temp: <%= foundReport.avg_temp%></h4>
+    <h4>Avg_Do_Conc: <%= foundReport.avg_do_conc%></h4>
+    <h4>Avg_Secchi_Depth: <%= foundReport.avg_secchi_depth%></h4>
+    <h4>Avg_Phosphorous: <%= foundReport.avg_phosph%></h4>
     <br>
     <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
     <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
