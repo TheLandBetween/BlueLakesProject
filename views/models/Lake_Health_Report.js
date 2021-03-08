@@ -9,7 +9,7 @@ const lakeHealthReportSchema = new Schema({
         ref: 'User_Account'
     },
     date_generated: {
-        type: String
+        type: Date
     },
     status: {
         type: String
