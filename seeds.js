@@ -32,6 +32,7 @@ report.save().then(report => {
 const seedReports = [
     {
         WBY_LID: 1,
+        creator: '6045959b91aa79d4c6db5ff0',
         date_generated: "2010-11-26",
         status: "bas",
         summary: "Been dsa",
@@ -44,6 +45,7 @@ const seedReports = [
     },
     {
         WBY_LID: 2,
+        creator: '6045959b91aa79d4c6db5ff0',
         date_generated: "220-11-26",
         status: "yell",
         summary: "Bedsddsdsen fantastic",
@@ -56,6 +58,7 @@ const seedReports = [
     },
     {
         WBY_LID: 3,
+        creator: '6045959b91aa79d4c6db5ff0',
         date_generated: "1020-11-26",
         status: "bad",
         summary: "yep fantastic",
@@ -68,6 +71,7 @@ const seedReports = [
     },
     {
         WBY_LID: 4,
+        creator: '6045959b91aa79d4c6db5ff0',
         date_generated: "2020-222-26",
         status: "so good",
         summary: " fantastic",
@@ -80,6 +84,7 @@ const seedReports = [
     },
     {
         WBY_LID: 5,
+        creator: '6045959b91aa79d4c6db5ff0',
         date_generated: "2220-11-26",
         status: "dasuhduusada",
         summary: "Been dasdsa",

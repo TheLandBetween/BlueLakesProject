@@ -5,8 +5,8 @@
     <div class="container">
     <%- include('../partials/flash')%>
 
-    <h1>Report ID: <%= foundReport._id %></h1> <!-- _id is mongoose variable for auto assigned uuid. do not change -->
     <h2>Date Generated: <%= foundReport.date_generated %></h2>
+    <h2>Creator:</h2>
     <br>
     <h1>Report Status: <%= foundReport.status%></h1>
     <h1>Report Summary: <%= foundReport.summary %></h1>
