@@ -162,6 +162,7 @@ app.post('/register', catchAsync(async (req, res, next) => {
     }
 }));
 
+// LOGIN ROUTE
 app.get('/login', catchAsync(async (req, res) => {
     res.render('userAccounts/login', {levelDeep: levelDeep = 1});
 }));
@@ -172,6 +173,7 @@ app.post('/login', passport.authenticate('local', {failureFlash: true, failureRe
     res.redirect(redirectURL);
 }));
 
+// LOGOUT ROUTE
 app.get('/logout', (req, res) => {
     req.logout();
     req.flash("success", "Goodbye");
