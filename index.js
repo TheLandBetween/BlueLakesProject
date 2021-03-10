@@ -44,6 +44,8 @@ const URI = 'mongodb+srv://bluelakes:pbTk3KiYV2yg6LQ4@cluster0.xk0y2.mongodb.net
 
 // setup Routes
 const lakeReportRoutes = require('./routes/lakeReports');
+const LakeHealthReport = require(path.join(__dirname, "./views/models/Lake_Health_Report"));
+
 const anglerReportRoutes = require('./routes/anglerReports');
 
 // JOI Validation Schemas
@@ -126,8 +128,9 @@ app.use((req, res, next) => {
 
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
-app.get('/', isLoggedIn,(req, res) => {
-    res.render('home', {levelDeep: levelDeep = 0})
+app.get('/', isLoggedIn, async (req, res) => {
+    const healthReports = await LakeHealthReport.find({creator : req.user._id},{});
+    res.render('home', {healthReports, levelDeep: levelDeep = 0})
 });
 
 //LAKE HEALTH REPORT ROUTING
