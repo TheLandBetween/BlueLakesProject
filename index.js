@@ -4,6 +4,7 @@ const connectDB = require('./Database/Connection')
 const app = express();
 const bcrypt = require('bcrypt');
 const {isLoggedIn} = require("./middleware");
+// test
 
 //Connect to the remote database
 connectDB();
