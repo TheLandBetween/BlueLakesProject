@@ -21,6 +21,17 @@
             </li>
         <% } %>
     </ul>
+
+        <h3>Your Angler Reports</h3>
+        <ul>
+            <% for (let report of anglerReports) {%>
+                <li>
+                    <b><%= report.species %></b> - <%= report.date_generated %>
+                    <a href="/anglerReports/<%= report.id%>">details</a>
+                </li>
+            <% } %>
+        </ul>
+
     <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY-->
     <div class="row">
         <div class="col-sm-3"></div>

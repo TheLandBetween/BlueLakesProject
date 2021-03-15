@@ -2,70 +2,72 @@
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
-    <div class="container">
-    <h1 class="text-center">New Angler Report</h1>
-    <form action="/anglerReports" method="post" class="text-center" name="submit">
-        <div class="form-group">
-            <label for="lake_town_fk">Lake Town: </label>
-            <input type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk">
-        </div>
-        <div class="form-group">
-            <label for="angler_name_fk">Your Name: </label>
-            <input type="text" id="angler_name_fk" placeholder="Patrick" name="angler_name_fk">
-        </div>
-        <div class="form-group">
-            <label for="date">Date: </label>
-            <input type="text" id="date" placeholder="year-mo-dy" name="date">
-        </div>
-        <div class="form-group">
-            <label for="t_start">Time In: </label>
-            <input type="text" id="t_start" placeholder="hh:mm" name="t_start">
-        </div>
-        <div class="form-group">
-            <label for="t_end">Time Out: </label>
-            <input type="text" id="t_end" placeholder="hh:mm" name="t_end">
-        </div>
-        <div class="form-group">
-            <label for="species">Species: </label>
-            <input type="text" id="species" placeholder="Species of Fish" name="species">
-        </div>
-        <div class="form-group">
-            <label for="length">Length: </label>
-            <input type="text" id="length" placeholder="Length of Fish" name="length">
-        </div>
-        <div class="form-group">
-            <label for="Length_Metric">Centimeters: </label>
-            <input type="radio" id="centimeters" name="Length_Metric" value="m" required>
-            <label for="Length_Metric">Inches: </label>
-            <input type="radio" id="inches" name="Length_Metric" value="i">
-        </div>
-        <div class="form-group">
-            <label for="weight">Weight: </label>
-            <input type="text" id="weight" placeholder="Weight of Fish" name="weight">
-        </div>
-        <div class="form-group">
-            <label for="Weight_Metric">LB: </label>
-            <input type="radio" id="pounds" name="Weight_Metric" value="l" required>
-            <label for="Weight_Metric">KG: </label>
-            <input type="radio" id="kilograms" name="Weight_Metric" value="k">
-        </div>
-        <div class="row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm">
-                <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+        <div class="container">
+        <%- include('../partials/flash') %>
+        <h1 class="text-center">New Angler Report</h1>
+        <form action="/anglerReports" method="post" class="text-center needs-validation" name="submit" novalidate>
+            <div class="form-group">
+                <label class="form-label" for="lake_town_fk">Lake Town: </label>
+                <input class="form-control" type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk">
             </div>
-            <div class="col-sm-3"></div>
-        </div>
-    </form>
+            <div class="form-group">
+                <label class="form-label" for="date">Date: </label>
+                <input class="form-control" type="date" id="date" placeholder="year-mo-dy" name="date">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="t_start">Time In: </label>
+                <input  class="form-control" type="text" id="t_start" placeholder="hh:mm" name="t_start">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="t_end">Time Out: </label>
+                <input  class="form-control" type="text" id="t_end" placeholder="hh:mm" name="t_end">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="species">Species: </label>
+                <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="length">Length: </label>
+                <input class="form-control" type="text" id="length" placeholder="Length of Fish" name="length">
+            </div>
+            <div class="form-group">
+                <label class="radio-inline" for="Length_Metric">
+                    <input class="form-control" type="radio" id="centimeters" name="Length_Metric" value="m" required checked>Centimeters
+                </label>
+                <label class="radio-inline" for="Length_Metric">
+                    <input class="form-control" type="radio" id="inches" name="Length_Metric" value="i" required>Inches
+                </label>
+
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="weight">Weight: </label>
+                <input class="form-control" type="text" id="weight" placeholder="Weight of Fish" name="weight">
+            </div>
+            <div class="form-group">
+                <label class="radio-inline" for="Weight_Metric">
+                    <input class="form-control" type="radio" id="pounds" name="Weight_Metric" value="l" required checked>Pounds
+                </label>
+                <label class="radio-inline" for="Weight_Metric">
+                    <input class="form-control" type="radio" id="kilograms" name="Weight_Metric" value="k" required>Kilograms
+                </label>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </form>
 
 
-    <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
-    <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm">
-            <a href="/anglerReports" class="btn btn-outline-secondary btn-block">All Reports</a>
+        <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm">
+                <a href="/anglerReports" class="btn btn-outline-secondary btn-block">All Reports</a>
+            </div>
+            <div class="col-sm-2"></div>
         </div>
-        <div class="col-sm-2"></div>
-    </div>
 <!-- include footer partial -->
 <%- include('../partials/foot')%>

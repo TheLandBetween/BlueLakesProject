@@ -47,6 +47,7 @@ const lakeReportRoutes = require('./routes/lakeReports');
 const LakeHealthReport = require(path.join(__dirname, "./views/models/Lake_Health_Report"));
 
 const anglerReportRoutes = require('./routes/anglerReports');
+const AnglerReport = require(path.join(__dirname, "./views/models/Angler_Report"))
 
 // JOI Validation Schemas
 const { userAccountSchema } = require('./schemas');
@@ -130,7 +131,8 @@ app.use((req, res, next) => {
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
 app.get('/', isLoggedIn, async (req, res) => {
     const healthReports = await LakeHealthReport.find({creator : req.user._id},{});
-    res.render('home', {healthReports, levelDeep: levelDeep = 0})
+    const anglerReports = await AnglerReport.find({creator : req.user._id},{})
+    res.render('home', {healthReports, anglerReports, levelDeep: levelDeep = 0})
 });
 
 //LAKE HEALTH REPORT ROUTING

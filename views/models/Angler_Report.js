@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 // create a template for the table (layed out in the db schema)
 const anglerDiariesSchema = new mongoose.Schema({
+    creator: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User_Account'
+    },
     lake_town_fk: { //Should it be the town name, or the lake itself?
         type: String,
         required: true
@@ -14,10 +20,10 @@ const anglerDiariesSchema = new mongoose.Schema({
         type: Date
     },
     t_start: {
-        type: Date
+        type: String
     },
     t_end: {
-        type: Date
+        type: String
     },
     species: {
         type: String

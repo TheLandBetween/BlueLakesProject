@@ -1,6 +1,7 @@
-const { lakeReportSchema } = require('./schemas'); // JOI schema, not mongodb schema
+const { lakeReportSchema, anglerReportSchema } = require('./schemas'); // JOI schema, not mongodb schema
 const ExpressError = require('./utils/ExpressError');
 const LakeHealthReport = require('./views/models/Lake_Health_Report');
+const AnglerReport = require('./views/models/Angler_Report');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -22,11 +23,23 @@ module.exports.validateLakeReport = (req, res, next) => {
     }
 };
 
+module.exports.validateAnglerReport = (req, res, next) => {
+    const { error } = anglerReportSchema.validate(req.body);
+
+    if (error) {
+        const errorMessage = error.details.map(el => el.message).join(',');
+        throw new ExpressError(errorMessage, 400)
+    } else {
+        next();
+    }
+};
+
 module.exports.isCreator = async (req, res, next) => {
     const { id } = req.params;
     const lakeReport = await LakeHealthReport.findById(id);
+    const anglerReport = await AnglerReport.findById(id);
     // if user is not authorized to update (same as creator), redirect and flash error
-    if (!lakeReport.creator.equals(req.user._id)) {
+    if (!lakeReport.creator.equals(req.user._id) || !anglerReport.creator.equals(req.user._id)) {
         req.flash('error', "You do not have permission to do that");
         return res.redirect(`/lakeReports/${id}`);
     }

@@ -5,20 +5,24 @@
     <div class="container">
     <%- include('../partials/flash')%>
 
-    <h1>Report ID: <%= foundReport.id_pk %></h1>
-    <h1>Date Created: <%= foundReport.date %></h1>
-    <h2>Lake Town: <%= foundReport.lake_town_fk %></h2>
+    <h2>Report ID: <%= foundReport.id_pk %></h2>
+    <h2>Date Created: <%= foundReport.date %></h2>
+    <h4>Lake Town: <%= foundReport.lake_town_fk %></h4>
     <br>
-    <h1>Angler Name: <%= foundReport.angler_name_fk%></h1>
-    <h2>Start Time: <%= foundReport.t_start%></h2>
-    <h2>End Time: <%= foundReport.t_end%></h2>
+    <h4>Angler Name: <%= foundReport.angler_name_fk%></h4>
+    <h4>Start Time: <%= foundReport.t_start%></h4>
+    <h4>End Time: <%= foundReport.t_end%></h4>
     <br>
     <div>
-        <h3>Species: <%= foundReport.species%></h3>
-        <h3>Length (cm): <%= foundReport.length%></h3>
-        <h3>Weight (lbs): <%= foundReport.weight%></h3>
+        <h4>Species: <%= foundReport.species%></h4>
+        <h4>Length (cm): <%= foundReport.length%></h4>
+        <h4>Weight (lbs): <%= foundReport.weight%></h4>
     </div>
     <br>
+        <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
+<!--            <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>-->
+<!--            <a href="#" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Delete Report</a>-->
+        <% } %>
     <a href="/anglerReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
 
 <!-- I dont think edit is really necessary, but im leaving the button here. surround foundReport.id in ejs tags-->

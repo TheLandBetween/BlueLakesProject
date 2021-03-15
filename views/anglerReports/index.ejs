@@ -7,7 +7,7 @@
         <h1 class="text-center">All Recent Angler Reports</h1>
             <div class="row" style="height: 20vh;">
                 <div class="col-sm-1"></div>
-                <div class="col-sm bg-white border border-primary">whhere@</div>
+                <div class="col-sm bg-white border border-primary">Angler Statistics and Graphs</div>
                 <div class="col-sm-1"></div>
             </div>
         <ul>
@@ -15,8 +15,8 @@
             <!--TODO: boostrap cards-->
             <% for (let report of anglerReports) {%>
                 <li>
-                    <b><%= report._id %></b> - <%= report.id_pk %>
-                    <a href="/reports/<%= report.id%>">details</a>
+                    <b><%= report.creator.firstName + ' ' + report.creator.lastName%></b> - <%= report.date %>
+                    <a href="/anglerReports/<%= report.id%>">details</a>
                 </li>
             <% } %>
         </ul>
