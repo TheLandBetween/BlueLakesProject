@@ -152,8 +152,8 @@ app.get('/register', catchAsync(async (req, res) => {
 app.post('/register', catchAsync(async (req, res, next) => {
     try {
         let rank = 1;
-        const { username, firstName, lastName, password } = req.body;
-        const newUser = new UserAccount({username, firstName, lastName, rank});
+        const { username, firstName, lastName, organization, password } = req.body;
+        const newUser = new UserAccount({username, firstName, lastName, organization, rank});
         const registeredUser = await UserAccount.register(newUser, password);
         // never really a case where this should raise an error as we are awaiting the user account
         // to be registered and have an error catcher on thr async function, but passport requires it

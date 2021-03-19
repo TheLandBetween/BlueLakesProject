@@ -11,10 +11,7 @@ const lakeHealthReportSchema = new Schema({
     date_generated: {
         type: Date
     },
-    status: {
-        type: String
-    },
-    summary: {
+    notes: {
         type: String
     },
     level_of_concern: {

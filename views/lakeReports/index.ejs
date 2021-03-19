@@ -10,16 +10,26 @@
                 <div class="col-sm bg-white border border-primary">Lake statistics and graphs</div>
                 <div class="col-sm-1"></div>
             </div>
-        <ul>
-            <!-- iterate through each matched report passed in and display in a li-->
-            <!--TODO: boostrap cards-->
+
+        <br>
+
+        <table class="table">
+            <tr>
+                <th>View Report</th>
+                <th>Creator</th>
+                <th>Date Recorded</th>
+                <th>Comments</th>
+            </tr>
             <% for (let report of healthReports) {%>
-                <li>
-                    <b><%= report.creator.firstName + ' ' + report.creator.lastName + ' - ' + report.status %></b> - <%= report.date_generated %>
-                    <a href="/lakeReports/<%= report.id%>">details</a>
-                </li>
+            <tr>
+                <td><a href="/lakeReports/<%= report.id%>">details</a></td>
+                <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
+                <td><%= report.notes %></td>
+            </tr>
             <% } %>
-        </ul>
+        </table>
+
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm">

@@ -20,7 +20,7 @@ const anglerDiariesSchema = new mongoose.Schema({
         type: Date
     },
     t_start: {
-        type: String
+        type: Date
     },
     t_end: {
         type: String

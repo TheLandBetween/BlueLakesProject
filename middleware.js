@@ -39,10 +39,16 @@ module.exports.isCreator = async (req, res, next) => {
     const lakeReport = await LakeHealthReport.findById(id);
     const anglerReport = await AnglerReport.findById(id);
     // if user is not authorized to update (same as creator), redirect and flash error
-    if (!lakeReport.creator.equals(req.user._id) || !anglerReport.creator.equals(req.user._id)) {
-        req.flash('error', "You do not have permission to do that");
-        return res.redirect(`/lakeReports/${id}`);
-    }
+    if (lakeReport)
+        if (!(lakeReport.creator).equals(req.user._id)) {
+            req.flash('error', "You do not have permission to do that");
+            return res.redirect(`/lakeReports/${id}`);
+        }
+    if (anglerReport)
+        if (!(anglerReport.creator).equals(req.user._id)) {
+            req.flash('error', "You do not have permission to do that");
+            return res.redirect(`/anglerReports/${id}`);
+        }
     next();
 };
 
