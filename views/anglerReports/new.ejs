@@ -1,3 +1,8 @@
+<!--TODO:
+    - remove BR's
+    - Multiple fish radio buttons are linked
+-->
+
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
@@ -6,48 +11,57 @@
         <%- include('../partials/flash') %>
         <h1 class="text-center">New Angler Report</h1>
         <form action="/anglerReports" method="post" class="text-center needs-validation" name="submit" novalidate>
-            <div class="form-group">
-                <label class="form-label" for="lake_town_fk">Lake Town: </label>
-                <input class="form-control" type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="date">Date: </label>
-                <input class="form-control" type="date" id="date" placeholder="year-mo-dy" name="date" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="t_start">Time In: </label>
-                <input  class="form-control" type="time" id="t_start" placeholder="hh:mm" name="t_start" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="t_end">Time Out: </label>
-                <input  class="form-control" type="time" id="t_end" placeholder="hh:mm" name="t_end" required>
-            </div>
-            <h2>Fish Caught</h2>
-            <div class="container" id="fishes">
-                <div class="card">
-                    <div class="card-header">
-                        <a data-toggle="collapse" href="#collapse-0" aria-expanded="true" aria-controls="collapse-0" id="heading-example" class="d-block">
-                            <i class="fa fa-chevron-down pull-right"></i>
-                            Fish
-                        </a>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="text-left">General Information</h2>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="form-label" for="lake_town_fk">Lake Town: </label>
+                        <input class="form-control" type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk" required>
                     </div>
-                    <div id="collapse-0" class="collapse show" aria-labelledby="heading-example">
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label class="form-label" for="species">Species: </label>
-                                <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="length">Length: </label>
-                                <input class="form-control" type="text" id="length" placeholder="Length of Fish" name="length">
-                            </div>
-                            <div class="form-group">
-                                <label class="radio-inline" for="Length_Metric">
-                                    <input class="form-control" type="radio" id="centimeters" name="Length_Metric" value="m" required checked>Centimeters
-                                </label>
-                                <label class="radio-inline" for="Length_Metric">
-                                    <input class="form-control" type="radio" id="inches" name="Length_Metric" value="i" required>Inches
-                                </label>
+                    <div class="form-group">
+                        <label class="form-label" for="date">Date: </label>
+                        <input class="form-control" type="date" id="date" placeholder="year-mo-dy" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t_start">Time In: </label>
+                        <input  class="form-control" type="text" id="t_start" placeholder="hh:mm" name="t_start" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="t_end">Time Out: </label>
+                        <input  class="form-control" type="text" id="t_end" placeholder="hh:mm" name="t_end" required>
+                    </div>
+                </div>
+                </div>
+
+            <div class="row">
+                <h2 class="text-left">Fish Caught</h2>
+                <div class="container" id="fishes">
+                    <div class="card">
+                        <div class="card-header">
+                            <a data-toggle="collapse" href="#collapse-0" aria-expanded="true" aria-controls="collapse-0" id="heading-example" class="d-block">
+                                <i class="fa fa-chevron-down pull-right"></i>
+                                Fish
+                            </a>
+                        </div>
+                        <div id="collapse-0" class="collapse show" aria-labelledby="heading-example">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label" for="species">Species: </label>
+                                    <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="length">Length: </label>
+                                    <input class="form-control" type="text" id="length" placeholder="Length of Fish" name="length">
+                                </div>
+                                <div class="form-group">
+                                    <label class="radio-inline" for="Length_Metric">
+                                        <input class="form-control" type="radio" id="centimeters" name="Length_Metric" value="m" required checked>Centimeters
+                                    </label>
+                                    <label class="radio-inline" for="Length_Metric">
+                                        <input class="form-control" type="radio" id="inches" name="Length_Metric" value="i" required>Inches
+                                    </label>
 
                             </div>
                             <div class="form-group">
@@ -67,9 +81,16 @@
                     </div>
                 </div>
             </div>
+            </div>
 
-            <button class="btn btn-outline-secondary" type="button" id="addFish">Add Fish</button>
-
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <br>
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm">
@@ -78,16 +99,7 @@
                 <div class="col-sm-3"></div>
             </div>
         </form>
-
-
-        <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
-        <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm">
-                <a href="/anglerReports" class="btn btn-outline-secondary btn-block">All Reports</a>
-            </div>
-            <div class="col-sm-2"></div>
-        </div>
+    </div>
 <!-- include footer partial -->
 <%- include('../partials/foot')%>
 
