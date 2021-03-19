@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path'); // duplicated in index.js, need to replace with partial that includes
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, isCreator, validateLakeReport } = require('../middleware');
-const bodyParser = require('body-parser'); // TODO: trying to figure out reports
+const bodyParser = require('body-parser'); // TODO: THINK THIS CAN GET REMOVED 6-8
 // const { app } = require('../index');
 router.use(bodyParser.urlencoded({ extended: true })); // TODO: same above
 
@@ -103,3 +103,4 @@ router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
 // })
 
 module.exports = router;
+
