@@ -24,9 +24,52 @@
                 <input  class="form-control" type="text" id="t_end" placeholder="hh:mm" name="t_end" required>
             </div>
             <h2>Fish Caught</h2>
-            <%- include('../partials/fish')%>
+            <div class="container" id="fishes">
+                <div class="card">
+                    <div class="card-header">
+                        <a data-toggle="collapse" href="#collapse-0" aria-expanded="true" aria-controls="collapse-0" id="heading-example" class="d-block">
+                            <i class="fa fa-chevron-down pull-right"></i>
+                            Fish
+                        </a>
+                    </div>
+                    <div id="collapse-0" class="collapse show" aria-labelledby="heading-example">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label" for="species">Species: </label>
+                                <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="length">Length: </label>
+                                <input class="form-control" type="text" id="length" placeholder="Length of Fish" name="length">
+                            </div>
+                            <div class="form-group">
+                                <label class="radio-inline" for="Length_Metric">
+                                    <input class="form-control" type="radio" id="centimeters" name="Length_Metric" value="m" required checked>Centimeters
+                                </label>
+                                <label class="radio-inline" for="Length_Metric">
+                                    <input class="form-control" type="radio" id="inches" name="Length_Metric" value="i" required>Inches
+                                </label>
 
-            <button onclick="" class="btn btn-outline-secondary">Add Fish</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="weight">Weight: </label>
+                                <input class="form-control" type="text" id="weight" placeholder="Weight of Fish" name="weight">
+                            </div>
+                            <div class="form-group">
+                                <label class="radio-inline" for="Weight_Metric">
+                                    <input class="form-control" type="radio" id="pounds" name="Weight_Metric" value="l" required checked>Pounds
+                                </label>
+                                <label class="radio-inline" for="Weight_Metric">
+                                    <input class="form-control" type="radio" id="kilograms" name="Weight_Metric" value="k" required>Kilograms
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-outline-secondary" type="button" id="addFish">Add Fish</button>
 
             <div class="row">
                 <div class="col-sm-3"></div>
@@ -54,8 +97,6 @@
     (function() {
         'use strict';
 
-        console.log("here");
-
         const forms = document.querySelectorAll('.needs-validation')
 
         Array.from(forms).forEach(function(form) {
@@ -69,4 +110,54 @@
             }, false)
         })
     })();
+
+    let fishCount = 0;
+
+    $("#addFish").click(function() {
+        fishCount = fishCount + 1;
+        $("#fishes").append(`
+            <div class="card">
+                <div class="card-header">
+                    <a data-toggle="collapse" href="#collapse-${fishCount}" aria-expanded="true" aria-controls="collapse-${fishCount}" id="heading-example" class="d-block">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                        Fish
+                    </a>
+                </div>
+                <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label" for="species">Species: </label>
+                            <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="length">Length: </label>
+                            <input class="form-control" type="text" id="length" placeholder="Length of Fish" name="length">
+                        </div>
+                        <div class="form-group">
+                            <label class="radio-inline" for="Length_Metric">
+                                <input class="form-control" type="radio" id="centimeters" name="Length_Metric" value="m" required checked>Centimeters
+                            </label>
+                            <label class="radio-inline" for="Length_Metric">
+                                <input class="form-control" type="radio" id="inches" name="Length_Metric" value="i" required>Inches
+                            </label>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="weight">Weight: </label>
+                            <input class="form-control" type="text" id="weight" placeholder="Weight of Fish" name="weight">
+                        </div>
+                        <div class="form-group">
+                            <label class="radio-inline" for="Weight_Metric">
+                                <input class="form-control" type="radio" id="pounds" name="Weight_Metric" value="l" required checked>Pounds
+                            </label>
+                            <label class="radio-inline" for="Weight_Metric">
+                                <input class="form-control" type="radio" id="kilograms" name="Weight_Metric" value="k" required>Kilograms
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        `)
+    })
 </script>
