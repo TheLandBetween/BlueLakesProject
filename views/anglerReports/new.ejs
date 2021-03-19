@@ -9,19 +9,19 @@
             <h2>General Information</h2>
             <div class="form-group">
                 <label class="form-label" for="lake_town_fk">Lake Town: </label>
-                <input class="form-control" type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk">
+                <input class="form-control" type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="date">Date: </label>
-                <input class="form-control" type="date" id="date" placeholder="year-mo-dy" name="date">
+                <input class="form-control" type="date" id="date" placeholder="year-mo-dy" name="date" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="t_start">Time In: </label>
-                <input  class="form-control" type="text" id="t_start" placeholder="hh:mm" name="t_start">
+                <input  class="form-control" type="text" id="t_start" placeholder="hh:mm" name="t_start" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="t_end">Time Out: </label>
-                <input  class="form-control" type="text" id="t_end" placeholder="hh:mm" name="t_end">
+                <input  class="form-control" type="text" id="t_end" placeholder="hh:mm" name="t_end" required>
             </div>
             <h2>Fish Caught</h2>
             <%- include('../partials/fish')%>
@@ -48,3 +48,25 @@
         </div>
 <!-- include footer partial -->
 <%- include('../partials/foot')%>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+
+        console.log("here");
+
+        const forms = document.querySelectorAll('.needs-validation')
+
+        Array.from(forms).forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })();
+</script>
