@@ -8,11 +8,15 @@ const anglerDiariesSchema = new mongoose.Schema({
         required: true,
         ref: 'User_Account'
     },
-    lake_town_fk: { //Should it be the town name, or the lake itself?
+    lake: {
         type: String,
         required: true
     },
-    angler_name_fk: {
+    municipality: {
+        type: String,
+        required: true
+    },
+    angler_name: {
         type: String,
         required: true
     },
@@ -20,7 +24,7 @@ const anglerDiariesSchema = new mongoose.Schema({
         type: Date
     },
     t_start: {
-        type: Date
+        type: String
     },
     t_end: {
         type: String

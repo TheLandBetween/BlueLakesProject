@@ -17,14 +17,16 @@ module.exports.lakeReportSchema = Joi.object({
 module.exports.anglerReportSchema = Joi.object({
     // This is where all the Joi validation is done.
     // TODO: this will be changed once we figure out what needs to be actually submitted
-    lake_town_fk: Joi.string().required(),
+    photo: Joi.any(),
+    lake: Joi.string().required(),
+    municipality: Joi.string().required(),
     date: Joi.date().required(),
     t_start: Joi.string().required(),
     t_end: Joi.string().required(),
     species: Joi.string().required(),
-    length: Joi.number().required(),
+    length: Joi.number().allow(null, ''),
     Length_Metric: Joi.string(),
-    weight: Joi.number().required(),
+    weight: Joi.number().allow(null, ''),
     Weight_Metric: Joi.string()
 });
 

@@ -17,8 +17,12 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label class="form-label" for="lake_town_fk">Lake Town: </label>
-                        <input class="form-control" type="text" id="lake_town_fk" placeholder="Lake Town" name="lake_town_fk" required>
+                        <label class="form-label" for="lake">Lake Name: </label>
+                        <input class="form-control" type="text" id="lake" placeholder="Lake Name" name="lake" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="municipality">Municipality: </label>
+                        <input class="form-control" type="text" id="municipality" placeholder="Municipality" name="municipality" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="date">Date: </label>
@@ -26,11 +30,11 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="t_start">Time In: </label>
-                        <input  class="form-control" type="text" id="t_start" placeholder="hh:mm" name="t_start" required>
+                        <input  class="form-control" type="time" id="t_start" placeholder="hh:mm" name="t_start" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="t_end">Time Out: </label>
-                        <input  class="form-control" type="text" id="t_end" placeholder="hh:mm" name="t_end" required>
+                        <input  class="form-control" type="time" id="t_end" placeholder="hh:mm" name="t_end" required>
                     </div>
                 </div>
                 </div>
@@ -47,13 +51,17 @@
                         </div>
                         <div id="collapse-0" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
+                                <div class="form-group d-flex flex-column">
+                                    <label class="form-label" for="photo">Picture of Fish: </label>
+                                    <input class="form-control-file" type="file" id="photo" name="photo" accept="image/*">
+                                </div>
                                 <div class="form-group">
                                     <label class="form-label" for="species">Species: </label>
-                                    <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">
+                                    <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="length">Length: </label>
-                                    <input class="form-control" type="text" id="length" placeholder="Length of Fish" name="length">
+                                    <input class="form-control" type="number" id="length" placeholder="Length of Fish" name="length">
                                 </div>
                                 <div class="form-group">
                                     <label class="radio-inline" for="Length_Metric">
@@ -142,7 +150,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="length">Length: </label>
-                            <input class="form-control" type="text" id="length" placeholder="Length of Fish" name="length">
+                            <input class="form-control" type="number" id="length" placeholder="Length of Fish" name="length">
                         </div>
                         <div class="form-group">
                             <label class="radio-inline" for="Length_Metric">
@@ -155,7 +163,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="weight">Weight: </label>
-                            <input class="form-control" type="text" id="weight" placeholder="Weight of Fish" name="weight">
+                            <input class="form-control" type="number" id="weight" placeholder="Weight of Fish" name="weight">
                         </div>
                         <div class="form-group">
                             <label class="radio-inline" for="Weight_Metric">

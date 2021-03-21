@@ -3,53 +3,67 @@
 <%- include('partials/navbar')%>
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
-    <%- include('partials/flash') %>
-    <h1 class="text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></h1>
-    <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
-    <div class="row" style="height: 30vh;">
-        <div class="col-sm-1"></div>
-        <div class="col-sm bg-white border border-primary">statistics & graphs & stuff</div>
-        <div class="col-sm-1"></div>
-    </div>
-    <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY -->
-    <h3>Your Lake Reports</h3>
-    <ul>
-        <% for (let report of healthReports) {%>
-            <li>
-                <b><%= report.status %></b> - <%= report.date_generated %>
-                <a href="/lakeReports/<%= report.id%>">details</a>
-            </li>
-        <% } %>
-    </ul>
+        <%- include('partials/flash') %>
+        <h1 class="text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></h1>
+        <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
+        <div class="row" style="height: 30vh;">
+            <div class="col-sm-1"></div>
+            <div class="col-sm bg-white border border-primary">statistics & graphs & stuff</div>
+            <div class="col-sm-1"></div>
+        </div>
+        <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY -->
+        <h3>Your Lake Reports</h3>
+
+        <table class="table">
+            <tr>
+                <th>View Report</th>
+                <th>Date Recorded</th>
+                <th>Comments</th>
+            </tr>
+            <% for (let report of healthReports) {%>
+                <tr>
+                    <td><a href="/lakeReports/<%= report.id%>">details</a></td>
+                    <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
+                    <td><%= report.notes %></td>
+                </tr>
+            <% } %>
+        </table>
 
         <h3>Your Angler Reports</h3>
-        <ul>
-            <% for (let report of anglerReports) {%>
-                <li>
-                    <b><%= report.species %></b> - <%= report.date_generated %>
-                    <a href="/anglerReports/<%= report.id%>">details</a>
-                </li>
-            <% } %>
-        </ul>
 
-    <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY-->
-    <div class="row">
-        <div class="col-sm-3"></div>
-        <div class="col-sm">
-            <!-- Link to submit new report-->
-            <a href="/lakeReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a>
+        <table class="table">
+            <tr>
+                <th>View Report</th>
+                <th>Date Recorded</th>
+                <th>Species</th>
+            </tr>
+            <% for (let report of anglerReports) {%>
+                <tr>
+                    <td><a href="/anglerReports/<%= report.id%>">details</a></td>
+                    <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
+                    <td><%= report.species %></td>
+                </tr>
+            <% } %>
+        </table>
+
+        <br> <!-- TODO: TAKE THIS OUT, SPACE PROPERLY-->
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm">
+                <!-- Link to submit new report-->
+                <a href="/lakeReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a>
+            </div>
+            <div class="col-sm-3"></div>
         </div>
-        <div class="col-sm-3"></div>
-    </div>
-    <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
-    <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm">
-            <!-- Link to view all reports-->
-            <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+        <br> <!-- TODO: REMOVE THIS, FORMAT PROPERLY -->
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm">
+                <!-- Link to view all reports-->
+                <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+            </div>
+            <div class="col-sm-2"></div>
         </div>
-        <div class="col-sm-2"></div>
-    </div>
 <!-- include footer partial -->
 <%- include('partials/foot')%>
 
