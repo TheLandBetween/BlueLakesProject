@@ -4,10 +4,10 @@ const path = require('path'); // duplicated in index.js, need to replace with pa
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, isCreator, validateLakeReport } = require('../middleware');
 const bodyParser = require('body-parser'); // TODO: THINK THIS CAN GET REMOVED 6-8
-// const { app } = require('../index');
 router.use(bodyParser.urlencoded({ extended: true })); // TODO: same above
 
 const LakeHealthReport = require(path.join(__dirname, "../views/models/Lake_Health_Report"));
+const lakeReports = require('../controllers/lakeReports');
 
 // server side validation for lake health reports
 const { lakeReportSchema } = require('../schemas'); // JOI schema, not mongodb schema
@@ -15,67 +15,25 @@ const ExpressError = require('../utils/ExpressError');
 
 // index route
 // GET /lakeReports - list all lakeReports
-router.get('/', isLoggedIn, catchAsync(async (req, res) => {
-    // async callback to wait for health lakeReports to be received, then respond with webpage
-    const healthReports = await LakeHealthReport.find({}).populate('creator');
-    // render index.ejs file with the lakeReports 'database'
-    res.render('lakeReports/index', { healthReports, levelDeep: levelDeep = 1});
-}));
+router.get('/', isLoggedIn, catchAsync(lakeReports.index));
 
 // create route
 // POST /lakeReports - Create new report
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('lakeReports/new', {levelDeep: levelDeep = 1});
-});
+router.get('/new', isLoggedIn, lakeReports.renderNewForm);
 // on lakeReports/new submission it posts to /lakeReports
-router.post('/', isLoggedIn, validateLakeReport, catchAsync(async (req, res) => {
-    // assigns passed in form to a lake health report object, saving to a variable
-    const newReport = new LakeHealthReport(req.body);
-    newReport.creator = req.user._id;
-    await newReport.save();
-    // save success trigger
-    req.flash('success', 'Successfully Created Report');
-    // redirect back to view all lakeReports page
-    res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
-}));
+router.post('/', isLoggedIn, validateLakeReport, catchAsync(lakeReports.createLakeReport));
 
 // show route
 // GET /lakeReports/:id - Get one report (using ID)
 // TODO: Slugify link at some point, so instead of id in the url it can be something realative to the report (name / date)
-router.get('/:id', isLoggedIn, catchAsync(async (req, res) => {
-    // pull id from url
-    const { id } = req.params;
-    // look up the health report corresponding to the id passed in to the url
-    const foundReport = await LakeHealthReport.findById(id).populate('creator'); // passing in creator field from
-    // send them to the page about the single report
-    res.render('lakeReports/details', { foundReport, levelDeep: levelDeep = 1 });
-}));
+router.get('/:id', isLoggedIn, catchAsync(lakeReports.showLakeReport));
 
 // edit route
-router.get('/:id/edit', isLoggedIn, isCreator, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const lakeReport = await LakeHealthReport.findById(id);
-    if(!lakeReport) {
-        req.flash('error', "Could not find that lake report.");
-        return res.redirect('/lakeReports');
-    }
-    res.render("lakeReports/edit", { lakeReport, levelDeep: levelDeep = 2 });
-}));
-router.put('/:id', isLoggedIn, isCreator, validateLakeReport, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    // find campground with given id
-    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body });
-    req.flash('success', "Successfully updated Lake Report");
-    res.redirect(`/lakeReports/${lakeReport._id}`);
-}));
+router.get('/:id/edit', isLoggedIn, isCreator, catchAsync(lakeReports.renderEditForm));
+router.put('/:id', isLoggedIn, isCreator, validateLakeReport, catchAsync(lakeReports.updateLakeReport));
 
 // DELETE route
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await LakeHealthReport.findByIdAndDelete(id);
-    req.flash('success', "Successfully deleted Lake Report");
-    res.redirect('/lakeReports');
-}));
+router.delete('/:id', isLoggedIn, catchAsync(lakeReports.updateLakeReport));
 
 // update route -- not sure if really required for our app. do we need to update a report once submitted?
 // PATCH /lakeReports/:id - Update one report
