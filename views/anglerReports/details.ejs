@@ -9,6 +9,7 @@
         <h2>Angler: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
 
         <br>
+
         <h4>Lake Town: <%= foundReport.lake %></h4>
         <h4>Lake Town: <%= foundReport.municipality %></h4>
         <br>
@@ -18,13 +19,13 @@
         <br>
         <div>
             <h4>Species: <%= foundReport.species%></h4>
-            <h4>Length (cm): <%= foundReport.length%></h4>
-            <h4>Weight (lbs): <%= foundReport.weight%></h4>
+            <h4>Length (cm): <%= foundReport.length.toFixed(2)%></h4>
+            <h4>Weight (lbs): <%= foundReport.weight.toFixed(2)%></h4>
         </div>
         <br>
             <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
-    <!--            <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>-->
-    <!--            <a href="#" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Delete Report</a>-->
+                <a href="/anglerReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
+                <a href="#" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Delete Report</a>
             <% } %>
         <a href="/anglerReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
 
