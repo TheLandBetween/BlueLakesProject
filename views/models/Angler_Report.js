@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const Fish = require("./Fish");
+const fishSchema = mongoose.model("Fish").schema;
 
 // create a template for the table (layed out in the db schema)
 const anglerDiariesSchema = new mongoose.Schema({
@@ -29,21 +31,7 @@ const anglerDiariesSchema = new mongoose.Schema({
     t_end: {
         type: String
     },
-    species: {
-        type: String
-    },
-    length: {
-        type: Number
-    },
-    weight: {
-        type: Number
-    },
-    photo: [
-        {
-            url: String,
-        filename: String
-        }
-    ]
+    fish: [fishSchema]
 });
 
 // assign it to a variable to create instances of the model

@@ -1,4 +1,5 @@
 const AnglerReport = require("../views/models/Angler_Report");
+const Fish = require("../views/models/Fish");
 
 module.exports.index = async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
@@ -14,26 +15,39 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createAnglerReport = async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
+
     newReport.creator = req.user._id;
     newReport.angler_name = req.user.firstName + " " + req.user.lastName;
-    // take path + filename from each image uploaded, add to photo object and append to report
-    newReport.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
-
-
-    if (req.body.Weight_Metric == 'imperial') { //Check chosen metrics, convert when needed
-        const conversionRate = 2.20462;
-
-        newReport.weight = req.body.weight * conversionRate;
-    }
-
-    if (req.body.Length_Metric == 'imperial') {
-        const conversionRate = 2.54;
-
-        newReport.length = req.body.length * conversionRate;
-    }
 
     await newReport.save();
-    console.log(newReport);
+
+    for (let i = 0; i < req.body.species.length; i++) {
+        const currFish = new Fish();
+
+        currFish.report_fk = newReport._id;
+        currFish.creator = req.user._id;
+        currFish.species = req.body.species[i];
+        // take path + filename from each image uploaded, add to photo object and append to report
+        //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
+
+        if (req.body.Weight_Metric == 'imperial') { //Check chosen metrics, convert when needed
+            const conversionRate = 2.20462;
+            currFish.weight = req.body.weight[i] * conversionRate;
+        } else
+            currFish.weight = req.body.weight[i];
+
+        if (req.body.Length_Metric == 'imperial') {
+            const conversionRate = 2.54;
+            currFish.length = req.body.length[i] * conversionRate;
+        } else
+            currFish.length = req.body.length[i];
+
+
+        console.log(currFish);
+
+        await currFish.save();
+    }
+
     // save success trigger
     req.flash('success', 'Successfully Created Report');
     // redirect back to view all lakeReports page
@@ -45,8 +59,10 @@ module.exports.showAnglerReport = async (req, res) => {
     const { id } = req.params;
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await AnglerReport.findById(id).populate('creator'); // passing in creator field from
+    const foundFish = await Fish.find({report_fk : foundReport._id},{})
+    console.log(foundFish);
     // send them to the page about the single report
-    res.render('anglerReports/details', { foundReport, levelDeep: levelDeep = 1 });
+    res.render('anglerReports/details', { foundReport, foundFish, levelDeep: levelDeep = 1 });
 };
 
 module.exports.renderEditForm = async (req, res) => {

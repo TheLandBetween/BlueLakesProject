@@ -10,7 +10,7 @@ const anglerReports = require('../controllers/anglerReports');
 
 router.route('/')
     .get(isLoggedIn, catchAsync(anglerReports.index)) // INDEX route
-    .post(isLoggedIn, upload.array('photo'), validateAnglerReport, catchAsync(anglerReports.createAnglerReport)) // CREATE route
+    .post(isLoggedIn, upload.array('photo'), catchAsync(anglerReports.createAnglerReport)) // CREATE route
 
 
 router.get('/new', isLoggedIn, anglerReports.renderNewForm); // CREATE route, display page

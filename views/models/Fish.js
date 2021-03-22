@@ -1,0 +1,37 @@
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+// create a template for the table (layed out in the db schema)
+const fishSchema = new mongoose.Schema({
+    report_fk: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'Angler_Report'
+    },
+    creator: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User_Account'
+    },
+    species: {
+        type: String,
+        required: true
+    },
+    length: {
+        type: Number
+    },
+    weight: {
+        type: Number
+    },
+    photo: [
+        {
+            url: String,
+            filename: String
+        }
+    ]
+});
+
+// assign it to a variable to create instances of the model
+const Fish = mongoose.model('Fish', fishSchema);
+
+module.exports = Fish;

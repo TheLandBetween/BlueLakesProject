@@ -13,19 +13,31 @@
         <h4>Lake Town: <%= foundReport.lake %></h4>
         <h4>Lake Town: <%= foundReport.municipality %></h4>
         <br>
-        <% for (let img of foundReport.photo) { %>
-            <img src='<%= img.url %>' alt="...">
-        <% } %>
-        <br>
         <h4>Angler Name: <%= foundReport.angler_name%></h4>
         <h4>Start Time: <%= foundReport.t_start%></h4>
         <h4>End Time: <%= foundReport.t_end%></h4>
+
         <br>
-        <div>
-            <h4>Species: <%= foundReport.species%></h4>
-            <h4>Length (cm): <%= foundReport.length.toFixed(2)%></h4>
-            <h4>Weight (lbs): <%= foundReport.weight.toFixed(2)%></h4>
-        </div>
+
+        <h2>Fish</h2>
+        <table class="table">
+            <tr>
+                <th>Species</th>
+                <th>Weight (Pounds)</th>
+                <th>Length (Centimeters)</th>
+            </tr>
+
+            <% foundFish.forEach(function (entry) { %>
+                <tr>
+                    <td><%= entry.species%></td>
+                    <td><%= entry.length%></td>
+                    <td><%= entry.weight%></td>
+                </tr>
+            <%})%>
+        </table>
+
+
+        <br>
         <br>
             <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
                 <a href="/anglerReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
