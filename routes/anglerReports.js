@@ -10,11 +10,8 @@ const anglerReports = require('../controllers/anglerReports');
 
 router.route('/')
     .get(isLoggedIn, catchAsync(anglerReports.index)) // INDEX route
-    // .post(isLoggedIn, validateAnglerReport, catchAsync(anglerReports.createAnglerReport)); // CREATE route
-    .post(upload.array('photo'), (req, res) => {
-    console.log(req.body, req.files);
-    res.send("it worked!");
-});
+    .post(isLoggedIn, upload.array('photo'), validateAnglerReport, catchAsync(anglerReports.createAnglerReport)) // CREATE route
+
 
 router.get('/new', isLoggedIn, anglerReports.renderNewForm); // CREATE route, display page
 

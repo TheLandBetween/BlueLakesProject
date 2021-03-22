@@ -17,7 +17,7 @@ module.exports.lakeReportSchema = Joi.object({
 module.exports.anglerReportSchema = Joi.object({
     // This is where all the Joi validation is done.
     // TODO: this will be changed once we figure out what needs to be actually submitted
-    photo: Joi.any(),
+    // photo: Joi.any(),
     lake: Joi.string().required(),
     municipality: Joi.string().required(),
     date: Joi.date().required(),

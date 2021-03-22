@@ -10,8 +10,10 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
     cloudinary,
-    folder: 'BlueLakes',
-    allowedFormats: ['jpeg', 'jpg', 'png']
+    params: {
+        folder: 'BlueLakes',
+        allowedFormats: ['jpeg', 'jpg', 'png']
+    }
 });
 
 module.exports = {

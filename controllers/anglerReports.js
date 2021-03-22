@@ -15,7 +15,10 @@ module.exports.createAnglerReport = async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
     newReport.creator = req.user._id;
-    newReport.angler_name = req.user.firstName + " " + req.user.lastName
+    newReport.angler_name = req.user.firstName + " " + req.user.lastName;
+    // take path + filename from each image uploaded, add to photo object and append to report
+    newReport.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
+
 
     if (req.body.Weight_Metric == 'imperial') { //Check chosen metrics, convert when needed
         const conversionRate = 2.20462;
@@ -30,6 +33,7 @@ module.exports.createAnglerReport = async (req, res) => {
     }
 
     await newReport.save();
+    console.log(newReport);
     // save success trigger
     req.flash('success', 'Successfully Created Report');
     // redirect back to view all lakeReports page

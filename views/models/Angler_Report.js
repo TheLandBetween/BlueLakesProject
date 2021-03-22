@@ -37,7 +37,13 @@ const anglerDiariesSchema = new mongoose.Schema({
     },
     weight: {
         type: Number
-    }
+    },
+    photo: [
+        {
+            url: String,
+        filename: String
+        }
+    ]
 });
 
 // assign it to a variable to create instances of the model
