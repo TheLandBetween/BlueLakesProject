@@ -15,7 +15,20 @@ module.exports.createAnglerReport = async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
     newReport.creator = req.user._id;
-    newReport.angler_name = req.user.firstName + " " + req.user.lastName;
+    newReport.angler_name = req.user.firstName + " " + req.user.lastName
+
+    if (req.body.Weight_Metric == 'imperial') { //Check chosen metrics, convert when needed
+        const conversionRate = 2.20462;
+
+        newReport.weight = req.body.weight * conversionRate;
+    }
+
+    if (req.body.Length_Metric == 'imperial') {
+        const conversionRate = 2.54;
+
+        newReport.length = req.body.length * conversionRate;
+    }
+
     await newReport.save();
     // save success trigger
     req.flash('success', 'Successfully Created Report');

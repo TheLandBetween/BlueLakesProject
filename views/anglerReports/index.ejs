@@ -10,16 +10,22 @@
                 <div class="col-sm bg-white border border-primary">Angler Statistics and Graphs</div>
                 <div class="col-sm-1"></div>
             </div>
-        <ul>
-            <!-- iterate through each matched report passed in and display in a li-->
-            <!--TODO: boostrap cards-->
+
+        <table class="table">
+            <tr>
+                <th>View Report</th>
+                <th>Creator</th>
+                <th>Date Recorded</th>
+            </tr>
             <% for (let report of anglerReports) {%>
-                <li>
-                    <b><%= report.creator.firstName + ' ' + report.creator.lastName%></b> - <%= report.date %>
-                    <a href="/anglerReports/<%= report.id%>">details</a>
-                </li>
+                <tr>
+                    <td><a href="/anglerReports/<%= report.id%>">details</a></td>
+                    <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                    <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
+                </tr>
             <% } %>
-        </ul>
+        </table>
+
         <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm">
