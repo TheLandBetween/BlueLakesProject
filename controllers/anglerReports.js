@@ -21,27 +21,63 @@ module.exports.createAnglerReport = async (req, res) => {
 
     await newReport.save();
 
-    for (let i = 0; i < req.body.species.length; i++) {
+    console.log(req.body);
+
+    if (Array.isArray(req.body.species)) {
+        for (let i = 0; i < req.body.species.length; i++) {
+            const currFish = new Fish();
+
+            currFish.report_fk = newReport._id;
+            currFish.creator = req.user._id;
+            currFish.species = req.body.species[i];
+            // take path + filename from each image uploaded, add to photo object and append to report
+            //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
+
+            if (req.body.weight[i]) {
+                if (req.body.Weight_Metric === 'imperial') { //Check chosen metrics, convert when needed
+                    const conversionRate = 2.20462;
+                    currFish.weight = req.body.weight[i] * conversionRate;
+                } else
+                    currFish.weight = req.body.weight[i];
+            }
+
+            if (req.body.length[i]) {
+                if (req.body.Length_Metric === 'imperial') {
+                    const conversionRate = 2.54;
+                    currFish.length = req.body.length[i] * conversionRate;
+                } else
+                    currFish.length = req.body.length[i];
+            }
+
+            console.log(currFish);
+
+            await currFish.save();
+        }
+    }
+    else {
         const currFish = new Fish();
 
         currFish.report_fk = newReport._id;
         currFish.creator = req.user._id;
-        currFish.species = req.body.species[i];
+        currFish.species = req.body.species;
         // take path + filename from each image uploaded, add to photo object and append to report
         //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
 
-        if (req.body.Weight_Metric == 'imperial') { //Check chosen metrics, convert when needed
-            const conversionRate = 2.20462;
-            currFish.weight = req.body.weight[i] * conversionRate;
-        } else
-            currFish.weight = req.body.weight[i];
+        if (req.body.weight) {
+            if (req.body.Weight_Metric === 'imperial') { //Check chosen metrics, convert when needed
+                const conversionRate = 2.20462;
+                currFish.weight = req.body.weight * conversionRate;
+            } else
+                currFish.weight = req.body.weight;
+        }
 
-        if (req.body.Length_Metric == 'imperial') {
-            const conversionRate = 2.54;
-            currFish.length = req.body.length[i] * conversionRate;
-        } else
-            currFish.length = req.body.length[i];
-
+        if (req.body.length) {
+            if (req.body.Length_Metric === 'imperial') {
+                const conversionRate = 2.54;
+                currFish.length = req.body.length * conversionRate;
+            } else
+                currFish.length = req.body.length;
+        }
 
         console.log(currFish);
 
