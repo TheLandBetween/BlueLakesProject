@@ -1,3 +1,10 @@
+// if we run in development mode add variables in env file into process
+// production will be done differently
+// access through process.env.VarName
+if(process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 // pull in express and set it up, assigned to app var
 const express = require("express");
 const connectDB = require('./Database/Connection')

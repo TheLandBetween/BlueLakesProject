@@ -10,7 +10,7 @@
         <div class="container">
         <%- include('../partials/flash') %>
         <h1 class="text-center">New Angler Report</h1>
-        <form action="/anglerReports" method="post" class="text-center needs-validation" name="submit" novalidate>
+        <form action="/anglerReports" method="post" class="text-center needs-validation" name="submit" novalidate enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="text-left">General Information</h2>
@@ -53,7 +53,7 @@
                             <div class="card-body">
                                 <div class="form-group d-flex flex-column">
                                     <label class="form-label" for="photo">Picture of Fish: </label>
-                                    <input class="form-control-file" type="file" id="photo" name="photo" accept="image/*">
+                                    <input class="form-control-file" type="file" id="photo" name="photo" multiple>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="species">Species: </label>

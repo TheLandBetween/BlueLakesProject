@@ -15,7 +15,7 @@ module.exports.createAnglerReport = async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
     newReport.creator = req.user._id;
-    newReport.angler_name_fk = req.user.firstName + " " + req.user.lastName
+    newReport.angler_name = req.user.firstName + " " + req.user.lastName;
     await newReport.save();
     // save success trigger
     req.flash('success', 'Successfully Created Report');

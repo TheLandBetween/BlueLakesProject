@@ -23,8 +23,13 @@
         <br>
         <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
         <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
-        <a href="#" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Delete Report</a>
+        <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
+            <button class="btn btn-block btn-outline-danger"> Delete </button>
+        </form>
         <% } %>
+
+
+
         <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
 
         <!-- I dont think edit is really necessary, but im leaving the button here. surround foundReport.id in ejs tags-->

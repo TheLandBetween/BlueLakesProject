@@ -2,12 +2,19 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, isCreator, validateAnglerReport } = require('../middleware');
+const multer = require('multer') // for reading multipart html form data
+const { storage } = require('../cloudinary');
+const upload = multer({ storage })
 
 const anglerReports = require('../controllers/anglerReports');
 
 router.route('/')
     .get(isLoggedIn, catchAsync(anglerReports.index)) // INDEX route
-    .post(isLoggedIn, validateAnglerReport, catchAsync(anglerReports.createAnglerReport)); // CREATE route
+    // .post(isLoggedIn, validateAnglerReport, catchAsync(anglerReports.createAnglerReport)); // CREATE route
+    .post(upload.array('photo'), (req, res) => {
+    console.log(req.body, req.files);
+    res.send("it worked!");
+});
 
 router.get('/new', isLoggedIn, anglerReports.renderNewForm); // CREATE route, display page
 
