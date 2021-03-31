@@ -11,7 +11,6 @@
                 <!-- date input, sent under 'date' label-->
                 <label class='form-label' for="date_generated">Date: </label>
                 <input type="date" id="date_generated" value="<%= lakeReport.date_generated.getUTCFullYear() + '-' + ('0' + (lakeReport.date_generated.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + lakeReport.date_generated.getUTCDay()).slice(-2)%>" name="date_generated" class="form-control" required>
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                 <div class="valid-feedback">
                     Looks good!
                 </div>
@@ -26,34 +25,181 @@
                 <label class='form-label' for="perc_shore_devd">Perc Shore Devd: </label>
                 <input type="text" id="perc_shore_devd" value="<%= lakeReport.perc_shore_devd %>" name="perc_shore_devd" class="form-control" required>
             </div>
-            <div class="form-group">
-                <!-- health input, sent under 'health' label-->
-                <label class='form-label' for="avg_temp">Average Temperature: </label>
-                <input type="text" id="avg_temp" value="<%= lakeReport.avg_temp %>" name="avg_temp" class="form-control" required>
+
+            <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
+            <div class="container" id="tempDO_Container">
+                <% var tempDOIndex = 0;
+                foundDoTemp.forEach(function (entry) {
+                    tempDOIndex += 1; %>
+                    <div class="card">
+                        <div class="card-header">
+                            <a data-toggle="collapse" href="#collapse-doTemp<%=tempDOIndex%>" aria-expanded="true" aria-controls="collapse-doTemp<%=tempDOIndex%>" id="heading-example" class="d-block">
+                                <i class="fa fa-chevron-down pull-right"></i>
+                                Temperature / Dissolved Oxygen <%=tempDOIndex%>
+                            </a>
+                        </div>
+                        <div id="collapse-doTemp<%=tempDOIndex%>" class="collapse show" aria-labelledby="heading-example">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class='form-label' for="temperature">Temperature: </label>
+                                    <input type="number" value="<%=entry.temperature%>" id="temperature" placeholder="Temperature Value" name="temperature" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class='form-label' for="dissolved_oxygen">Do Conc: </label>
+                                <input type="number" value="<%=entry.dissolvedOxygen%>" id="dissolved_oxygen" placeholder="Dissolved Oxygen" name="dissolved_oxygen" class="form-control" required>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label class='form-label' for="doTempCoordinateX">X-Coordinate: </label>
+                                    <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class='form-label' for="doTempCoordinateY">Y-Coordinate: </label>
+                                    <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%})%>
             </div>
-            <div class="form-group">
-                <label class="radio-inline">
-                    <input type="radio" id="celsius" name="Metric" value="c" class="form-control" checked>Celsius
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" id="fahrenheit" name="Imperial" value="f" class="form-control">Fahrenheit
-                </label>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addtemp_DO">Add Temp/DO Reading</button>
+                </div>
+                <div class="col-sm-3"></div>
             </div>
-            <div class="form-group">
-                <!-- health input, sent under 'health' label-->
-                <label class='form-label' for="avg_do_conc">Average Do Conc: </label>
-                <input type="text" id="avg_do_conc" value="<%= lakeReport.avg_do_conc %>" name="avg_do_conc" class="form-control" required>
+            <br>
+
+            <!-- SECCHI DEPTH READING -->
+            <div class="container" id="secchiDepth_Container">
+                <% var secchiIndex = 0;
+                foundSecchi.forEach(function (entry) {
+                    secchiIndex += 1; %>
+                    $("#secchiDepth_Container").append(`
+                    <div class="card">
+                        <div class="card-header">
+                            <a data-toggle="collapse" href="#collapse-secchi<%=secchiIndex%>" aria-expanded="true" aria-controls="collapse-secchi<%=secchiIndex%>" id="heading-example" class="d-block">
+                                <i class="fa fa-chevron-down pull-right"></i>
+                                Secchi <%=secchiIndex%>
+                            </a>
+                        </div>
+                        <div id="collapse-secchi<%=secchiIndex%>" class="collapse show" aria-labelledby="heading-example">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class='form-label' for="secchi_depth">Secchi Depth: </label>
+                                    <input type="number" value="<%=entry.secchi%>" id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
+                                </div>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label class='form-label' for="secchiCoordinateX">X-Coordinate: </label>
+                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class='form-label' for="secchiCoordinateY">Y-Coordinate: </label>
+                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                <%})%>
             </div>
-            <div class="form-group">
-                <!-- health input, sent under 'health' label-->
-                <label class='form-label' for="avg_secchi_depth">Average Secchi Depth: </label>
-                <input type="text" id="avg_secchi_depth" value="<%= lakeReport.avg_secchi_depth %>" name="avg_secchi_depth" class="form-control" required>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addSecchi">Add Secchi Reading</button>
+                </div>
+                <div class="col-sm-3"></div>
             </div>
-            <div class="form-group">
-                <!-- health input, sent under 'health' label-->
-                <label class='form-label' for="Avg_Phosph">Average Phospherous: </label>
-                <input type="text" id="avg_phosph" value="<%= lakeReport.avg_phosph %>" name="avg_phosph" class="form-control" required>
+            <br>
+
+            <!-- PHOSPHORUS READING -->
+            <div class="container" id="phosphorus_Container">
+                <% var phosphorusIndex = 0;
+                foundPhosphorus.forEach(function (entry) {
+                    phosphorusIndex += 1; %>
+                    <div class="card">
+                        <div class="card-header">
+                            <a data-toggle="collapse" href="#collapse-phosphorus<%=phosphorusIndex%>" aria-expanded="true" aria-controls="collapse-phosphorus<%=phosphorusIndex%>" id="heading-example" class="d-block">
+                                <i class="fa fa-chevron-down pull-right"></i>
+                                Phosphorus <%=phosphorusIndex%>
+                            </a>
+                        </div>
+                        <div id="collapse-phosphorus<%=phosphorusIndex%>" class="collapse show" aria-labelledby="heading-example">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class='form-label' for="phosphorus">Phosphorus: </label>
+                                    <input type="number" value="<%=entry.phosphorus%>" id="phosphorus" placeholder="Phosphorus in PPB" name="phosphorus" class="form-control" required>
+                                </div>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label class='form-label' for="phosphorusCoordinateX">X-Coordinate: </label>
+                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class='form-label' for="phosphorusCoordinateY">Y-Coordinate: </label>
+                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%})%>
             </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addPhosphorus">Add Phosphorus Reading</button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <br>
+
+            <!-- CALCIUM READING -->
+            <div class="container" id="calcium_Container">
+                <% var caliumIndex = 0;
+                foundCalcium.forEach(function (entry) {
+                    caliumIndex += 1; %>
+                    <div class="card">
+                        <div class="card-header">
+                            <a data-toggle="collapse" href="#collapse-calcium<%=caliumIndex%>" aria-expanded="true" aria-controls="collapse-calcium<%=caliumIndex%>" id="heading-example" class="d-block">
+                                <i class="fa fa-chevron-down pull-right"></i>
+                                Calcium <%=caliumIndex%>
+                            </a>
+                        </div>
+                        <div id="collapse-calcium<%=caliumIndex%>" class="collapse show" aria-labelledby="heading-example">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class='form-label' for="calcium">Calcium: </label>
+                                    <input type="number" value="<%=entry.calcium%>" id="calcium" placeholder="Calcium in PPM" name="calcium" class="form-control" required>
+                                </div>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <label class='form-label' for="calciumCoordinateX">X-Coordinate: </label>
+                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class='form-label' for="calciumCoordinateY">Y-Coordinate: </label>
+                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%})%>
+            </div>
+            <div class="row">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addCalcium">Add Calcium Reading</button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+            <br>
+
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm">
@@ -91,4 +237,153 @@
                     }, false)
                 })
             })();
+
+            //TEMPERATURE / DISSOLVED OXYGEN CONTROLS
+            let tempDOCount = <%=tempDOIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+
+            //Add temperature / dissolved oxygen button controls
+            $("#addtemp_DO").click(function() {
+                tempDOCount = tempDOCount + 1;
+                $("#tempDO_Container").append(`
+        <div class="card">
+                <div class="card-header">
+                    <a data-toggle="collapse" href="#collapse-doTemp${tempDOCount}" aria-expanded="true" aria-controls="collapse-doTemp${tempDOCount}" id="heading-example" class="d-block">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                        Temperature / Dissolved Oxygen ${tempDOCount}
+                    </a>
+                </div>
+                <div id="collapse-doTemp${tempDOCount}" class="collapse show" aria-labelledby="heading-example">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class='form-label' for="temperature">Temperature: </label>
+                            <input type="number" id="temperature" placeholder="Temperature Value" name="temperature" class="form-control" required>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label class='form-label' for="dissolved_oxygen">Do Conc: </label>
+                            <input type="number" id="dissolved_oxygen" placeholder="Dissolved Oxygen" name="dissolved_oxygen" class="form-control" required>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label class='form-label' for="doTempCoordinateX">X-Coordinate: </label>
+                                <input type="number" step="0.0001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class='form-label' for="doTempCoordinateY">Y-Coordinate: </label>
+                                <input type="number" step="0.0001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+            })
+
+            //SECCHI CONTROLS
+            let secchiCount = <%=secchiIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+
+            //Add secchi button controls
+            $("#addSecchi").click(function() {
+                secchiCount = secchiCount + 1;
+                $("#secchiDepth_Container").append(`
+            <div class="card">
+                <div class="card-header">
+                    <a data-toggle="collapse" href="#collapse-secchi${secchiCount}" aria-expanded="true" aria-controls="collapse-secchi${secchiCount}" id="heading-example" class="d-block">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                        Secchi ${secchiCount}
+                    </a>
+                </div>
+                <div id="collapse-secchi${secchiCount}" class="collapse show" aria-labelledby="heading-example">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class='form-label' for="secchi_depth">Secchi Depth: </label>
+                            <input type="number" id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label class='form-label' for="secchiCoordinateX">X-Coordinate: </label>
+                                <input type="number" step="0.0001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class='form-label' for="secchiCoordinateY">Y-Coordinate: </label>
+                                <input type="number" step="0.0001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+            })
+
+            //PHOSPHORUS CONTROLS
+            let phosphorusCount = <%=phosphorusIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+
+            //Add phosphorus button controls
+            $("#addPhosphorus").click(function() {
+                phosphorusCount = phosphorusCount + 1;
+                $("#phosphorus_Container").append(`
+            <div class="card">
+                <div class="card-header">
+                    <a data-toggle="collapse" href="#collapse-phosphorus${phosphorusCount}" aria-expanded="true" aria-controls="collapse-phosphorus${phosphorusCount}" id="heading-example" class="d-block">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                        Phosphorus ${phosphorusCount}
+                    </a>
+                </div>
+                <div id="collapse-phosphorus${phosphorusCount}" class="collapse show" aria-labelledby="heading-example">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class='form-label' for="phosphorus">Phosphorus: </label>
+                            <input type="number" id="phosphorus" placeholder="Phosphorus in PPB" name="phosphorus" class="form-control" required>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label class='form-label' for="phosphorusCoordinateX">X-Coordinate: </label>
+                                <input type="number" step="0.0001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class='form-label' for="phosphorusCoordinateY">Y-Coordinate: </label>
+                                <input type="number" step="0.0001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+            })
+
+            //CALCIUM CONTROLS
+            let calciumCount = <%=caliumIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+
+            //Add calcium button controls
+            $("#addCalcium").click(function() {
+                calciumCount = calciumCount + 1;
+                $("#calcium_Container").append(`
+            <div class="card">
+                <div class="card-header">
+                    <a data-toggle="collapse" href="#collapse-calcium${calciumCount}" aria-expanded="true" aria-controls="collapse-calcium${calciumCount}" id="heading-example" class="d-block">
+                        <i class="fa fa-chevron-down pull-right"></i>
+                        Calcium ${calciumCount}
+                    </a>
+                </div>
+                <div id="collapse-calcium${calciumCount}" class="collapse show" aria-labelledby="heading-example">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class='form-label' for="calcium">Calcium: </label>
+                            <input type="number" id="calcium" placeholder="Calcium in PPM" name="calcium" class="form-control" required>
+                        </div>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <label class='form-label' for="calciumCoordinateX">X-Coordinate: </label>
+                                <input type="number" step="0.0001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class='form-label' for="calciumCoordinateY">Y-Coordinate: </label>
+                                <input type="number" step="0.0001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+            })
         </script>

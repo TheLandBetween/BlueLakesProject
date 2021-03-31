@@ -17,7 +17,8 @@ const phosphorousSchema = new mongoose.Schema({
         ref: 'User_Account'
     },
     phosphorus: {
-        type: Number
+        type: Number,
+        required: true
     },
     location: {
         type: pointSchema,

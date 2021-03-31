@@ -17,7 +17,8 @@ const secchiSchema = new mongoose.Schema({
         ref: 'User_Account'
     },
     secchi: {
-        type: Number
+        type: Number,
+        required: true
     },
     location: {
         type: pointSchema,

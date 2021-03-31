@@ -158,11 +158,18 @@ module.exports.showLakeReport = async (req, res) => {
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params;
     const lakeReport = await LakeHealthReport.findById(id);
+    const foundDoTemp = await DO_Temp.find({report_fk : lakeReport._id},{})
+    const foundSecchi = await Secchi.find({report_fk : lakeReport._id},{})
+    const foundPhosphorus = await Phosphorus.find({report_fk : lakeReport._id},{})
+    const foundCalcium = await Calcium.find({report_fk : lakeReport._id},{})
+
+    const numTempDoReports = 123;
+
     if(!lakeReport) {
         req.flash('error', "Could not find that lake report.");
         return res.redirect('/lakeReports');
     }
-    res.render("lakeReports/edit", { lakeReport, levelDeep: levelDeep = 2 });
+    res.render("lakeReports/edit", { lakeReport, foundDoTemp, foundSecchi, foundPhosphorus, foundCalcium, numTempDoReports, levelDeep: levelDeep = 2 });
 };
 
 module.exports.updateLakeReport = async (req, res) => {

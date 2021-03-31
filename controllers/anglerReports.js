@@ -103,12 +103,15 @@ module.exports.showAnglerReport = async (req, res) => {
 
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params;
-    const anglerReport = await AnglerReport.findById(id);
-    if(!anglerReport) {
+    const foundReport = await AnglerReport.findById(id);
+    if(!foundReport) {
         req.flash('error', "Could not find that angler report.");
         return res.redirect('/anglerReports');
     }
-    res.render("anglerReports/edit", { anglerReport, levelDeep: levelDeep = 2 });
+    const foundFish = await Fish.find({report_fk : foundReport._id},{})
+
+
+    res.render("anglerReports/edit", { foundReport, foundFish, levelDeep: levelDeep = 2 });
 };
 
 
