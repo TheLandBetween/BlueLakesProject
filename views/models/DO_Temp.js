@@ -1,34 +1,31 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const Point = require("./Point");
+const pointSchema = mongoose.model("Point").schema;
 
 // create a template for the table (layed out in the db schema)
 const doTempSchema = new mongoose.Schema({
-    id_pk: {
-        type: Number,
-        required: true
+    report_fk: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'Lake_Health_Report'
     },
-    lake_town_fk: {
-        type: String,
-        required: true
+    creator: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User_Account'
     },
-    approved: {
-        type: String
-    },
-    date: {
-        type: Date
-    },
-    max_depth: {
+    dissolvedOxygen: {
         type: Number
     },
-    temp_depth: {
+    temperature: {
         type: Number
     },
-    do_conc: {
-        type: Number
-    },
-    do_depth: {
-        type: Number
-    },
-
+    location: {
+        type: pointSchema,
+        coordinates: []
+    }
 });
 
 // assign it to a variable to create instances of the model

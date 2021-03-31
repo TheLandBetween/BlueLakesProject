@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const DissolvedOxygenTemperature = require("./DO_Temp");
+const Secchi = require("./Secchi");
+const Phosphorous = require("./Phosphorous");
+const Calcium = require("./Calcium");
+
+const doTempSchema = mongoose.model("doTemp").schema;
+const secchiSchema = mongoose.model("Secchi").schema;
+const phosphorousSchema = mongoose.model("Phosphorous").schema;
+const calciumSchema = mongoose.model("Calcium").schema;
+
 // create a template for the table (layed out in the db schema)
 const lakeHealthReportSchema = new Schema({
     creator: {
@@ -21,23 +31,10 @@ const lakeHealthReportSchema = new Schema({
     perc_shore_devd: {
         type: Number
     },
-    avg_temp: {
-        type: Number
-    },
-    avg_do_conc: {
-        type: Number
-    },
-    avg_secchi_depth: {
-        type: Number
-    },
-    avg_phosph: {
-        type: Number
-    },
-    // want to keep these reports as seperate objects since we need to view all at once
-    lake: {
-        type: Schema.Types.ObjectID,
-        ref: 'Lake'
-    }
+    doTemp: [doTempSchema],
+    secchi_depth: [secchiSchema],
+    phosphorus: [phosphorousSchema],
+    calcium: [calciumSchema]
 });
 
 // assign it to a variable to create instances of the model

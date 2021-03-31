@@ -5,7 +5,7 @@ const Point = require("./Point");
 const pointSchema = mongoose.model("Point").schema;
 
 // create a template for the table (layed out in the db schema)
-const secchiSchema = new mongoose.Schema({
+const calciumSchema = new mongoose.Schema({
     report_fk: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -16,8 +16,9 @@ const secchiSchema = new mongoose.Schema({
         required: true,
         ref: 'User_Account'
     },
-    secchi: {
-        type: Number
+    calcium: {
+        type: Number,
+        required: true
     },
     location: {
         type: pointSchema,
@@ -26,6 +27,6 @@ const secchiSchema = new mongoose.Schema({
 });
 
 // assign it to a variable to create instances of the model
-const secchi = mongoose.model('Secchi', secchiSchema);
+const Calcium = mongoose.model('Calcium', calciumSchema);
 
-module.exports = secchi;
+module.exports = Calcium;

@@ -5,13 +5,23 @@ module.exports.lakeReportSchema = Joi.object({
     // This is where all the Joi validation is done.
     // TODO: this will be changed once we figure out what needs to be actually submitted
     date_generated: Joi.string().required(), // says this must be a string and is required
-    notes: Joi.string().required(),
-    perc_shore_devd: Joi.number().required(),
-    avg_temp: Joi.number().required(),
-    Metric: Joi.string().required(),
-    avg_do_conc: Joi.number().required(),
-    avg_secchi_depth: Joi.number().required(),
-    avg_phosph: Joi.number().required()
+    notes: Joi.string(),
+    perc_shore_devd: Joi.number(),
+    temperature: Joi.number(),
+    Metric: Joi.string(),
+    dissolved_oxygen: Joi.number(),
+    secchi_depth: Joi.number(),
+    phosphorus: Joi.number(),
+    calcium: Joi.number(),
+
+    doTempCoordinateX: Joi.number(),
+    doTempCoordinateY: Joi.number(),
+    secchiCoordinateX: Joi.number(),
+    secchiCoordinateY: Joi.number(),
+    phosphorusCoordinateX: Joi.number(),
+    phosphorusCoordinateY: Joi.number(),
+    calciumCoordinateX: Joi.number(),
+    calciumCoordinateY: Joi.number()
 });
 
 module.exports.anglerReportSchema = Joi.object({
@@ -23,11 +33,6 @@ module.exports.anglerReportSchema = Joi.object({
     date: Joi.date().required(),
     t_start: Joi.string().required(),
     t_end: Joi.string().required(),
-    // species: Joi.string().required(),
-    // length: Joi.number().allow(null, ''),
-    // Length_Metric: Joi.string(),
-    // weight: Joi.number().allow(null, ''),
-    // Weight_Metric: Joi.string()
 });
 
 

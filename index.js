@@ -11,14 +11,9 @@ const connectDB = require('./Database/Connection')
 const app = express();
 const bcrypt = require('bcrypt');
 const {isLoggedIn} = require("./middleware");
-// test
 
 //Connect to the remote database
 connectDB();
-
-
-
-//const seed = require('./seeds'); //TEST SEEDING THE REMOTE DATABASE
 
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({extended: false }));

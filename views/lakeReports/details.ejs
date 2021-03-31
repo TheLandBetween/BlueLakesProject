@@ -14,12 +14,73 @@
         <br>
 
         <h4>Notes: <%= foundReport.notes%></h4>
-
         <h4>Perc Shore Devd: <%= foundReport.perc_shore_devd%></h4>
-        <h4>Temperatures: <%= foundReport.avg_temp%></h4>
-        <h4>Do Conc: <%= foundReport.avg_do_conc%></h4>
-        <h4>Avg_Secchi_Depth: <%= foundReport.avg_secchi_depth%></h4>
-        <h4>Avg_Phosphorous: <%= foundReport.avg_phosph%></h4>
+
+        <% if (foundDoTemp.length) { %>
+            <table class="table">
+                <tr>
+                    <th>Temperature</th>
+                    <th>Dissolved Oxygen</th>
+                    <th>Coordinates</th>
+                </tr>
+
+                <% foundDoTemp.forEach(function (entry) { %>
+                    <tr>
+                        <td><%= entry.temperature%></td>
+                        <td><%= entry.dissolvedOxygen%></td>
+                        <td><%= entry.location.coordinates%></td>
+                    </tr>
+                <%})%>
+            </table>
+        <%}%>
+
+        <% if (foundSecchi.length) { %>
+            <table class="table">
+                <tr>
+                    <th>Secchi</th>
+                    <th>Coordinates</th>
+                </tr>
+
+                <% foundSecchi.forEach(function (entry) { %>
+                    <tr>
+                        <td><%= entry.secchi%></td>
+                        <td><%= entry.location.coordinates%></td>
+                    </tr>
+                <%})%>
+            </table>
+        <%}%>
+
+        <% if (foundPhosphorus.length) { %>
+            <table class="table">
+                <tr>
+                    <th>Phosphorus</th>
+                    <th>Coordinates</th>
+                </tr>
+
+                <% foundPhosphorus.forEach(function (entry) { %>
+                    <tr>
+                        <td><%= entry.phosphorus%></td>
+                        <td><%= entry.location.coordinates%></td>
+                    </tr>
+                <%})%>
+            </table>
+        <%}%>
+
+        <% if (foundCalcium.length) { %>
+            <table class="table">
+                <tr>
+                    <th>Calcium</th>
+                    <th>Coordinates</th>
+                </tr>
+                <% foundCalcium.forEach(function (entry) { %>
+                    <tr>
+                        <td><%= entry.calcium%></td>
+                        <td><%= entry.location.coordinates%></td>
+                    </tr>
+                <%})%>
+            </table>
+        <%}%>
+
         <br>
         <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
         <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
