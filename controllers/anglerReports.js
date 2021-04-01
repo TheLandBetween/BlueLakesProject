@@ -117,8 +117,22 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateAnglerReport = async (req, res) => {
     const { id } = req.params;
-    // find campground with given id
+    // find angler report with given id
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { ...req.body });
+
+    const {fish_id} = req.body;
+    if (fish_id) {
+        const { species, length, weight } = req.body;
+
+        if (Array.isArray(fish_id)) {
+            for (let i = 0; i < fish_id; i++) {
+                const fishReport = await Fish.findByIdAndUpdate(fish_id[i], {species: species[i], length: length[i], weight: weight[i]})
+            }
+        } else {
+            const fishReport = await Fish.findByIdAndUpdate(fish_id, {species: species, length: length, weight: weight})
+        }
+    }
+
     req.flash('success', "Successfully updated Angler Report");
     res.redirect(`/anglerReports/${AnglerReport._id}`);
 };

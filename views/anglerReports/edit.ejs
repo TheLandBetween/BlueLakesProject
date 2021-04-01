@@ -54,6 +54,7 @@
                         </div>
                         <div id="collapse-<%=index%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id">
                                 <div class="form-group d-flex flex-column">
                                     <img>
                                 </div>
@@ -146,6 +147,7 @@
                 </div>
                 <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
+                        <input class="form-control" value="" type="hidden" id="fish_id" name="fish_id">
                         <div class="form-group">
                             <label class="form-label" for="species">Species: </label>
                             <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">

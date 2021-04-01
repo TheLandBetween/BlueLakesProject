@@ -163,19 +163,159 @@ module.exports.renderEditForm = async (req, res) => {
     const foundPhosphorus = await Phosphorus.find({report_fk : lakeReport._id},{})
     const foundCalcium = await Calcium.find({report_fk : lakeReport._id},{})
 
-    const numTempDoReports = 123;
-
     if(!lakeReport) {
         req.flash('error', "Could not find that lake report.");
         return res.redirect('/lakeReports');
     }
-    res.render("lakeReports/edit", { lakeReport, foundDoTemp, foundSecchi, foundPhosphorus, foundCalcium, numTempDoReports, levelDeep: levelDeep = 2 });
+    res.render("lakeReports/edit", { lakeReport, foundDoTemp, foundSecchi, foundPhosphorus, foundCalcium, levelDeep: levelDeep = 2 });
 };
 
 module.exports.updateLakeReport = async (req, res) => {
     const { id } = req.params;
-    // find campground with given id
-    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { ...req.body });
+    // find lake report with given id
+    const { date_generated, notes, perc_shore_devd } = req.body;
+    const lakeReport = await LakeHealthReport.findByIdAndUpdate(id, { date_generated: date_generated, notes: notes, perc_shore_devd: perc_shore_devd});
+
+    const {doTemp_id, secchi_id, phosphorus_id, calcium_id} = req.body;
+
+    if (doTemp_id) {
+        const {temperature, dissolved_oxygen, doTempCoordinateX, doTempCoordinateY} = req.body;
+
+        if (Array.isArray(doTemp_id)) { //If array, parse every item
+            for (let i = 0; i < doTemp_id.length; i++) {
+                if (doTemp_id[i] === "?") { //If no ID is provided, create a new entry
+                    const newDoTemp = new DO_Temp();
+
+                    newDoTemp.report_fk = lakeReport._id;
+                    newDoTemp.creator = req.user._id;
+                    newDoTemp.dissolvedOxygen = dissolved_oxygen[i];
+                    newDoTemp.temperature = temperature[i];
+                    newDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX[i], doTempCoordinateY[i]] };
+
+                    await newDoTemp.save();
+                } else { //Otherwise, update existing report
+                    const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], { dissolvedOxygen: dissolved_oxygen[i], temperature: temperature[i], location: { type: 'Point', coordinates: [doTempCoordinateX[i], doTempCoordinateY[i]] }});
+                }
+            }
+        } else { //If not array, perform singular operation
+            if (doTemp_id === "?") { //If no ID is provided, create a new entry
+                const newDoTemp = new DO_Temp();
+
+                newDoTemp.report_fk = lakeReport._id;
+                newDoTemp.creator = req.user._id;
+                newDoTemp.dissolvedOxygen = dissolved_oxygen;
+                newDoTemp.temperature = temperature;
+                newDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] };
+
+                await newDoTemp.save();
+            } else { //Otherwise, update existing report
+                const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], { dissolvedOxygen: dissolved_oxygen, temperature: temperature, location: { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] }});
+            }
+        }
+    }
+
+    if (secchi_id) {
+        const {secchi_depth, secchiCoordinateX, secchiCoordinateY} = req.body;
+
+        if (Array.isArray(secchi_id)) { //If array, parse every item
+            for (let i = 0; i < secchi_id.length; i++) {
+                if (secchi_id[i] === "?") { //If no ID is provided, create a new entry
+                    const newSecchi = new Secchi();
+
+                    newSecchi.report_fk = lakeReport._id;
+                    newSecchi.creator = req.user._id;
+                    newSecchi.secchi = secchi_depth[i];
+                    newSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX[i], secchiCoordinateY[i]] };
+
+                    await newSecchi.save();
+                } else { //Otherwise, update existing report
+                    const secchiReport = await Secchi.findByIdAndUpdate(secchi_id[i], { secchi: secchi_depth[i], location: { type: 'Point', coordinates: [secchiCoordinateX[i], secchiCoordinateY[i]] }});
+                }
+            }
+        } else { //If not array, perform singular operation
+            if (secchi_id === "?") { //If no ID is provided, create a new entry
+                const newSecchi = new Secchi();
+
+                newSecchi.report_fk = lakeReport._id;
+                newSecchi.creator = req.user._id;
+                newSecchi.secchi = secchi_depth;
+                newSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX, secchiCoordinateY] };
+
+                await newSecchi.save();
+            } else { //Otherwise, update existing report
+                const secchiReport = await Secchi.findByIdAndUpdate(secchi_id, { secchi: secchi_depth, location: { type: 'Point', coordinates: [secchiCoordinateX, secchiCoordinateY] }});
+            }
+        }
+    }
+
+    if (phosphorus_id) {
+        const {phosphorus, phosphorusCoordinateX, phosphorusCoordinateY} = req.body;
+
+        if (Array.isArray(phosphorus_id)) { //If array, parse every item
+            for (let i = 0; i < phosphorus_id.length; i++) {
+                if (phosphorus_id[i] === "?") { //If no ID is provided, create a new entry
+                    const newPhosphorus = new Phosphorus();
+
+                    newPhosphorus.report_fk = lakeReport._id;
+                    newPhosphorus.creator = req.user._id;
+                    newPhosphorus.phosphorus = phosphorus[i];
+                    newPhosphorus.location = { type: 'Point', coordinates: [phosphorusCoordinateX[i], phosphorusCoordinateY[i]] };
+
+                    await currPhosphorus.save();
+                } else { //Otherwise, update existing report
+                    const phosphorusReport = await Phosphorus.findByIdAndUpdate(phosphorus_id[i], { phosphorus: phosphorus[i], location: { type: 'Point', coordinates: [phosphorusCoordinateX[i], phosphorusCoordinateY[i]] }});
+                }
+            }
+        } else { //If not array, perform singular operation
+            if (phosphorus_id === "?") { //If no ID is provided, create a new entry
+                const newPhosphorus = new Phosphorus();
+
+                newPhosphorus.report_fk = lakeReport._id;
+                newPhosphorus.creator = req.user._id;
+                newPhosphorus.phosphorus = phosphorus;
+                newPhosphorus.location = { type: 'Point', coordinates: [phosphorusCoordinateX, phosphorusCoordinateY] };
+
+                await currPhosphorus.save();
+            } else { //Otherwise, update existing report
+                const phosphorusReport = await Phosphorus.findByIdAndUpdate(phosphorus_id, { phosphorus: phosphorus, location: { type: 'Point', coordinates: [phosphorusCoordinateX, phosphorusCoordinateY] }});
+            }
+        }
+    }
+
+    if (calcium_id) {
+        const {calcium, calciumCoordinateX, calciumCoordinateY} = req.body;
+
+        if (Array.isArray(calcium_id)) { //If array, parse every item
+            for (let i = 0; i < calcium_id.length; i++) {
+                if (calcium_id[i] === "?") { //If no ID is provided, create a new entry
+                    const newCalcium = new Calcium();
+
+                    newCalcium.report_fk = lakeReport._id;
+                    newCalcium.creator = req.user._id;
+                    newCalcium.calcium = calcium[i];
+                    newCalcium.location = { type: 'Point', coordinates: [calciumCoordinateX[i], calciumCoordinateY[i]] };
+
+                    await currCalcium.save();
+                } else { //Otherwise, update existing report
+                    const calciumReport = await Calcium.findByIdAndUpdate(calcium_id[i], { calcium: calcium[i], location: { type: 'Point', coordinates: [calciumCoordinateX[i], calciumCoordinateY[i]] }});
+                }
+            }
+        } else { //If not array, perform singular operation
+            if (calcium_id === "?") { //If no ID is provided, create a new entry
+                const newCalcium = new Calcium();
+
+                newCalcium.report_fk = lakeReport._id;
+                newCalcium.creator = req.user._id;
+                newCalcium.calcium = calcium;
+                newCalcium.location = { type: 'Point', coordinates: [calciumCoordinateX, calciumCoordinateY] };
+
+                await currCalcium.save();
+            } else { //Otherwise, update existing report
+                const calciumReport = await Calcium.findByIdAndUpdate(calcium_id, { calcium: calcium, location: { type: 'Point', coordinates: [calciumCoordinateX, calciumCoordinateY] }});
+            }
+        }
+    }
+
     req.flash('success', "Successfully updated Lake Report");
     res.redirect(`/lakeReports/${lakeReport._id}`);
 };
