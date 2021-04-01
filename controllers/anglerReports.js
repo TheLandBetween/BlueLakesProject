@@ -5,11 +5,11 @@ module.exports.index = async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const anglerReports = await AnglerReport.find({}).populate('creator');
     // render index.ejs file with the lakeReports 'database'
-    res.render('anglerReports/index', { anglerReports, levelDeep: levelDeep = 1});
+    res.render('anglerReports/index', { anglerReports } );
 };
 
 module.exports.renderNewForm = (req, res) => {
-    res.render('anglerReports/new', {levelDeep: levelDeep = 1});
+    res.render('anglerReports/new');
 };
 
 module.exports.createAnglerReport = async (req, res) => {
@@ -98,7 +98,7 @@ module.exports.showAnglerReport = async (req, res) => {
     const foundFish = await Fish.find({report_fk : foundReport._id},{})
     console.log(foundFish);
     // send them to the page about the single report
-    res.render('anglerReports/details', { foundReport, foundFish, levelDeep: levelDeep = 1 });
+    res.render('anglerReports/details', { foundReport, foundFish });
 };
 
 module.exports.renderEditForm = async (req, res) => {
@@ -111,14 +111,28 @@ module.exports.renderEditForm = async (req, res) => {
     const foundFish = await Fish.find({report_fk : foundReport._id},{})
 
 
-    res.render("anglerReports/edit", { foundReport, foundFish, levelDeep: levelDeep = 2 });
+    res.render("anglerReports/edit", { foundReport, foundFish });
 };
 
 
 module.exports.updateAnglerReport = async (req, res) => {
     const { id } = req.params;
-    // find campground with given id
+    // find angler report with given id
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { ...req.body });
+
+    const {fish_id} = req.body;
+    if (fish_id) {
+        const { species, length, weight } = req.body;
+
+        if (Array.isArray(fish_id)) {
+            for (let i = 0; i < fish_id; i++) {
+                const fishReport = await Fish.findByIdAndUpdate(fish_id[i], {species: species[i], length: length[i], weight: weight[i]})
+            }
+        } else {
+            const fishReport = await Fish.findByIdAndUpdate(fish_id, {species: species, length: length, weight: weight})
+        }
+    }
+
     req.flash('success', "Successfully updated Angler Report");
     res.redirect(`/anglerReports/${AnglerReport._id}`);
 };

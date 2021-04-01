@@ -31,7 +31,7 @@ const User_Account = require("./views/models/User_Account");
 let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
 uuid();
-express.static(path.join(__dirname, "public"));
+express.static(path.join(__dirname, "/public"));
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));

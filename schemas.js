@@ -7,21 +7,26 @@ module.exports.lakeReportSchema = Joi.object({
     date_generated: Joi.string().required(), // says this must be a string and is required
     notes: Joi.string(),
     perc_shore_devd: Joi.number(),
-    temperature: Joi.number(),
+    temperature: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     Metric: Joi.string(),
-    dissolved_oxygen: Joi.number(),
-    secchi_depth: Joi.number(),
-    phosphorus: Joi.number(),
-    calcium: Joi.number(),
+    dissolved_oxygen: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    secchi_depth: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    phosphorus: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    calcium: {type: [Joi.number(), Joi.array().items(Joi.number())]},
 
-    doTempCoordinateX: Joi.number(),
-    doTempCoordinateY: Joi.number(),
-    secchiCoordinateX: Joi.number(),
-    secchiCoordinateY: Joi.number(),
-    phosphorusCoordinateX: Joi.number(),
-    phosphorusCoordinateY: Joi.number(),
-    calciumCoordinateX: Joi.number(),
-    calciumCoordinateY: Joi.number()
+    doTempCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    doTempCoordinateY: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    secchiCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    secchiCoordinateY: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    phosphorusCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    phosphorusCoordinateY: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    calciumCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    calciumCoordinateY: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+
+    doTemp_id: {type: [Joi.string(), Joi.array().items(Joi.string())]},
+    secchi_id: {type: [Joi.string(), Joi.array().items(Joi.string())]},
+    phosphorus_id: {type: [Joi.string(), Joi.array().items(Joi.string())]},
+    calcium_id: {type: [Joi.string(), Joi.array().items(Joi.string())]}
 });
 
 module.exports.anglerReportSchema = Joi.object({

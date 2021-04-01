@@ -1,6 +1,7 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
+<%- include('../partials/videoBG')%>
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
         <%- include('../partials/flash') %>
@@ -40,6 +41,7 @@
                         </div>
                         <div id="collapse-doTemp<%=tempDOIndex%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="doTemp_id" name="doTemp_id">
                                 <div class="form-group">
                                     <label class='form-label' for="temperature">Temperature: </label>
                                     <input type="number" value="<%=entry.temperature%>" id="temperature" placeholder="Temperature Value" name="temperature" class="form-control" required>
@@ -87,6 +89,7 @@
                         </div>
                         <div id="collapse-secchi<%=secchiIndex%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="secchi_id" name="secchi_id">
                                 <div class="form-group">
                                     <label class='form-label' for="secchi_depth">Secchi Depth: </label>
                                     <input type="number" value="<%=entry.secchi%>" id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
@@ -130,6 +133,7 @@
                         </div>
                         <div id="collapse-phosphorus<%=phosphorusIndex%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="phosphorus_id" name="phosphorus_id">
                                 <div class="form-group">
                                     <label class='form-label' for="phosphorus">Phosphorus: </label>
                                     <input type="number" value="<%=entry.phosphorus%>" id="phosphorus" placeholder="Phosphorus in PPB" name="phosphorus" class="form-control" required>
@@ -172,6 +176,7 @@
                         </div>
                         <div id="collapse-calcium<%=caliumIndex%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="calcium_id" name="calcium_id">
                                 <div class="form-group">
                                     <label class='form-label' for="calcium">Calcium: </label>
                                     <input type="number" value="<%=entry.calcium%>" id="calcium" placeholder="Calcium in PPM" name="calcium" class="form-control" required>
@@ -216,8 +221,7 @@
             </div>
             <div class="col-sm-2"></div>
         </div>
-        <!-- include footer partial -->
-        <%- include('../partials/foot')%>
+    </div>
 
         <script>
             // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -254,6 +258,7 @@
                 </div>
                 <div id="collapse-doTemp${tempDOCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
+                        <input class="form-control" value="?" type="hidden" id="doTemp_id" name="doTemp_id">
                         <div class="form-group">
                             <label class='form-label' for="temperature">Temperature: </label>
                             <input type="number" id="temperature" placeholder="Temperature Value" name="temperature" class="form-control" required>
@@ -295,6 +300,7 @@
                 </div>
                 <div id="collapse-secchi${secchiCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
+                        <input class="form-control" value="?" type="hidden" id="secchi_id" name="secchi_id">
                         <div class="form-group">
                             <label class='form-label' for="secchi_depth">Secchi Depth: </label>
                             <input type="number" id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
@@ -331,6 +337,7 @@
                 </div>
                 <div id="collapse-phosphorus${phosphorusCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
+                        <input class="form-control" value="?" type="hidden" id="phosphorus_id" name="phosphorus_id">
                         <div class="form-group">
                             <label class='form-label' for="phosphorus">Phosphorus: </label>
                             <input type="number" id="phosphorus" placeholder="Phosphorus in PPB" name="phosphorus" class="form-control" required>
@@ -367,6 +374,7 @@
                 </div>
                 <div id="collapse-calcium${calciumCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
+                        <input class="form-control" value="?" type="hidden" id="calcium_id" name="calcium_id">
                         <div class="form-group">
                             <label class='form-label' for="calcium">Calcium: </label>
                             <input type="number" id="calcium" placeholder="Calcium in PPM" name="calcium" class="form-control" required>

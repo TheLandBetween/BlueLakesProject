@@ -6,6 +6,7 @@
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
+<%- include('../partials/videoBG')%>
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
         <div class="container">
         <%- include('../partials/flash') %>
@@ -53,15 +54,15 @@
                             <div class="card-body">
                                 <div class="form-group d-flex flex-column">
                                     <label class="form-label" for="photo">Picture of Fish: </label>
-                                    <input class="form-control-file" type="file" id="photo" name="photo" multiple>
+                                    <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo" multiple>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="species">Species: </label>
-                                    <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species" required>
+                                    <input class="form-control" type="text" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="length">Length: </label>
-                                    <input class="form-control" type="number" id="length" placeholder="Length of Fish" name="length">
+                                    <input class="form-control" type="number" id="fish[${fishCount}][length]" placeholder="Length of Fish" name="length">
                                 </div>
                                 <div class="form-group">
                                     <label class="radio-inline" for="Length_Metric">
@@ -74,7 +75,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="weight">Weight: </label>
-                                <input class="form-control" type="text" id="weight" placeholder="Weight of Fish" name="weight">
+                                <input class="form-control" type="text" id="fish[${fishCount}][weight]" placeholder="Weight of Fish" name="weight">
                             </div>
                             <div class="form-group">
                                 <label class="radio-inline" for="Weight_Metric">
@@ -108,8 +109,7 @@
             </div>
         </form>
     </div>
-<!-- include footer partial -->
-<%- include('../partials/foot')%>
+</div>
 
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -144,13 +144,17 @@
                 </div>
                 <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
+                        <div class="form-group d-flex flex-column">
+                            <label class="form-label" for="photo">Picture of Fish: </label>
+                            <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo">
+                        </div>
                         <div class="form-group">
                             <label class="form-label" for="species">Species: </label>
-                            <input class="form-control" type="text" id="species" placeholder="Species of Fish" name="species">
+                            <input class="form-control" type="text" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="length">Length: </label>
-                            <input class="form-control" type="number" id="length" placeholder="Length of Fish" name="length">
+                            <input class="form-control" type="number" id="fish[${fishCount}][length]" placeholder="Length of Fish" name="length">
                         </div>
                         <div class="form-group">
                             <label class="radio-inline" for="Length_Metric">
@@ -163,7 +167,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="weight">Weight: </label>
-                            <input class="form-control" type="number" id="weight" placeholder="Weight of Fish" name="weight">
+                            <input class="form-control" type="number" id="fish[${fishCount}][weight]" placeholder="Weight of Fish" name="weight">
                         </div>
                         <div class="form-group">
                             <label class="radio-inline" for="Weight_Metric">
