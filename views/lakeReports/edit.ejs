@@ -79,7 +79,6 @@
                 <% var secchiIndex = 0;
                 foundSecchi.forEach(function (entry) {
                     secchiIndex += 1; %>
-                    $("#secchiDepth_Container").append(`
                     <div class="card">
                         <div class="card-header">
                             <a data-toggle="collapse" href="#collapse-secchi<%=secchiIndex%>" aria-expanded="true" aria-controls="collapse-secchi<%=secchiIndex%>" id="heading-example" class="d-block">
@@ -107,7 +106,6 @@
                             </div>
                         </div>
                     </div>
-                    `)
                 <%})%>
             </div>
             <div class="row">
@@ -242,8 +240,12 @@
                 })
             })();
 
+            $("#delete_Item").click(function() {
+
+            });
+
             //TEMPERATURE / DISSOLVED OXYGEN CONTROLS
-            let tempDOCount = <%=tempDOIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+            let tempDOCount = <%=tempDOIndex%> + 0; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
 
             //Add temperature / dissolved oxygen button controls
             $("#addtemp_DO").click(function() {
@@ -285,7 +287,7 @@
             })
 
             //SECCHI CONTROLS
-            let secchiCount = <%=secchiIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+            let secchiCount = <%=secchiIndex%> + 0; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
 
             //Add secchi button controls
             $("#addSecchi").click(function() {
@@ -322,7 +324,7 @@
             })
 
             //PHOSPHORUS CONTROLS
-            let phosphorusCount = <%=phosphorusIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+            let phosphorusCount = <%=phosphorusIndex%> + 0; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
 
             //Add phosphorus button controls
             $("#addPhosphorus").click(function() {
@@ -359,7 +361,7 @@
             })
 
             //CALCIUM CONTROLS
-            let calciumCount = <%=caliumIndex%> - 1; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+            let calciumCount = <%=caliumIndex%> + 0; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
 
             //Add calcium button controls
             $("#addCalcium").click(function() {

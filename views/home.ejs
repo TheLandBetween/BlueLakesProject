@@ -11,7 +11,7 @@
             <div class="row">
                 <% if(currentUser && currentUser.rank === 2) {%>
                     <h3>Your Lake Reports</h3>
-                    <table class="table">
+                    <table class="table" id="tableToFormat">
                         <tr>
                             <th>View Report</th>
                             <th>Date Recorded</th>
@@ -28,7 +28,7 @@
                 <% } %>
 
                 <h3>Your Angler Reports</h3>
-                <table class="table">
+                <table class="table" id="tableToFormat">
                     <tr>
                         <th>View Report</th>
                         <th>Date Recorded</th>

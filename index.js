@@ -128,8 +128,8 @@ app.use((req, res, next) => {
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
 app.get('/', isLoggedIn, async (req, res) => {
-    const healthReports = await LakeHealthReport.find({creator : req.user._id},{});
-    const anglerReports = await AnglerReport.find({creator : req.user._id},{})
+    const healthReports = await LakeHealthReport.find({creator : req.user._id},{}).sort({"date_generated": -1});
+    const anglerReports = await AnglerReport.find({creator : req.user._id},{}).sort({"date": -1});
     res.render('home', {healthReports, anglerReports})
 });
 
