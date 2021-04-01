@@ -14,7 +14,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/anglerReports/">All Angler Reports <span class="sr-only">(current)</span></a>
             </li>
-            <% if(currentUser.rank === 2) {%>
+            <% if(currentUser && currentUser.rank === 2) {%>
                 <li class="nav-item">
                     <a class="nav-link" href="/lakeReports/new">New Lake Report <span class="sr-only">(current)</span></a>
                 </li>
