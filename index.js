@@ -28,7 +28,6 @@ const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User_Account = require("./views/models/User_Account");
-let levelDeep; // think this is a temp solution, but is to deal with directory depths and partials
 
 uuid();
 express.static(path.join(__dirname, "/public"));
@@ -131,7 +130,7 @@ app.use((req, res, next) => {
 app.get('/', isLoggedIn, async (req, res) => {
     const healthReports = await LakeHealthReport.find({creator : req.user._id},{});
     const anglerReports = await AnglerReport.find({creator : req.user._id},{})
-    res.render('home', {healthReports, anglerReports, levelDeep: levelDeep = 0})
+    res.render('home', {healthReports, anglerReports})
 });
 
 //LAKE HEALTH REPORT ROUTING
@@ -175,7 +174,7 @@ app.use((err, req, res, next) => {
     const { statusCode = 500 } = err; // pull statusCode from ExpressError object, set to 500 default
     if (!err.message) err.message = "Something went wrong!";
     // pull statusCode and message from ExpressError class passed in
-    res.status(statusCode).render('error', { err, levelDeep: levelDeep = 0 }) // pass error object to error page
+    res.status(statusCode).render('error', { err }) // pass error object to error page
 });
 
 //Starts application on port 3000

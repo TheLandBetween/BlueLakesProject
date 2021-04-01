@@ -14,7 +14,7 @@ const transport = nodemailer.createTransport({
 });
 
 module.exports.renderRegisterForm = async (req, res) => {
-    res.render('userAccounts/register', {levelDeep: levelDeep = 1});
+    res.render('userAccounts/register');
 };
 
 module.exports.registerUser = async (req, res, next) => {
@@ -37,7 +37,7 @@ module.exports.registerUser = async (req, res, next) => {
 };
 
 module.exports.renderLoginForm = async (req, res) => {
-    res.render('userAccounts/login', {levelDeep: levelDeep = 1});
+    res.render('userAccounts/login');
 };
 
 module.exports.loginUser = async (req, res) => {
@@ -54,7 +54,7 @@ module.exports.logoutUser = (req, res) => {
 };
 
 module.exports.renderForgotForm = async (req, res) => {
-    res.render('userAccounts/forgot', {levelDeep: levelDeep = 1});
+    res.render('userAccounts/forgot');
 };
 
 module.exports.forgotUserPassword = async (req, res) => {
@@ -90,7 +90,7 @@ module.exports.forgotUserPassword = async (req, res) => {
 };
 
 module.exports.renderRecoverForm = async (req, res) => {
-    res.render('userAccounts/recover', {levelDeep: levelDeep = 1});
+    res.render('userAccounts/recover');
 };
 
 module.exports.recoverUserAccount = async (req, res) => {

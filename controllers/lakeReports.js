@@ -12,7 +12,7 @@ module.exports.index = async (req, res) => {
 };
 
 module.exports.renderNewForm = (req, res) => {
-    res.render('lakeReports/new', {levelDeep: levelDeep = 1});
+    res.render('lakeReports/new');
 };
 
 module.exports.createLakeReport = async (req, res) => {

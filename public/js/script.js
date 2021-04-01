@@ -6,6 +6,6 @@ function addFish(fishCount, emptyFishNode) {
 }
 
 $(document).ready(function(){
-    $('.my-background-video').bgVideo({fadeIn: 2000});
+    $('.my-background-video').bgVideo();
    document.querySelector('video').playbackRate = 0.5;
 });
