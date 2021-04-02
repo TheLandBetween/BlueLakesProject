@@ -36,6 +36,33 @@ module.exports.registerUser = async (req, res, next) => {
     }
 };
 
+//PROFILE PAGE
+module.exports.renderProfile = async (req, res) => {
+    res.render('userAccounts/profile');
+};
+module.exports.updateRank = async (req, res) => {
+    const {update_username, update_rank} = req.body;
+
+    const updateUser = (await UserAccount.findOne({username: update_username}, {}));
+
+    if (!updateUser) { //If no email exists, inform the user and redirect to the forgot page
+        req.flash('error', 'User does not exist');
+        res.redirect('/profile');
+    } else {
+        await UserAccount.updateOne({username: update_username}, {$set: {rank: update_rank}});
+        req.flash('success', 'User has been updated.  Rank = ' + update_rank);
+        res.redirect('/profile');
+    }
+};
+
+module.exports.renderChangePassword = async (req, res) => {
+    res.render('userAccounts/changePassword');
+};
+
+module.exports.changePassword = async (req, res) => {
+};
+
+//LOGIN
 module.exports.renderLoginForm = async (req, res) => {
     res.render('userAccounts/login');
 };
