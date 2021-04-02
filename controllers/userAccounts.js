@@ -97,7 +97,8 @@ module.exports.renderLoginForm = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
     req.flash('success', "Welcome back!");
-    const redirectURL = req.session.returnTo || '/'; // set to url if navigated from page, or send to home page if not
+    // set to url if navigated from page, or send to home page if not
+    const redirectURL = req.session.returnTo || '/';
     delete req.session.returnTo; // clear from session
     res.redirect(redirectURL);
 };
@@ -113,22 +114,27 @@ module.exports.renderForgotForm = async (req, res) => {
 };
 
 module.exports.forgotUserPassword = async (req, res) => {
-    const token = (await promisify(crypto.randomBytes)(10)).toString('hex'); //Creates a random string of characters to serve as a recovery key
+    //Creates a random string of characters to serve as a recovery key
+    const token = (await promisify(crypto.randomBytes)(10)).toString('hex');
+    //Acquires user email from form input
+    const username = req.body.username;
 
-    const username = req.body.username; //Acquires user email from form input
+    //Checks if the email is associated with a user in the database
+    const user = (await UserAccount.findOne({username : username},{}));
 
-    const user = (await UserAccount.findOne({username : username},{})); //Checks if the email is associated with a user in the database
-
-    if (!user) { //If no email exists, inform the user and redirect to the forgot page
+    //If no email exists, inform the user and redirect to the forgot page
+    if (!user) {
         req.flash('error', 'No account with that email address exists.');
         res.redirect('/forgot');
     } else { //Otherwise, continue in reset password process
-        await UserAccount.updateOne({username: username}, //Update the users DB entry with the randomized token, which is good for 1 hour
+        //Update the users DB entry with the randomized token, which is good for 1 hour
+        await UserAccount.updateOne({username: username},
             {$set: {
                     resetPasswordToken: token,
                     resetPasswordExpires: Date.now() + 3600000
                 }});
-        const resetEmail = { //Generate a email to send to the client
+        //Generate a email to send to the client
+        const resetEmail = {
             to: username, //Sends to the email address that is within the database
             from: 'passwordreset@example.com',
             subject: 'Angler Diaries Password Reset',
@@ -149,26 +155,32 @@ module.exports.renderRecoverForm = async (req, res) => {
 };
 
 module.exports.recoverUserAccount = async (req, res) => {
-    const { recoveryToken, password, password_verify } = req.body; //Grabs their entered token, and new password from the form
+    //Grabs their entered token, and new password from the form
+    const { recoveryToken, password, password_verify } = req.body;
 
-    if (recoveryToken == "") { //Recovery token cannot be empty
+    //Recovery token cannot be empty
+    if (recoveryToken == "") {
         req.flash('error', 'Recovery code cannot be empty');
         return res.redirect('/recover');
     }
 
-    const user = await (UserAccount.findOne({resetPasswordToken : recoveryToken},{})); //Checks if there is an account associated with the recovery token
+    //Checks if there is an account associated with the recovery token
+    const user = await (UserAccount.findOne({resetPasswordToken : recoveryToken},{}));
 
-    if (!user) { //If there is no account with the recovery token entered, refresh the page and display error
+    //If there is no account with the recovery token entered, refresh the page and display error
+    if (!user) {
         req.flash('error', 'Password reset token is invalid or expired.')
         return res.redirect('/recover');
     }
 
-    if (user.resetPasswordExpires < Date.now()) { //If recovery token exists, check that it hasn't expired
+    //If recovery token exists, check that it hasn't expired
+    if (user.resetPasswordExpires < Date.now()) {
         req.flash('error', 'Password reset token is invalid or expired.')
         return res.redirect('/recover');
     }
 
-    if (!(password === password_verify)) { //Ensure the new entered passwords match, otherwise redirect
+    //Ensure the new entered passwords match, otherwise redirect
+    if (!(password === password_verify)) {
         req.flash('error', "Passwords don't match.");
         return res.redirect('/recover');
     }
