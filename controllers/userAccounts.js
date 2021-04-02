@@ -60,6 +60,24 @@ module.exports.renderChangePassword = async (req, res) => {
 };
 
 module.exports.changePassword = async (req, res) => {
+    const foundUser = await UserAccount.findOne({ _id: req.user._id })
+
+    const { password, password_new } = req.body;
+
+    if(!foundUser) {
+        req.flash('error', "User does not exist")
+        res.redirect('userAccounts/changePassword')
+    } else {
+        await foundUser.changePassword(password, password_new, function(err) {
+            if (err) {
+                req.flash('error', err.name)
+                res.redirect('userAccounts/changePassword')
+            } else {
+                req.flash('success', "Your password has been updated")
+                res.redirect('/')
+            }
+        })
+    }
 };
 
 //LOGIN
