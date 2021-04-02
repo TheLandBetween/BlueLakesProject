@@ -55,26 +55,36 @@ module.exports.updateRank = async (req, res) => {
     }
 };
 
+// CHANGE PASSWORD
+// Purpose: Render functionality, display the change password page
 module.exports.renderChangePassword = async (req, res) => {
     res.render('userAccounts/changePassword');
 };
-
+// Purpose: Retrieve the user account associated with the currently logged in user and update their password
+// when provided their current password and a new password.
 module.exports.changePassword = async (req, res) => {
+    // find user account based on currently logged in user's ID
     const foundUser = await UserAccount.findOne({ _id: req.user._id })
 
-    const { password, password_new } = req.body;
-
+    // If no user found flash appropriate error
+    // THIS SHOULD NEVER HAPPEN, since user must be logged in to get to the form submission page.
     if(!foundUser) {
         req.flash('error', "User does not exist")
         res.redirect('userAccounts/changePassword')
     } else {
+        // pull old password and new password from form submission
+        const { password, password_new } = req.body;
+
+        // use passport's changePassword method to update the found account's password
         await foundUser.changePassword(password, password_new, function(err) {
             if (err) {
+                // if an error comes up (such as incorrect old password, flash the error
                 req.flash('error', err.name)
                 res.redirect('userAccounts/changePassword')
             } else {
+                // if no error password has been succesfully changed, send them back to profile.
                 req.flash('success', "Your password has been updated")
-                res.redirect('/')
+                res.redirect('/profile')
             }
         })
     }
