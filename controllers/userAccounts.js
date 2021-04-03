@@ -90,6 +90,27 @@ module.exports.changePassword = async (req, res) => {
     }
 };
 
+module.exports.renderUpdateName = async (req, res) => {res.render('userAccounts/updateName');};
+module.exports.updateName = async (req, res) => {
+    const { username, firstName, lastName } = req.body;
+
+    await UserAccount.updateOne({username: username}, {$set: {firstName: firstName, lastName: lastName}});
+
+    req.flash('success', "Display name updated.")
+    res.redirect('/profile')
+};
+
+module.exports.renderUpdateOrganization = async (req, res) => {res.render('userAccounts/updateOrganization.ejs');};
+module.exports.updateOrganization = async (req, res) => {
+    const { username, organization } = req.body;
+
+    await UserAccount.updateOne({username: username}, {$set: {organization: organization}});
+
+    req.flash('success', "Organization updated.")
+    res.redirect('/profile')
+};
+
+
 //LOGIN
 module.exports.renderLoginForm = async (req, res) => {
     res.render('userAccounts/login');

@@ -149,17 +149,26 @@ app.post('/register', catchAsync(userAccounts.registerUser));
 
 //PROFILE PAGE ROUTING
 app.get('/profile', isLoggedIn, catchAsync(userAccounts.renderProfile));
+
 app.post('/updateRank', isLoggedIn, catchAsync(userAccounts.updateRank));
+
 app.get('/changePassword', isLoggedIn, catchAsync(userAccounts.renderChangePassword));
-app.post('/changePassword', isLoggedIn, passport.authenticate('local', {failureFlash: true, failureRedirect: '/changePassword'}), catchAsync(userAccounts.changePassword));
+app.post('/changePassword', isLoggedIn, catchAsync(userAccounts.changePassword));
+
+app.get('/updateName', isLoggedIn, catchAsync(userAccounts.renderUpdateName));
+app.post('/updateName', isLoggedIn, catchAsync(userAccounts.updateName));
+
+app.get('/updateOrganization', isLoggedIn, catchAsync(userAccounts.renderUpdateOrganization));
+app.post('/updateOrganization', isLoggedIn, catchAsync(userAccounts.updateOrganization));
+
 
 // LOGIN ROUTE
 app.get('/login', catchAsync(userAccounts.renderLoginForm));
 app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(userAccounts.loginUser));
 
+
 // LOGOUT ROUTE
 app.get('/logout', userAccounts.logoutUser);
-
 
 app.get('/forgot', catchAsync(userAccounts.renderForgotForm));
 app.post('/forgot', catchAsync(userAccounts.forgotUserPassword));
