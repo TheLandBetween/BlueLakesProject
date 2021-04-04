@@ -21,8 +21,6 @@ module.exports.createAnglerReport = async (req, res) => {
 
     await newReport.save();
 
-    console.log(req.body);
-
     if (Array.isArray(req.body.species)) {
         for (let i = 0; i < req.body.species.length; i++) {
             const currFish = new Fish();
@@ -48,8 +46,6 @@ module.exports.createAnglerReport = async (req, res) => {
                 } else
                     currFish.length = req.body.length[i];
             }
-
-            console.log(currFish);
 
             await currFish.save();
         }
@@ -79,8 +75,6 @@ module.exports.createAnglerReport = async (req, res) => {
                 currFish.length = req.body.length;
         }
 
-        console.log(currFish);
-
         await currFish.save();
     }
 
@@ -96,7 +90,6 @@ module.exports.showAnglerReport = async (req, res) => {
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await AnglerReport.findById(id).populate('creator'); // passing in creator field from
     const foundFish = await Fish.find({report_fk : foundReport._id},{})
-    console.log(foundFish);
     // send them to the page about the single report
     res.render('anglerReports/details', { foundReport, foundFish });
 };

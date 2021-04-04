@@ -23,6 +23,10 @@ const secchiSchema = new mongoose.Schema({
     location: {
         type: pointSchema,
         coordinates: []
+    },
+    depth: {
+        type: Number,
+        required: true
     }
 });
 

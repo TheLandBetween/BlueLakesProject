@@ -22,6 +22,7 @@
                 <tr>
                     <th>Temperature</th>
                     <th>Dissolved Oxygen</th>
+                    <th>Depth</th>
                     <th>Coordinates</th>
                 </tr>
 
@@ -29,6 +30,7 @@
                     <tr>
                         <td><%= entry.temperature%></td>
                         <td><%= entry.dissolvedOxygen%></td>
+                        <td><%= entry.depth%></td>
                         <td><%= entry.location.coordinates%></td>
                     </tr>
                 <%})%>
@@ -39,12 +41,14 @@
             <table class="table">
                 <tr>
                     <th>Secchi</th>
+                    <th>Depth</th>
                     <th>Coordinates</th>
                 </tr>
 
                 <% foundSecchi.forEach(function (entry) { %>
                     <tr>
                         <td><%= entry.secchi%></td>
+                        <td><%= entry.depth%></td>
                         <td><%= entry.location.coordinates%></td>
                     </tr>
                 <%})%>
