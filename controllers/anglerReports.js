@@ -3,9 +3,29 @@ const Fish = require("../views/models/Fish");
 
 module.exports.index = async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
-    const anglerReports = await AnglerReport.find({}).populate('creator');
+    const anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1});
+    let fishCounts = await Fish.aggregate([
+        { "$unwind" : "$species" },
+        { "$group": { "_id": "$species", "count": { "$sum": 1} } },
+        { "$group": {
+            "_id": null,
+                "counts": {
+                "$push": {
+                    "k": "$_id",
+                    "v": "$count"
+                }
+            }
+        } },
+        { "$replaceRoot": {
+            "newRoot": { "$arrayToObject": "$counts" }
+        } }
+    ]);
+
+    console.log(fishCounts[0]);
+    fishCounts = fishCounts[0]
+
     // render index.ejs file with the lakeReports 'database'
-    res.render('anglerReports/index', { anglerReports } );
+    res.render('anglerReports/index', { anglerReports, fishCounts} );
 };
 
 module.exports.renderNewForm = (req, res) => {

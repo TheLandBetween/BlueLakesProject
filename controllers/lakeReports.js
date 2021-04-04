@@ -6,7 +6,7 @@ const Calcium = require("../views/models/Calcium");
 
 module.exports.index = async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
-    const healthReports = await LakeHealthReport.find({}).populate('creator');
+    const healthReports = await LakeHealthReport.find({}).populate('creator').sort({"date_generated": -1});
     // render index.ejs file with the lakeReports 'database'
     res.render('lakeReports/index', { healthReports });
 };

@@ -11,7 +11,7 @@
             <div class="row">
                 <% if(currentUser && currentUser.rank === 2) {%>
                     <h3>Your Lake Reports</h3>
-                    <table class="table" id="tableToFormat">
+                    <table class="table" id="lakeReportTable">
                         <tr>
                             <th>View Report</th>
                             <th>Date Recorded</th>
@@ -28,7 +28,7 @@
                 <% } %>
 
                 <h3>Your Angler Reports</h3>
-                <table class="table" id="tableToFormat">
+                <table class="table" id="anglerReportTable">
                     <tr>
                         <th>View Report</th>
                         <th>Date Recorded</th>
@@ -38,7 +38,7 @@
                         <tr>
                             <td><a href="/anglerReports/<%= report.id%>">details</a></td>
                             <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
-                            <td><%= report.species %></td>
+                            <td><%= report.fish.species %></td>
                         </tr>
                     <% } %>
                 </table>
