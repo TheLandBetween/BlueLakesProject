@@ -9,6 +9,7 @@ if(process.env.NODE_ENV !== "production") {
 const express = require("express");
 const connectDB = require('./Database/Connection')
 const app = express();
+const fs = require('fs')
 const bcrypt = require('bcrypt');
 const {isLoggedIn} = require("./middleware");
 
@@ -141,6 +142,15 @@ app.get('/lakeReports/:id/edit',isLoggedIn , (req, res) => {
 //ANGLER REPORT ROUTING
 app.use('/anglerReports', anglerReportRoutes);
 app.get('/anglerReports/:id/edit', isLoggedIn, (req, res) => {
+});
+
+app.get('/identifyFish', function (req, res) {
+    let filePath = "/resources/Identify_Fish.pdf";
+
+    fs.readFile(__dirname + filePath , function (err,data){
+        res.contentType("application/pdf");
+        res.send(data);
+    });
 });
 
 //USER ACCOUNT ROUTING
