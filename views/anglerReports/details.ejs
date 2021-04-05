@@ -26,6 +26,7 @@
                 <th>Species</th>
                 <th>Weight (Pounds)</th>
                 <th>Length (Centimeters)</th>
+                <th>View Fish</th>
             </tr>
 
             <% foundFish.forEach(function (entry) { %>
@@ -33,6 +34,7 @@
                     <td><%= entry.species%></td>
                     <td><%= entry.length%></td>
                     <td><%= entry.weight%></td>
+                    <td><a>View Fish</a></td>
                 </tr>
             <%})%>
         </table>

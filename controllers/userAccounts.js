@@ -9,7 +9,7 @@ const transport = nodemailer.createTransport({
     port: 465,
     auth: {
         user: 'bluelakesproject', //GMail username and password currently hardcoded, need to encrypt after development
-        pass: '3dLfWMQ1GF6m'
+        pass: process.env.GMAIL_PASS
     }
 });
 
@@ -76,7 +76,7 @@ module.exports.changePassword = async (req, res) => {
                 req.flash('success', "Your password has been updated")
                 res.redirect('/')
             }
-        })
+        });
     }
 };
 
@@ -167,14 +167,14 @@ module.exports.recoverUserAccount = async (req, res) => {
         return res.redirect('/recover');
     }
 
-    const user = await (UserAccount.findOne({resetPasswordToken : recoveryToken},{})); //Checks if there is an account associated with the recovery token
+    const foundUser = await (UserAccount.findOne({resetPasswordToken : recoveryToken},{})); //Checks if there is an account associated with the recovery token
 
-    if (!user) { //If there is no account with the recovery token entered, refresh the page and display error
+    if (!foundUser) { //If there is no account with the recovery token entered, refresh the page and display error
         req.flash('error', 'Password reset token is invalid or expired.')
         return res.redirect('/recover');
     }
 
-    if (user.resetPasswordExpires < Date.now()) { //If recovery token exists, check that it hasn't expired
+    if (foundUser.resetPasswordExpires < Date.now()) { //If recovery token exists, check that it hasn't expired
         req.flash('error', 'Password reset token is invalid or expired.')
         return res.redirect('/recover');
     }
@@ -184,22 +184,23 @@ module.exports.recoverUserAccount = async (req, res) => {
         return res.redirect('/recover');
     }
 
-    await user.updateOne({resetPasswordToken : recoveryToken}, //Update their entries in the database.
-        {$set: {
-                password: password, //Password set as new password
-                resetPasswordToken: null, //Password token and expiration are reset, to prevent further changes
-                resetPasswordExpires: null
-            }});
+    foundUser.setPassword(password, async function (err) {
+        if (err) {
+            req.flash('error', err.name)
+            return res.redirect('/recover')
+        } else {
+            const resetEmail = { //Generate email to inform a user of their changes
+                to: foundUser.username,
+                from: 'passwordreset@example.com',
+                subject: 'Angler Diaries Password Changed',
+                text: 'This is a confirmation that the password for your account ' + user.username + ' has been changed.'
+            };
 
-    const resetEmail = { //Generate email to inform a user of their changes
-        to: user.username,
-        from: 'passwordreset@example.com',
-        subject: 'Angler Diaries Password Changed',
-        text: 'This is a confirmation that the password for your account ' + user.username + ' has been changed.'
-    };
+            await transport.sendMail(resetEmail); //Send the email through gmail SMTP
 
-    await transport.sendMail(resetEmail); //Send the email through gmail SMTP
+            req.flash('success', 'Success!  Your password has been changed.');
+            return res.redirect('/login');
+        }
+    });
 
-    req.flash('success', 'Success!  Your password has been changed.');
-    res.redirect('/login');
 };
