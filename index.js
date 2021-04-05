@@ -11,7 +11,7 @@ const connectDB = require('./Database/Connection')
 const app = express();
 const fs = require('fs')
 const bcrypt = require('bcrypt');
-const {isLoggedIn} = require("./middleware");
+const {isLoggedIn, isCurrentlyAuthenticated} = require("./middleware");
 
 //Connect to the remote database
 connectDB();
@@ -154,7 +154,7 @@ app.get('/identifyFish', function (req, res) {
 });
 
 //USER ACCOUNT ROUTING
-app.get('/register', catchAsync(userAccounts.renderRegisterForm));
+app.get('/register', isCurrentlyAuthenticated,catchAsync(userAccounts.renderRegisterForm));
 app.post('/register', catchAsync(userAccounts.registerUser));
 
 //PROFILE PAGE ROUTING
@@ -173,18 +173,18 @@ app.post('/updateOrganization', isLoggedIn, catchAsync(userAccounts.updateOrgani
 
 
 // LOGIN ROUTE
-app.get('/login', catchAsync(userAccounts.renderLoginForm));
+app.get('/login', isCurrentlyAuthenticated, catchAsync(userAccounts.renderLoginForm));
 app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(userAccounts.loginUser));
 
 
 // LOGOUT ROUTE
 app.get('/logout', userAccounts.logoutUser);
 
-app.get('/forgot', catchAsync(userAccounts.renderForgotForm));
+app.get('/forgot', isCurrentlyAuthenticated, catchAsync(userAccounts.renderForgotForm));
 app.post('/forgot', catchAsync(userAccounts.forgotUserPassword));
 
 //USER ACCOUNT RECOVERY ROUTING
-app.get('/recover', catchAsync(userAccounts.renderRecoverForm));
+app.get('/recover', isCurrentlyAuthenticated, catchAsync(userAccounts.renderRecoverForm));
 app.post('/recover', catchAsync(userAccounts.recoverUserAccount));
 
 // 404 error page, request a link that doesnt exist

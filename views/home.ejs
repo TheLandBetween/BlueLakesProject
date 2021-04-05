@@ -9,7 +9,7 @@
                 <h1 class="text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></h1>
             </div>
             <div class="row">
-                <% if(currentUser && currentUser.rank === 2) {%>
+                <% if(currentUser && currentUser.rank >= 2) {%>
                     <h3>Your Lake Reports</h3>
                     <table class="table" id="lakeReportTable">
                         <tr>
@@ -48,18 +48,28 @@
                     <div class="col-md-3 col-sm-12">
                     </div>
                     <div class="col-md-6 col-sm-12">
-                        <a href="/anglerReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Report</a>
+                        <a href="/anglerReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Angler Report</a>
                     </div>
+                    <% if(currentUser && currentUser.rank >= 2) {%>
+                    <div class="col-md-6 col-sm-12">
+                        <a href="/lakeReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Lake Health Report</a>
+                    </div>
+                    <% } %>
                     <div class="col-md-3 col-sm-12">
                     </div>
                 </div>
+                <% if(currentUser && currentUser.rank === 3) {%>
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
-                        <a href="/anglerReports" class="btn main-button-outline btn-block" role="button" aria-disabled="true">View All Reports</a>
+                        <a href="/anglerReports" class="btn main-button-outline btn-block" role="button" aria-disabled="true">View All Angler Reports</a>
+                    </div>
+                    <div class="col-md-8">
+                        <a href="/lakeReports" class="btn main-button-outline btn-block" role="button" aria-disabled="true">View All Lake Health Reports</a>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
+                <% } %>
             </div>
         </div>
     </div>
