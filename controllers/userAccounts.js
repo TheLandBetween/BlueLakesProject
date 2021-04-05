@@ -162,7 +162,7 @@ module.exports.renderRecoverForm = async (req, res) => {
 module.exports.recoverUserAccount = async (req, res) => {
     const { recoveryToken, password, password_verify } = req.body; //Grabs their entered token, and new password from the form
 
-    if (recoveryToken == "") { //Recovery token cannot be empty
+    if (recoveryToken === "") { //Recovery token cannot be empty
         req.flash('error', 'Recovery code cannot be empty');
         return res.redirect('/recover');
     }
@@ -189,12 +189,19 @@ module.exports.recoverUserAccount = async (req, res) => {
             req.flash('error', err.name)
             return res.redirect('/recover')
         } else {
+            await foundUser.save();
             const resetEmail = { //Generate email to inform a user of their changes
                 to: foundUser.username,
                 from: 'passwordreset@example.com',
                 subject: 'Angler Diaries Password Changed',
-                text: 'This is a confirmation that the password for your account ' + user.username + ' has been changed.'
+                text: 'This is a confirmation that the password for your account ' + foundUser.username + ' has been changed.'
             };
+
+            await UserAccount.updateOne({username: foundUser.username}, //Update the users DB entry with the randomized token, which is good for 1 hour
+                {$unset: {
+                        resetPasswordToken: "",
+                        resetPasswordExpires: ""
+                    }});
 
             await transport.sendMail(resetEmail); //Send the email through gmail SMTP
 
