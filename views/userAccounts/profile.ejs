@@ -11,6 +11,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <h6><b>Email</b>: <%=currentUser.username%></h6>
+                <a href="/changePassword">Change Password</a>
                 <h6><b>Name</b>: <%=currentUser.firstName + ' ' + currentUser.lastName%></h6>
                 <a href="/updateName">Edit</a>
                 <h6><b>Organization</b>: <%=currentUser.organization%></h6>
@@ -37,7 +38,7 @@
                     <div class="row">
                         <div class="col-sm-3"></div>
                         <div class="col-sm">
-                            <button type="submit" class="btn btn-outline-primary btn-block">Update Rank</button>
+                            <button type="submit" class="btn btn-sm btn-outline-primary btn-block">Update Rank</button>
                         </div>
                         <div class="col-sm-3"></div>
                     </div>

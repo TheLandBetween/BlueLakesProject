@@ -16,8 +16,10 @@ module.exports.lakeReportSchema = Joi.object({
 
     doTempCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     doTempCoordinateY: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    doTempDepth: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     secchiCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     secchiCoordinateY: {type: [Joi.number(), Joi.array().items(Joi.number())]},
+    secchiDepth: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     phosphorusCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     phosphorusCoordinateY: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     calciumCoordinateX: {type: [Joi.number(), Joi.array().items(Joi.number())]},

@@ -3,9 +3,29 @@ const Fish = require("../views/models/Fish");
 
 module.exports.index = async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
-    const anglerReports = await AnglerReport.find({}).populate('creator');
+    const anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1});
+    let fishCounts = await Fish.aggregate([
+        { "$unwind" : "$species" },
+        { "$group": { "_id": "$species", "count": { "$sum": 1} } },
+        { "$group": {
+            "_id": null,
+                "counts": {
+                "$push": {
+                    "k": "$_id",
+                    "v": "$count"
+                }
+            }
+        } },
+        { "$replaceRoot": {
+            "newRoot": { "$arrayToObject": "$counts" }
+        } }
+    ]);
+
+    console.log(fishCounts[0]);
+    fishCounts = fishCounts[0]
+
     // render index.ejs file with the lakeReports 'database'
-    res.render('anglerReports/index', { anglerReports } );
+    res.render('anglerReports/index', { anglerReports, fishCounts} );
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -20,8 +40,6 @@ module.exports.createAnglerReport = async (req, res) => {
     newReport.angler_name = req.user.firstName + " " + req.user.lastName;
 
     await newReport.save();
-
-    console.log(req.body);
 
     if (Array.isArray(req.body.species)) {
         for (let i = 0; i < req.body.species.length; i++) {
@@ -48,8 +66,6 @@ module.exports.createAnglerReport = async (req, res) => {
                 } else
                     currFish.length = req.body.length[i];
             }
-
-            console.log(currFish);
 
             await currFish.save();
         }
@@ -79,8 +95,6 @@ module.exports.createAnglerReport = async (req, res) => {
                 currFish.length = req.body.length;
         }
 
-        console.log(currFish);
-
         await currFish.save();
     }
 
@@ -96,7 +110,6 @@ module.exports.showAnglerReport = async (req, res) => {
     // look up the health report corresponding to the id passed in to the url
     const foundReport = await AnglerReport.findById(id).populate('creator'); // passing in creator field from
     const foundFish = await Fish.find({report_fk : foundReport._id},{})
-    console.log(foundFish);
     // send them to the page about the single report
     res.render('anglerReports/details', { foundReport, foundFish });
 };

@@ -6,7 +6,7 @@ const Calcium = require("../views/models/Calcium");
 
 module.exports.index = async (req, res) => {
     // async callback to wait for health lakeReports to be received, then respond with webpage
-    const healthReports = await LakeHealthReport.find({}).populate('creator');
+    const healthReports = await LakeHealthReport.find({}).populate('creator').sort({"date_generated": -1});
     // render index.ejs file with the lakeReports 'database'
     res.render('lakeReports/index', { healthReports });
 };
@@ -17,7 +17,6 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createLakeReport = async (req, res) => {
     // assigns passed in form to a lake health report object, saving to a variable
-    console.log(req.body);
     const newReport = new LakeHealthReport(req.body);
     newReport.creator = req.user._id;
 
@@ -26,7 +25,9 @@ module.exports.createLakeReport = async (req, res) => {
     const {temperature, dissolved_oxygen, secchi_depth, phosphorus, calcium} = req.body;
 
     if (temperature) {
-        const {doTempCoordinateX, doTempCoordinateY} = req.body;
+        const {doTempCoordinateX, doTempCoordinateY, doTempDepth} = req.body;
+
+        console.log(doTempDepth);
 
         if (Array.isArray(temperature)) {
             for (let i = 0; i < temperature.length; i++) {
@@ -36,6 +37,7 @@ module.exports.createLakeReport = async (req, res) => {
                 currDoTemp.creator = req.user._id;
                 currDoTemp.dissolvedOxygen = dissolved_oxygen[i];
                 currDoTemp.temperature = temperature[i];
+                currDoTemp.depth = doTempDepth[i];
                 currDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX[i], doTempCoordinateY[i]] };
 
                 console.log(currDoTemp);
@@ -49,6 +51,7 @@ module.exports.createLakeReport = async (req, res) => {
             currDoTemp.creator = req.user._id;
             currDoTemp.dissolvedOxygen = dissolved_oxygen;
             currDoTemp.temperature = temperature;
+            currDoTemp.depth = doTempDepth;
             currDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] };
 
             console.log(currDoTemp);
@@ -58,7 +61,7 @@ module.exports.createLakeReport = async (req, res) => {
     }
 
     if (secchi_depth) {
-        const {secchiCoordinateX, secchiCoordinateY} = req.body;
+        const {secchiCoordinateX, secchiCoordinateY, secchiDepth} = req.body;
 
         if (Array.isArray(secchi_depth)) {
             for (let i = 0; i < secchi_depth.length; i++) {
@@ -67,6 +70,7 @@ module.exports.createLakeReport = async (req, res) => {
                 currSecchi.report_fk = newReport._id;
                 currSecchi.creator = req.user._id;
                 currSecchi.secchi = secchi_depth[i];
+                currSecchi.depth = secchiDepth[i];
                 currSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX[i], secchiCoordinateY[i]] };
 
                 await currSecchi.save();
@@ -77,6 +81,7 @@ module.exports.createLakeReport = async (req, res) => {
             currSecchi.report_fk = newReport._id;
             currSecchi.creator = req.user._id;
             currSecchi.secchi = secchi_depth;
+            currSecchi.depth = secchiDepth;
             currSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX, secchiCoordinateY] };
 
             await currSecchi.save();
@@ -179,7 +184,7 @@ module.exports.updateLakeReport = async (req, res) => {
     const {doTemp_id, secchi_id, phosphorus_id, calcium_id} = req.body;
 
     if (doTemp_id) {
-        const {temperature, dissolved_oxygen, doTempCoordinateX, doTempCoordinateY} = req.body;
+        const {temperature, dissolved_oxygen, doTempCoordinateX, doTempCoordinateY, doTempDepth} = req.body;
 
         if (Array.isArray(doTemp_id)) { //If array, parse every item
             for (let i = 0; i < doTemp_id.length; i++) {
@@ -190,11 +195,12 @@ module.exports.updateLakeReport = async (req, res) => {
                     newDoTemp.creator = req.user._id;
                     newDoTemp.dissolvedOxygen = dissolved_oxygen[i];
                     newDoTemp.temperature = temperature[i];
+                    newDoTemp.depth = doTempDepth[i];
                     newDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX[i], doTempCoordinateY[i]] };
 
                     await newDoTemp.save();
                 } else { //Otherwise, update existing report
-                    const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], { dissolvedOxygen: dissolved_oxygen[i], temperature: temperature[i], location: { type: 'Point', coordinates: [doTempCoordinateX[i], doTempCoordinateY[i]] }});
+                    const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], { dissolvedOxygen: dissolved_oxygen[i], temperature: temperature[i], depth: doTempDepth[i], location: { type: 'Point', coordinates: [doTempCoordinateX[i], doTempCoordinateY[i]] }});
                 }
             }
         } else { //If not array, perform singular operation
@@ -205,17 +211,18 @@ module.exports.updateLakeReport = async (req, res) => {
                 newDoTemp.creator = req.user._id;
                 newDoTemp.dissolvedOxygen = dissolved_oxygen;
                 newDoTemp.temperature = temperature;
+                newDoTemp.depth = doTempDepth;
                 newDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] };
 
                 await newDoTemp.save();
             } else { //Otherwise, update existing report
-                const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], { dissolvedOxygen: dissolved_oxygen, temperature: temperature, location: { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] }});
+                const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], { dissolvedOxygen: dissolved_oxygen, temperature: temperature, depth: doTempDepth, location: { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] }});
             }
         }
     }
 
     if (secchi_id) {
-        const {secchi_depth, secchiCoordinateX, secchiCoordinateY} = req.body;
+        const {secchi_depth, secchiCoordinateX, secchiCoordinateY, secchiDepth} = req.body;
 
         if (Array.isArray(secchi_id)) { //If array, parse every item
             for (let i = 0; i < secchi_id.length; i++) {
@@ -225,11 +232,12 @@ module.exports.updateLakeReport = async (req, res) => {
                     newSecchi.report_fk = lakeReport._id;
                     newSecchi.creator = req.user._id;
                     newSecchi.secchi = secchi_depth[i];
+                    newSecchi.depth = secchiDepth[i];
                     newSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX[i], secchiCoordinateY[i]] };
 
                     await newSecchi.save();
                 } else { //Otherwise, update existing report
-                    const secchiReport = await Secchi.findByIdAndUpdate(secchi_id[i], { secchi: secchi_depth[i], location: { type: 'Point', coordinates: [secchiCoordinateX[i], secchiCoordinateY[i]] }});
+                    const secchiReport = await Secchi.findByIdAndUpdate(secchi_id[i], { secchi: secchi_depth[i], depth: secchiDepth[i], location: { type: 'Point', coordinates: [secchiCoordinateX[i], secchiCoordinateY[i]] }});
                 }
             }
         } else { //If not array, perform singular operation
@@ -239,11 +247,12 @@ module.exports.updateLakeReport = async (req, res) => {
                 newSecchi.report_fk = lakeReport._id;
                 newSecchi.creator = req.user._id;
                 newSecchi.secchi = secchi_depth;
+                newSecchi.depth = secchiDepth;
                 newSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX, secchiCoordinateY] };
 
                 await newSecchi.save();
             } else { //Otherwise, update existing report
-                const secchiReport = await Secchi.findByIdAndUpdate(secchi_id, { secchi: secchi_depth, location: { type: 'Point', coordinates: [secchiCoordinateX, secchiCoordinateY] }});
+                const secchiReport = await Secchi.findByIdAndUpdate(secchi_id, { secchi: secchi_depth, depth: secchiDepth, location: { type: 'Point', coordinates: [secchiCoordinateX, secchiCoordinateY] }});
             }
         }
     }
