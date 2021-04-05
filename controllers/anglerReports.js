@@ -2,6 +2,10 @@ const AnglerReport = require("../views/models/Angler_Report");
 const Fish = require("../views/models/Fish");
 
 module.exports.index = async (req, res) => {
+    if (req.user.rank < 3) {
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/');
+    }
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1});
     let fishCounts = await Fish.aggregate([

@@ -8,6 +8,34 @@
                 <img src="https://res.cloudinary.com/jaredcloud/image/upload/v1617254133/banner_qj6yhr.png" class="img-fluid mx-auto d-block" alt="Blue Lakes Banner">
                 <h1 class="text-center ">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></h1>
             </div>
+            <div class="row homeButtons d-flex flex-column">
+                <div class="row">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-sm-4">
+                        <a href="/anglerReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Angler Report</a>
+                    </div>
+                    <% if(currentUser && currentUser.rank >= 2) {%>
+                        <div class="col-sm-4">
+                            <a href="/lakeReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Lake Health Report</a>
+                        </div>
+                    <% } %>
+                    <div class="col-md-2">
+                    </div>
+                </div>
+                <% if(currentUser && currentUser.rank === 3) {%>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-sm-4">
+                            <a href="/anglerReports" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">View All Angler Reports</a>
+                        </div>
+                        <div class="col-sm-4">
+                            <a href="/lakeReports" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">View All Lake Health Reports</a>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                <% } %>
+            </div>
             <div class="row">
                 <% if(currentUser && currentUser.rank >= 2) {%>
                     <h3>Your Lake Reports</h3>
@@ -31,46 +59,20 @@
                 <table class="table" id="anglerReportTable">
                     <tr>
                         <th>View Report</th>
+                        <th>Municipality</th>
+                        <th>Lake</th>
                         <th>Date Recorded</th>
-                        <th>Species</th>
                     </tr>
                     <% for (let report of anglerReports) {%>
                         <tr>
                             <td><a href="/anglerReports/<%= report.id%>">details</a></td>
+                            <td><%= report.municipality%></td>
+                            <td><%= report.lake%></td>
                             <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
-                            <td><%= report.fish.species %></td>
                         </tr>
                     <% } %>
                 </table>
         </div>
-            <div class="row homeButtons d-flex flex-column">
-                <div class="row">
-                    <div class="col-md-3 col-sm-12">
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                        <a href="/anglerReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Angler Report</a>
-                    </div>
-                    <% if(currentUser && currentUser.rank >= 2) {%>
-                    <div class="col-md-6 col-sm-12">
-                        <a href="/lakeReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Lake Health Report</a>
-                    </div>
-                    <% } %>
-                    <div class="col-md-3 col-sm-12">
-                    </div>
-                </div>
-                <% if(currentUser && currentUser.rank === 3) {%>
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8">
-                        <a href="/anglerReports" class="btn main-button-outline btn-block" role="button" aria-disabled="true">View All Angler Reports</a>
-                    </div>
-                    <div class="col-md-8">
-                        <a href="/lakeReports" class="btn main-button-outline btn-block" role="button" aria-disabled="true">View All Lake Health Reports</a>
-                    </div>
-                    <div class="col-md-2"></div>
-                </div>
-                <% } %>
-            </div>
         </div>
     </div>
 
