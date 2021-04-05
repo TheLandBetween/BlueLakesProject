@@ -1,35 +1,45 @@
 <%- include('../partials/head')%>
-<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
-    <div class="container">
+<%- include('../partials/videoBG')%>
+<div class="container centerLogin d-flex justify-content-center">
+    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
         <%- include('../partials/flash') %>
-        <h1>Login</h1>
-        <form action="/login" method="POST" class="needs-validation" name="login" novalidate>
-            <div class="form-group">
-                <!-- date input, sent under 'date' label-->
-                <label class='form-label' for="username">Email</label>
-                <input type="email" id="username" placeholder="user@host.com" name="username" class="form-control" required>
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                <div class="valid-feedback">
-                    Looks good!
+
+        <div class="row header d-flex">
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center"><h1 class="display-4">Login</h1></div>
+            <div class="col-md-6 col-sm-12 d-flex justify-content-center"><img src="https://res.cloudinary.com/jaredcloud/image/upload/v1617254133/banner_qj6yhr.png" class="img-fluid mx-auto d-block" alt="Blue Lakes Banner"></div>
+        </div>
+        <div class="row header">
+            <form action="/login" method="POST" class="needs-validation" name="login" novalidate>
+                <div class="form-group">
+                    <!-- date input, sent under 'date' label-->
+                    <label class='form-label' for="username">Email</label>
+                    <input type="email" id="username" placeholder="user@host.com" name="username" class="form-control" required>
+                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <!-- date input, sent under 'date' label-->
-                <label class='form-label' for="password">Password</label>
-                <input type="password" id="password" placeholder="Password" name="password" class="form-control" required>
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                <div class="valid-feedback">
-                    Looks good!
+                <div class="form-group">
+                    <!-- date input, sent under 'date' label-->
+                    <label class='form-label' for="password">Password</label>
+                    <input type="password" id="password" placeholder="Password" name="password" class="form-control" required>
+                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm">
-                    <button type="submit" class="btn btn-outline-primary btn-block">Login</button>
+                <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm">
+                        <button type="submit" class="btn btn-outline-primary btn-block">Login</button>
+                    </div>
+                    <div class="col-sm-3"></div>
                 </div>
-                <div class="col-sm-3"></div>
-            </div>
-        </form>
-        <a href="/register">Register</a>
-        <br/> <!-- REPLACE LATER -->
-        <a href="/forgot">Forgot Password</a>
+            </form>
+        </div>
+        <div class="row d-flex flex-column header">
+            <a href="/register">Register</a>
+            <a href="/forgot">Forgot Password</a>
+        </div>
+    </div>
+</div>
