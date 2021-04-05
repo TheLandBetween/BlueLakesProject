@@ -33,6 +33,8 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createAnglerReport = async (req, res) => {
+    // strip all photos from the entry and add them to a list. one photo per fish
+    let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
 
@@ -48,6 +50,7 @@ module.exports.createAnglerReport = async (req, res) => {
             currFish.report_fk = newReport._id;
             currFish.creator = req.user._id;
             currFish.species = req.body.species[i];
+            currFish.photo = fishPics[i]  // get current image and assign to fish as only one allowed per upload
             // take path + filename from each image uploaded, add to photo object and append to report
             //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
 
@@ -76,6 +79,7 @@ module.exports.createAnglerReport = async (req, res) => {
         currFish.report_fk = newReport._id;
         currFish.creator = req.user._id;
         currFish.species = req.body.species;
+        currFish.photo = fishPics[0] // since one fish upload first corresponding photo
         // take path + filename from each image uploaded, add to photo object and append to report
         //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
 

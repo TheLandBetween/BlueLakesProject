@@ -23,13 +23,19 @@
         <h2>Fish</h2>
         <table class="table">
             <tr>
+                <th>Photo</th>
                 <th>Species</th>
-                <th>Weight (Pounds)</th>
-                <th>Length (Centimeters)</th>
+                <th>Weight (lbs)</th>
+                <th>Length (cm)</th>
             </tr>
 
             <% foundFish.forEach(function (entry) { %>
                 <tr>
+                    <td>
+                    <% if(entry.photo[0]) {%>
+                        <img src='<%= entry.photo[0].url %>' alt="Photo" class="img-fluid">
+                    <% } %>
+                    </td>
                     <td><%= entry.species%></td>
                     <td><%= entry.length%></td>
                     <td><%= entry.weight%></td>
