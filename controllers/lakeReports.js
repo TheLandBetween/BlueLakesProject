@@ -290,7 +290,7 @@ module.exports.updateLakeReport = async (req, res) => {
                     newPhosphorus.phosphorus = phosphorus[i];
                     newPhosphorus.location = { type: 'Point', coordinates: [phosphorusCoordinateX[i], phosphorusCoordinateY[i]] };
 
-                    await currPhosphorus.save();
+                    await newPhosphorus.save();
                 } else { //Otherwise, update existing report
                     const phosphorusReport = await Phosphorus.findByIdAndUpdate(phosphorus_id[i], { phosphorus: phosphorus[i], location: { type: 'Point', coordinates: [phosphorusCoordinateX[i], phosphorusCoordinateY[i]] }});
                 }
@@ -304,7 +304,7 @@ module.exports.updateLakeReport = async (req, res) => {
                 newPhosphorus.phosphorus = phosphorus;
                 newPhosphorus.location = { type: 'Point', coordinates: [phosphorusCoordinateX, phosphorusCoordinateY] };
 
-                await currPhosphorus.save();
+                await newPhosphorus.save();
             } else { //Otherwise, update existing report
                 const phosphorusReport = await Phosphorus.findByIdAndUpdate(phosphorus_id, { phosphorus: phosphorus, location: { type: 'Point', coordinates: [phosphorusCoordinateX, phosphorusCoordinateY] }});
             }
@@ -324,7 +324,7 @@ module.exports.updateLakeReport = async (req, res) => {
                     newCalcium.calcium = calcium[i];
                     newCalcium.location = { type: 'Point', coordinates: [calciumCoordinateX[i], calciumCoordinateY[i]] };
 
-                    await currCalcium.save();
+                    await newCalcium.save();
                 } else { //Otherwise, update existing report
                     const calciumReport = await Calcium.findByIdAndUpdate(calcium_id[i], { calcium: calcium[i], location: { type: 'Point', coordinates: [calciumCoordinateX[i], calciumCoordinateY[i]] }});
                 }
@@ -338,7 +338,7 @@ module.exports.updateLakeReport = async (req, res) => {
                 newCalcium.calcium = calcium;
                 newCalcium.location = { type: 'Point', coordinates: [calciumCoordinateX, calciumCoordinateY] };
 
-                await currCalcium.save();
+                await newCalcium.save();
             } else { //Otherwise, update existing report
                 const calciumReport = await Calcium.findByIdAndUpdate(calcium_id, { calcium: calcium, location: { type: 'Point', coordinates: [calciumCoordinateX, calciumCoordinateY] }});
             }
