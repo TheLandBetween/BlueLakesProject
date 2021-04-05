@@ -51,7 +51,7 @@ html, body {
 .video-hero--content {
     position: relative;
     height: 100%;
-    padding-top: 10vh;
+    padding-top: 9vh;
     padding-bottom: 2vh;
 }
 
@@ -129,7 +129,16 @@ html, body {
     border-color: var(--col-blue);
 }
 
-.homeHeader * {
+.header {
     padding: 2%;
     align-items: center;
+}
+
+.fishImage {
+    max-width: 20vw;
+    max-height: 20vh;
+}
+
+.mainContainer {
+    height: 100%;
 }
