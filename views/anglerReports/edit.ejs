@@ -187,6 +187,10 @@
                 <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
                         <input class="form-control" value="" type="hidden" id="fish_id" name="fish_id">
+                        <div class="form-group d-flex flex-column">
+                            <label class="form-label" for="photo">Picture of Fish: </label>
+                            <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo" multiple>
+                        </div>
                         <div class="form-group">
                             <label class="form-label" for="species">Species: </label>
                                     <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>

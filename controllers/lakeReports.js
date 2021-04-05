@@ -5,6 +5,10 @@ const Phosphorus = require("../views/models/Phosphorous");
 const Calcium = require("../views/models/Calcium");
 
 module.exports.index = async (req, res) => {
+    if (req.user.rank < 3) {
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/');
+    }
     // async callback to wait for health lakeReports to be received, then respond with webpage
     const healthReports = await LakeHealthReport.find({}).populate('creator').sort({"date_generated": -1});
     // render index.ejs file with the lakeReports 'database'
@@ -16,6 +20,10 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createLakeReport = async (req, res) => {
+    if (req.user.rank < 2) {
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/');
+    }
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new LakeHealthReport(req.body);
     newReport.creator = req.user._id;
@@ -147,6 +155,10 @@ module.exports.createLakeReport = async (req, res) => {
 };
 
 module.exports.showLakeReport = async (req, res) => {
+    if (req.user.rank < 2) {
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/');
+    }
     // pull id from url
     const { id } = req.params;
     // look up the health report corresponding to the id passed in to the url
@@ -161,6 +173,10 @@ module.exports.showLakeReport = async (req, res) => {
 };
 
 module.exports.renderEditForm = async (req, res) => {
+    if (req.user.rank < 2) {
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/');
+    }
     const { id } = req.params;
     const lakeReport = await LakeHealthReport.findById(id);
     const foundDoTemp = await DO_Temp.find({report_fk : lakeReport._id},{})
@@ -176,6 +192,10 @@ module.exports.renderEditForm = async (req, res) => {
 };
 
 module.exports.updateLakeReport = async (req, res) => {
+    if (req.user.rank < 2) {
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/');
+    }
     const { id } = req.params;
     // find lake report with given id
     const { date_generated, notes, perc_shore_devd } = req.body;
@@ -330,6 +350,10 @@ module.exports.updateLakeReport = async (req, res) => {
 };
 
 module.exports.deleteLakeReport = async (req, res) => {
+    if (req.user.rank < 2) {
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/');
+    }
     const { id } = req.params;
     await LakeHealthReport.findByIdAndDelete(id);
     req.flash('success', "Successfully deleted Lake Report");
