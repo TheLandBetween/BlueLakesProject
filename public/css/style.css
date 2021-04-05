@@ -11,8 +11,8 @@ html, body {
     width: 100%;
     margin: 0 0;
     padding: 0 0;
+    font-size: 1rem;
 }
-
 
 .main-bg {
     -webkit-box-shadow: 0px 0px 16px 0px rgba(22,96,136,0.75);
@@ -139,6 +139,6 @@ html, body {
     max-height: 20vh;
 }
 
-.mainContainer {
-    height: 100%;
+.sectionHeader {
+    padding-bottom: 2%;
 }
