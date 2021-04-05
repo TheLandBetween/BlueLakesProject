@@ -6,7 +6,7 @@
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
         <h1 class="text-center">All Recent Angler Reports</h1>
-            <div class="row" style="height: 20vh;">
+            <div class="row" >
                 <div class="col-sm-1"></div>
                 <div class="col-sm bg-white border border-primary">
                     <table class="table table-sm">
@@ -24,21 +24,24 @@
                 </div>
                 <div class="col-sm-1"></div>
             </div>
-
-        <table class="table">
-            <tr>
-                <th>View Report</th>
-                <th>Creator</th>
-                <th>Date Recorded</th>
-            </tr>
-            <% for (let report of anglerReports) {%>
+        <br>
+        <div class="row">
+            <table class="table">
                 <tr>
-                    <td><a href="/anglerReports/<%= report.id%>">details</a></td>
-                    <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
-                    <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
+                    <th>View Report</th>
+                    <th>Creator</th>
+                    <th>Date Recorded</th>
                 </tr>
-            <% } %>
-        </table>
+                <% for (let report of anglerReports) {%>
+                    <tr>
+                        <td><a href="/anglerReports/<%= report.id%>">details</a></td>
+                        <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                        <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
+                    </tr>
+                <% } %>
+            </table>
+        </div>
+
 
         <div class="row">
             <div class="col-sm-2"></div>
