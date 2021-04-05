@@ -10,14 +10,22 @@
     <div>
         <div class="row">
             <div class="col-sm-12">
-                <h6><b>Email</b>: <%=currentUser.username%></h6>
-                <a href="/changePassword">Change Password</a>
-                <h6><b>Name</b>: <%=currentUser.firstName + ' ' + currentUser.lastName%></h6>
-                <a href="/updateName">Edit</a>
-                <h6><b>Organization</b>: <%=currentUser.organization%></h6>
-                <a href="/updateOrganization">Edit</a>
+                <div class="pull-left"><h6><b>Email</b>: <%=currentUser.username%></h6></div>
+                <div class="pull-right"><a href="/changePassword">Change Password</a></div>
+                <div class="clearfix"></div>
+
+                <div class="pull-left"><h6><b>Name</b>: <%=currentUser.firstName + ' ' + currentUser.lastName%></h6></div>
+                <div class="pull-right"><a href="/updateName">Change Name</a></div>
+                <div class="clearfix"></div>
+
+                <div class="pull-left"><h6><b>Organization</b>: <%=currentUser.organization%></h6></div>
+                <div class="pull-right"><a href="/updateOrganization">Change Organization</a></div>
+                <div class="clearfix"></div>
+
                 <h6><b>Current Rank</b>: <%=currentUser.rank%></h6>
             </div>
+
+            <% if(currentUser && currentUser.rank === 3) {%>
             <div class="col-sm-12">
                 <h4>Set User Rank</h4>
                 <h6>Rank Options</h6>
@@ -26,6 +34,7 @@
                     <li>2 - Researcher</li>
                     <li>3 - Administrator</li>
                 </ul>
+
                 <form action="/updateRank" method="post" class="text-center needs-validation" name="submitUpdateUser" novalidate>
                     <div class=" form-inline">
                         <label class='form-label' for="update_username">User Email: </label>
@@ -43,11 +52,7 @@
                         <div class="col-sm-3"></div>
                     </div>
                 </form>
-
-            </div>
-            <div class="row">
-                <a class="btn btn-primary btn-md" role="button" aria-pressed="true" href="/anglerReports/">Your Angler Reports<span class="sr-only">(current)</span></a>
-                <a class="btn btn-primary btn-md" role="button" aria-pressed="true" href="/lakeReports/">Your Lake Reports<span class="sr-only">(current)</span></a>
+                <% } %>
             </div>
         </div>
     </div>

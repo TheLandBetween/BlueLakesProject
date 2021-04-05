@@ -12,6 +12,14 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 };
 
+module.exports.isCurrentlyAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        req.flash('error', "You are already logged in!");
+        return res.redirect('/')
+    }
+    next();
+};
+
 module.exports.validateLakeReport = (req, res, next) => {
     const { error } = lakeReportSchema.validate(req.body);
 
