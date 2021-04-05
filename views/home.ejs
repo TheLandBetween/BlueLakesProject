@@ -10,29 +10,23 @@
             </div>
             <div class="row homeButtons d-flex flex-column">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-sm-6">
+                        <a href="/anglerReports/new" class="btn btn-block secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>New Angler Report</h6></a>
                     </div>
-                    <div class="col-sm-4">
-                        <a href="/anglerReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Angler Report</a>
-                    </div>
-                    <% if(currentUser && currentUser.rank >= 2) {%>
-                        <div class="col-sm-4">
-                            <a href="/lakeReports/new" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">New Lake Health Report</a>
-                        </div>
-                    <% } %>
-                    <div class="col-md-2">
+                    <div class="col-sm-6">
+                        <% if(currentUser && currentUser.rank >= 2) {%>
+                            <a href="/lakeReports/new" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>New Lake Health Report</h6></a>
+                        <% } %>
                     </div>
                 </div>
                 <% if(currentUser && currentUser.rank === 3) {%>
                     <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-sm-4">
-                            <a href="/anglerReports" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">View All Angler Reports</a>
+                        <div class="col-sm-6">
+                            <a href="/anglerReports" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>View All Angler Reports</h6></a>
                         </div>
-                        <div class="col-sm-4">
-                            <a href="/lakeReports" class="btn secondary-button-outline btn-block" role="button" aria-disabled="true">View All Lake Health Reports</a>
+                        <div class="col-sm-6">
+                            <a href="/lakeReports" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>View All Lake Health Reports</h6></a>
                         </div>
-                        <div class="col-md-2"></div>
                     </div>
                 <% } %>
             </div>

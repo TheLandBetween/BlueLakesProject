@@ -155,7 +155,7 @@ module.exports.updateAnglerReport = async (req, res) => {
     }
 
     req.flash('success', "Successfully updated Angler Report");
-    res.redirect(`/anglerReports/${AnglerReport._id}`);
+    res.redirect(`/anglerReports/${anglerReport._id}`);
 };
 
 module.exports.deleteAnglerReport = async (req, res) => {
