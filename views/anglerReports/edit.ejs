@@ -11,7 +11,7 @@
     <div class="container">
         <%- include('../partials/flash') %>
         <h1 class="text-center">Edit Angler Report</h1>
-        <form action="/anglerReports" method="post" class="text-center needs-validation" name="submit" novalidate enctype="multipart/form-data">
+        <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
             <div class="row">
                 <div class="col-sm-12">
                     <h2 class="text-left">General Information</h2>
@@ -186,7 +186,7 @@
                 </div>
                 <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
                     <div class="card-body">
-                        <input class="form-control" value="" type="hidden" id="fish_id" name="fish_id">
+                        <input class="form-control" value="?" type="hidden" id="fish_id" name="fish_id">
                         <div class="form-group d-flex flex-column">
                             <label class="form-label" for="photo">Picture of Fish: </label>
                             <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo" multiple>

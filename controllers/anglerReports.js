@@ -139,18 +139,45 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateAnglerReport = async (req, res) => {
     const { id } = req.params;
     // find angler report with given id
-    const anglerReport = await AnglerReport.findByIdAndUpdate(id, { ...req.body });
+    const {lake, municipality, date, t_start, t_end} = req.body;
+    console.log(req.body);
+    const anglerReport = await AnglerReport.findByIdAndUpdate(id, { lake: lake, municipality: municipality, date: date, t_start: t_start, t_end: t_end });
 
     const {fish_id} = req.body;
-    if (fish_id) {
-        const { species, length, weight } = req.body;
 
-        if (Array.isArray(fish_id)) {
-            for (let i = 0; i < fish_id; i++) {
-                const fishReport = await Fish.findByIdAndUpdate(fish_id[i], {species: species[i], length: length[i], weight: weight[i]})
+    if (fish_id) {
+        const { species, length, weight} = req.body;
+
+        if (Array.isArray(fish_id)) { //If array, parse every item
+            for (let i = 0; i < fish_id.length; i++) {
+                if (fish_id[i] === "?") { //If no ID is provided, create a new entry
+                    const newFish = new Fish();
+
+                    newFish.report_fk = anglerReport._id;
+                    newFish.creator = req.user._id;
+                    newFish.species = species[i];
+                    newFish.length = length[i];
+                    newFish.weight = weight[i];
+
+                    await newFish.save();
+                } else { //Otherwise, update existing report
+                    const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i]});
+                }
             }
-        } else {
-            const fishReport = await Fish.findByIdAndUpdate(fish_id, {species: species, length: length, weight: weight})
+        } else { //If not array, perform singular operation
+            if (fish_id === "?") { //If no ID is provided, create a new entry
+                const newFish = new Fish();
+
+                newFish.report_fk = anglerReport._id;
+                newFish.creator = req.user._id;
+                newFish.species = species;
+                newFish.length = length;
+                newFish.weight = weight;
+
+                await newFish.save();
+            } else { //Otherwise, update existing report
+                const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight});
+            }
         }
     }
 
