@@ -142,3 +142,7 @@ html, body {
 .sectionHeader {
     padding-bottom: 2%;
 }
+
+.pageForm {
+    width: 100%;
+}
