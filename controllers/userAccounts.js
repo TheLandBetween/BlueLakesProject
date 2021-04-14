@@ -4,12 +4,12 @@ const UserAccount = require("../views/models/User_Account");
 const crypto = require('crypto');
 const { promisify } = require('util');
 const nodemailer = require('nodemailer');
-const transport = nodemailer.createTransport({
+const transport = nodemailer.createTransport({ //Transporter service to communicate with G-Mail for app->client emails
     host: 'smtp.gmail.com', //Use gmail as SMTP transport client
     port: 465,
     auth: {
-        user: 'bluelakesproject', //GMail username and password currently hardcoded, need to encrypt after development
-        pass: process.env.GMAIL_PASS
+        user: 'bluelakesproject', //Credentials
+        pass: process.env.GMAIL_PASS //Password included in .env file
     }
 });
 
@@ -17,40 +17,46 @@ module.exports.renderRegisterForm = async (req, res) => {
     res.render('userAccounts/register');
 };
 
+//Executes upon register form submission
 module.exports.registerUser = async (req, res, next) => {
     try {
-        let rank = 1;
-        const { username, firstName, lastName, organization, password } = req.body;
-        const newUser = new UserAccount({username, firstName, lastName, organization, rank});
-        const registeredUser = await UserAccount.register(newUser, password);
+        let rank = 1; //Default rank for a user is 1, unless upgraded by an administrator after account creation
+        const { username, firstName, lastName, organization, password } = req.body; //Gets all associated credentials from request
+        const newUser = new UserAccount({username, firstName, lastName, organization, rank}); //Creates a new user object
+        const registeredUser = await UserAccount.register(newUser, password); //Registers the user using their email(username) and password
         // never really a case where this should raise an error as we are awaiting the user account
         // to be registered and have an error catcher on thr async function, but passport requires it
-        req.login(registeredUser, error => {
+        req.login(registeredUser, error => { //Logs the user in after registration and directs them to the home page
             if (error) return next(error);
             req.flash("success", "Welcome!");
             res.redirect('/');
         });
-    } catch (error) {
+    } catch (error) { //If there is an error, redirects to the register page
         req.flash("error", error.message);
         res.redirect('/register')
     }
 };
 
-//PROFILE PAGE
+//PROFILE PAGE METHODS
 module.exports.renderProfile = async (req, res) => {
     res.render('userAccounts/profile');
 };
 module.exports.updateRank = async (req, res) => {
-    const {update_username, update_rank} = req.body;
+    if (req.user.rank < 3) { //Must be an administrator (rank 3) to execute
+        req.flash('error', "Your account doesn't have permission."); //If user doesn't have correct rank, reject and redirect to profile page
+        return res.redirect('/profile');
+    }
+    const {update_username, update_rank} = req.body; //Updates a existing users rank
 
-    const updateUser = (await UserAccount.findOne({username: update_username}, {}));
+    //Tries to see if the user exists
+    const updateUser = (await UserAccount.findOne({username: update_username}, {})); //Can use username as key since username (email) must be unique for each account
 
     if (!updateUser) { //If no email exists, inform the user and redirect to the forgot page
         req.flash('error', 'User does not exist');
         res.redirect('/profile');
-    } else {
+    } else { //User exists, update their rank
         await UserAccount.updateOne({username: update_username}, {$set: {rank: update_rank}});
-        req.flash('success', 'User has been updated.  Rank = ' + update_rank);
+        req.flash('success', 'User has been updated.  Rank = ' + update_rank); //User now has permissions associated with their rank
         res.redirect('/profile');
     }
 };
@@ -92,19 +98,19 @@ module.exports.changePassword = async (req, res) => {
 
 module.exports.renderUpdateName = async (req, res) => {res.render('userAccounts/updateName');};
 module.exports.updateName = async (req, res) => {
-    const { username, firstName, lastName } = req.body;
+    const { username, firstName, lastName } = req.body; //Gets updated first and last name from the form
 
-    await UserAccount.updateOne({username: username}, {$set: {firstName: firstName, lastName: lastName}});
+    await UserAccount.updateOne({username: username}, {$set: {firstName: firstName, lastName: lastName}}); //Updates the users name
 
-    req.flash('success', "Display name updated.")
+    req.flash('success', "Display name updated.") //Redirects back to profile, name should be updated for user to view
     res.redirect('/profile')
 };
 
 module.exports.renderUpdateOrganization = async (req, res) => {res.render('userAccounts/updateOrganization.ejs');};
 module.exports.updateOrganization = async (req, res) => {
-    const { username, organization } = req.body;
+    const { username, organization } = req.body; //Gets updated organization from the form
 
-    await UserAccount.updateOne({username: username}, {$set: {organization: organization}});
+    await UserAccount.updateOne({username: username}, {$set: {organization: organization}}); //Updates the users organization.  User can associate with any organization without permission
 
     req.flash('success', "Organization updated.")
     res.redirect('/profile')
@@ -125,15 +131,13 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.logoutUser = (req, res) => {
-    req.logout();
+    req.logout(); //Logs the user out of the current session
     req.flash("success", "Goodbye");
     res.redirect('/login');
 };
 
-module.exports.renderForgotForm = async (req, res) => {
-    res.render('userAccounts/forgot');
-};
-
+//FORGOT PASSWORD METHODS
+module.exports.renderForgotForm = async (req, res) => {res.render('userAccounts/forgot');};
 module.exports.forgotUserPassword = async (req, res) => {
     //Creates a random string of characters to serve as a recovery key
     const token = (await promisify(crypto.randomBytes)(10)).toString('hex');
@@ -171,10 +175,7 @@ module.exports.forgotUserPassword = async (req, res) => {
     }
 };
 
-module.exports.renderRecoverForm = async (req, res) => {
-    res.render('userAccounts/recover');
-};
-
+module.exports.renderRecoverForm = async (req, res) => {res.render('userAccounts/recover');};
 module.exports.recoverUserAccount = async (req, res) => {
     const { recoveryToken, password, password_verify } = req.body; //Grabs their entered token, and new password from the form
 
@@ -201,12 +202,12 @@ module.exports.recoverUserAccount = async (req, res) => {
         return res.redirect('/recover');
     }
 
-    foundUser.setPassword(password, async function (err) {
+    foundUser.setPassword(password, async function (err) { //Sets the users password to the updated password
         if (err) {
             req.flash('error', err.name)
             return res.redirect('/recover')
         } else {
-            await foundUser.save();
+            await foundUser.save(); //Must save after .setPassword, but not after .changePassword
             const resetEmail = { //Generate email to inform a user of their changes
                 to: foundUser.username,
                 from: 'passwordreset@example.com',
@@ -215,7 +216,7 @@ module.exports.recoverUserAccount = async (req, res) => {
             };
 
             await UserAccount.updateOne({username: foundUser.username}, //Update the users DB entry with the randomized token, which is good for 1 hour
-                {$unset: {
+                {$unset: { //Unset completely removes the keys from the database, so once a user changes their password the tokens cannot be used again
                         resetPasswordToken: "",
                         resetPasswordExpires: ""
                     }});
@@ -223,7 +224,7 @@ module.exports.recoverUserAccount = async (req, res) => {
             await transport.sendMail(resetEmail); //Send the email through gmail SMTP
 
             req.flash('success', 'Success!  Your password has been changed.');
-            return res.redirect('/login');
+            return res.redirect('/login'); //Redirects the user to the login page where they can use their new password
         }
     });
 
