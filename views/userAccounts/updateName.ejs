@@ -4,9 +4,9 @@
         <%- include('../partials/flash') %>
         <h1>Update Display Name</h1>
         <form action="/updateName" method="POST" class="needs-validation" name="updateName" novalidate>
-            <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username">
+            <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username"> <!-- Hidden input field holding the users username -->
             <div class="form-group">
-                <label class='form-label' for="firstName">First Name: </label>
+                <label class='form-label' for="firstName">First Name: </label> <!-- First and Last name filled in with current names.  User can change and submit to update -->
                 <input type="text" value="<%=currentUser.firstName%>" id="firstName" placeholder="First Name" name="firstName" class="form-control" required>
             </div>
             <div class="form-group">

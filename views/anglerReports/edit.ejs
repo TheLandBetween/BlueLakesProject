@@ -9,7 +9,7 @@
 <%- include('../partials/videoBG')%>
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
-        <%- include('../partials/flash') %>
+        <%- include('../partials/flash') %> <!-- foundReport is a variable passed in from the controller containing the associated anglerReport object -->
         <h1 class="text-center">Edit Angler Report</h1>
         <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
             <div class="row">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label class="form-label" for="lake">Lake Name: </label>
+                        <label class="form-label" for="lake">Lake Name: </label> <!-- Fills in inputs with all information the user has already submitted with the report, they can choose what to change -->
                         <input class="form-control" value="<%=foundReport.lake%>" type="text" id="lake" placeholder="Lake Name" name="lake" required>
                     </div>
                     <div class="form-group">
@@ -40,30 +40,30 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row"> <!-- Now output every fish associated with report, foundFish contains every fish as a list of objects -->
                 <h2 class="text-left">Fish Caught</h2>
-                <a class="text-left" href="/identifyFish">Observe Fish</a>
-                <div class="container" id="fishes">
-                    <% var index = 0;
+                <a class="text-left" href="/identifyFish">Observe Fish</a> <!-- Leads to document that allows users to view what the fish look like -->
+                <div class="container" id="fishes"> <!-- Fishes container which fish cards can be appended to -->
+                    <% var index = 0; <!-- Current fish index -->
                     foundFish.forEach(function (entry) {
-                        index += 1; %>
-                    <div class="card">
-                        <div class="card-header">
+                        index += 1; %> <!-- Every fish increments index by 1, index is used to make sure the cards are unique when minimized or examined -->
+                    <div class="card"> <!-- If card aria-controls and href's are the same, minimizing one card will effect another with the same name.  Use indexes to get around this -->
+                        <div class="card-header"> <!-- Top of card -->
                             <a data-toggle="collapse" href="#collapse-<%=index%>" aria-expanded="true" aria-controls="collapse-<%=index%>" id="heading-example" class="d-block">
                                 <i class="fa fa-chevron-down pull-right"></i>
-                                Fish <%=index%>
+                                Fish <%=index%> <!-- Displays the current fish number at the head of the card -->
                             </a>
                         </div>
                         <div id="collapse-<%=index%>" class="collapse show" aria-labelledby="heading-example">
-                            <div class="card-body">
-                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id">
+                            <div class="card-body"> <!-- Body is where all the information can be input.  Whole container is wrapped by a form, so duplicate inputs submit as an array of inputs -->
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id"> <!-- For each existing fish, have a hidden ID field containing its unique database ID.  Used in processing after editing -->
                                 <div class="form-group d-flex flex-column">
                                     <img>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="species">Species: </label>
+                                    <label class="form-label" for="species">Species: </label> <!-- Value is initiated as the fish in the report -->
                                     <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
-                                        <option value="<%=entry.species%>" selected><%=entry.species%></option>
+                                        <option value="<%=entry.species%>" selected><%=entry.species%></option> <!-- All viable species approved by The Land Between, sorted alphabetically -->
                                         <option value="Atlantic Salmon">Atlantic Salmon</option>
                                         <option value="Black Crappie">Black Crappie</option>
                                         <option value="Bluegill">Bluegill</option>
@@ -138,7 +138,7 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
-                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button>
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button> <!-- Click to execute addFish function defined in script at bottom of page.  Adds another boostrap card -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
@@ -146,7 +146,7 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm">
-                    <button type="submit" class="btn btn-outline-primary btn-block">Update Report</button>
+                    <button type="submit" class="btn btn-outline-primary btn-block">Update Report</button> <!-- Submit the report -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
@@ -172,10 +172,10 @@
             })
         })();
 
-        let fishCount = <%=index%> - 1;
+        let fishCount = <%=index%> - 1; //Gets the current count of existing fish from document
 
-        $("#addFish").click(function() {
-            fishCount = fishCount + 1;
+        $("#addFish").click(function() { //Adds another bootstrap card upon submission
+            fishCount = fishCount + 1; //Increases the index for each new fish added to the report
             $("#fishes").append(`
             <div class="card">
                 <div class="card-header">

@@ -4,20 +4,20 @@
 <%- include('../partials/videoBG')%>
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
-        <%- include('../partials/flash')%>
+        <%- include('../partials/flash')%> <!-- Displays all information with the associated report -->
         <h2>Date Generated: <%= foundReport.date_generated.getUTCDate() + '-' + (foundReport.date_generated.getUTCMonth() + 1) + '-' + foundReport.date_generated.getUTCFullYear() %></h2>
         <h2>Creator: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
 
         <br>
 
-        <h4>Level of Concern: <%= foundReport.level_of_concern %></h4>
+        <h4>Level of Concern: <%= foundReport.level_of_concern %></h4> <!-- Not currently implemented, need functions to determine level of concern based on given values -->
 
         <br>
 
         <h4>Notes: <%= foundReport.notes%></h4>
         <h4>Perc Shore Devd: <%= foundReport.perc_shore_devd%></h4>
 
-        <% if (foundDoTemp.length) { %>
+        <% if (foundDoTemp.length) { %> <!-- Displays a table of DoTemp readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Temperature</th>
@@ -37,7 +37,7 @@
             </table>
         <%}%>
 
-        <% if (foundSecchi.length) { %>
+        <% if (foundSecchi.length) { %> <!-- Displays a table of secchi readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Secchi</th>
@@ -55,7 +55,7 @@
             </table>
         <%}%>
 
-        <% if (foundPhosphorus.length) { %>
+        <% if (foundPhosphorus.length) { %> <!-- Displays a table of Phosphorus readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Phosphorus</th>
@@ -71,7 +71,7 @@
             </table>
         <%}%>
 
-        <% if (foundCalcium.length) { %>
+        <% if (foundCalcium.length) { %> <!-- Displays a table of calcium readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Calcium</th>
@@ -87,12 +87,12 @@
         <%}%>
 
         <br>
-        <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
+        <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %> <!-- If the current user is the creator of the report, they are given the option to edit or delete the report -->
         <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
         <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
             <button class="btn btn-block btn-outline-danger"> Delete </button>
         </form>
         <% } %>
 
-        <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+        <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all reports -->
 </div>

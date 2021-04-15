@@ -10,7 +10,7 @@
         <form action="/lakeReports/<%= lakeReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
             <div class="form-group">
                 <!-- date input, sent under 'date' label-->
-                <label class='form-label' for="date_generated">Date: </label>
+                <label class='form-label' for="date_generated">Date: </label> <!-- Date must be formatted by slices in order to fit in a date input in html -->
                 <input type="date" id="date_generated" value="<%= lakeReport.date_generated.getUTCFullYear() + '-' + ('0' + (lakeReport.date_generated.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + lakeReport.date_generated.getUTCDay()).slice(-2)%>" name="date_generated" class="form-control" required>
                 <div class="valid-feedback">
                     Looks good!
@@ -28,9 +28,9 @@
             </div>
 
             <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
-            <div class="container" id="tempDO_Container">
+            <div class="container" id="tempDO_Container"> <!-- Container for DoTemp readings -->
                 <% var tempDOIndex = 0;
-                foundDoTemp.forEach(function (entry) {
+                foundDoTemp.forEach(function (entry) { <!-- Adds each doTemp to its own card for the user to edit -->
                     tempDOIndex += 1; %>
                     <div class="card">
                         <div class="card-header">
@@ -39,9 +39,9 @@
                                 Temperature / Dissolved Oxygen <%=tempDOIndex%>
                             </a>
                         </div>
-                        <div id="collapse-doTemp<%=tempDOIndex%>" class="collapse show" aria-labelledby="heading-example">
+                        <div id="collapse-doTemp<%=tempDOIndex%>" class="collapse show" aria-labelledby="heading-example"> <!-- Fills in all fields with values contained within the entry -->
                             <div class="card-body">
-                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="doTemp_id" name="doTemp_id">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="doTemp_id" name="doTemp_id"> <!-- Hidden ID field associated with its database ID -->
                                 <div class="form-group">
                                     <label class='form-label' for="temperature">Temperature: </label>
                                     <input type="number" value="<%=entry.temperature%>" id="temperature" placeholder="Temperature Value" name="temperature" class="form-control" required>
@@ -61,7 +61,7 @@
                                     <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class='form-label' for="doTempDepth">Depth: </label>
+                                    <label class='form-label' for="doTempDepth">Depth: </label> <!-- Step allows for decimal places -->
                                     <input type="number" value="<%=entry.depth%>" step="0.01" id="doTempDepth" placeholder="Depth" name="doTempDepth" class="form-control" required>
                                 </div>
                             </div>
@@ -72,18 +72,18 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
-                    <button class="btn btn-outline-secondary btn-block" type="button" id="addtemp_DO">Add Temp/DO Reading</button>
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- Button to add another card below current readings -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
             <br>
 
             <!-- SECCHI DEPTH READING -->
-            <div class="container" id="secchiDepth_Container">
+            <div class="container" id="secchiDepth_Container"> <!-- Container for secchi readings -->
                 <% var secchiIndex = 0;
-                foundSecchi.forEach(function (entry) {
+                foundSecchi.forEach(function (entry) { <!-- Iterates over each secchi value found -->
                     secchiIndex += 1; %>
-                    <div class="card">
+                    <div class="card"> <!-- Creates a new card for each reading -->
                         <div class="card-header">
                             <a data-toggle="collapse" href="#collapse-secchi<%=secchiIndex%>" aria-expanded="true" aria-controls="collapse-secchi<%=secchiIndex%>" id="heading-example" class="d-block">
                                 <i class="fa fa-chevron-down pull-right"></i>
@@ -92,7 +92,7 @@
                         </div>
                         <div id="collapse-secchi<%=secchiIndex%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
-                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="secchi_id" name="secchi_id">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="secchi_id" name="secchi_id"> <!-- Hidden secchi ID associated with its database ID -->
                                 <div class="form-group">
                                     <label class='form-label' for="secchi_depth">Secchi Depth: </label>
                                     <input type="number" value="<%=entry.secchi%>" id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
@@ -119,16 +119,16 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
-                    <button class="btn btn-outline-secondary btn-block" type="button" id="addSecchi">Add Secchi Reading</button>
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addSecchi">Add Secchi Reading</button> <!-- Button to add another card below current readings -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
             <br>
 
             <!-- PHOSPHORUS READING -->
-            <div class="container" id="phosphorus_Container">
+            <div class="container" id="phosphorus_Container"> <!-- Container that contains all phosphorus cards -->
                 <% var phosphorusIndex = 0;
-                foundPhosphorus.forEach(function (entry) {
+                foundPhosphorus.forEach(function (entry) { <!-- Iterates over each phosphorus reading -->
                     phosphorusIndex += 1; %>
                     <div class="card">
                         <div class="card-header">
@@ -139,7 +139,7 @@
                         </div>
                         <div id="collapse-phosphorus<%=phosphorusIndex%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
-                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="phosphorus_id" name="phosphorus_id">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="phosphorus_id" name="phosphorus_id"> <!-- Hidden ID associated with its database ID -->
                                 <div class="form-group">
                                     <label class='form-label' for="phosphorus">Phosphorus: </label>
                                     <input type="number" value="<%=entry.phosphorus%>" id="phosphorus" placeholder="Phosphorus in PPB" name="phosphorus" class="form-control" required>
@@ -162,16 +162,16 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
-                    <button class="btn btn-outline-secondary btn-block" type="button" id="addPhosphorus">Add Phosphorus Reading</button>
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addPhosphorus">Add Phosphorus Reading</button> <!-- Button to add additional phosphorus cards -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
             <br>
 
             <!-- CALCIUM READING -->
-            <div class="container" id="calcium_Container">
+            <div class="container" id="calcium_Container"> <!-- Container for all calcium cards -->
                 <% var caliumIndex = 0;
-                foundCalcium.forEach(function (entry) {
+                foundCalcium.forEach(function (entry) { <!-- Creates a card for each calcium reading -->
                     caliumIndex += 1; %>
                     <div class="card">
                         <div class="card-header">
@@ -182,7 +182,7 @@
                         </div>
                         <div id="collapse-calcium<%=caliumIndex%>" class="collapse show" aria-labelledby="heading-example">
                             <div class="card-body">
-                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="calcium_id" name="calcium_id">
+                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="calcium_id" name="calcium_id"> <!-- Calcium card ID associated with its database ID -->
                                 <div class="form-group">
                                     <label class='form-label' for="calcium">Calcium: </label>
                                     <input type="number" value="<%=entry.calcium%>" id="calcium" placeholder="Calcium in PPM" name="calcium" class="form-control" required>
@@ -205,7 +205,7 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
-                    <button class="btn btn-outline-secondary btn-block" type="button" id="addCalcium">Add Calcium Reading</button>
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addCalcium">Add Calcium Reading</button> <!-- Add more calcium cards -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
@@ -214,7 +214,7 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm">
-                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button> <!-- Submit the report -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
@@ -299,7 +299,7 @@
             })
 
             //SECCHI CONTROLS
-            let secchiCount = <%=secchiIndex%> + 0; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+            let secchiCount = <%=secchiIndex%> + 0; //Must be initialized by adding 0, or will present an error
 
             //Add secchi button controls
             $("#addSecchi").click(function() {
@@ -340,7 +340,7 @@
             })
 
             //PHOSPHORUS CONTROLS
-            let phosphorusCount = <%=phosphorusIndex%> + 0; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+            let phosphorusCount = <%=phosphorusIndex%> + 0;
 
             //Add phosphorus button controls
             $("#addPhosphorus").click(function() {
@@ -377,7 +377,7 @@
             })
 
             //CALCIUM CONTROLS
-            let calciumCount = <%=caliumIndex%> + 0; //MUST CHANGE TO NUMBER OF INITIAL REPORTS
+            let calciumCount = <%=caliumIndex%> + 0;
 
             //Add calcium button controls
             $("#addCalcium").click(function() {

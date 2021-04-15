@@ -28,12 +28,12 @@
         </div>
 
         <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
-        <div class="container" id="tempDO_Container">
+        <div class="container" id="tempDO_Container"> <!-- Each container is initialized as empty, in case the user doesn't want to submit a type of reading with the report -->
         </div>
         <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6">
-                <button class="btn btn-outline-secondary btn-block" type="button" id="addtemp_DO">Add Temp/DO Reading</button>
+                <button class="btn btn-outline-secondary btn-block" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- As the user adds readings, cards are added to the associated container -->
             </div>
             <div class="col-sm-3"></div>
         </div>
@@ -114,7 +114,7 @@
     })();
 
     let tempDOCount = 0;
-    $("#addtemp_DO").click(function() {
+    $("#addtemp_DO").click(function() { //Add a card to the TempDO container
         tempDOCount = tempDOCount + 1;
         $("#tempDO_Container").append(`
         <div class="card">
@@ -157,7 +157,7 @@
     })
 
     let secchiCount = 0;
-    $("#addSecchi").click(function() {
+    $("#addSecchi").click(function() { //Add a secchi card to the secchi container
         secchiCount = secchiCount + 1;
         $("#secchiDepth_Container").append(`
             <div class="card">
@@ -194,7 +194,7 @@
     })
 
     let phosphorusCount = 0;
-    $("#addPhosphorus").click(function() {
+    $("#addPhosphorus").click(function() { //Add a phosphorus card to the phosphorus container
         phosphorusCount = phosphorusCount + 1;
         $("#phosphorus_Container").append(`
             <div class="card">
@@ -227,7 +227,7 @@
     })
 
     let calciumCount = 0;
-    $("#addCalcium").click(function() {
+    $("#addCalcium").click(function() { //Add a calcium card to the calcium container
         calciumCount = calciumCount + 1;
         $("#calcium_Container").append(`
             <div class="card">

@@ -6,7 +6,7 @@ const pointSchema = mongoose.model("Point").schema;
 
 // create a template for the table (layed out in the db schema)
 const secchiSchema = new mongoose.Schema({
-    report_fk: {
+    report_fk: { //Foreign key associated with the parent report
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Lake_Health_Report'
@@ -20,11 +20,11 @@ const secchiSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    location: {
+    location: { //Point schema which contains a x and y
         type: pointSchema,
         coordinates: []
     },
-    depth: {
+    depth: { //Couldn't implement z as part of a GeoJSON point, so it is a separate Number field
         type: Number,
         required: true
     }

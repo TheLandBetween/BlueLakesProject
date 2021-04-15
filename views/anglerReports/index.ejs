@@ -9,14 +9,14 @@
             <div class="row" >
                 <div class="col-sm-1"></div>
                 <div class="col-sm bg-white border border-primary">
-                    <table class="table table-sm">
+                    <table class="table table-sm"> <!-- Table of all species caught, and their counts in the database -->
                         <tr>
                             <th>Species of Fish</th>
                             <th>Count</th>
                         </tr>
-                        <% for (let fish in fishCounts) {%>
+                        <% for (let fish in fishCounts) {%> <!-- fishCounts is passed in through the controller -->
                             <tr>
-                                <td><%= fish %></td>
+                                <td><%= fish %></td> <!-- Implemented as a dictionary -->
                                 <td><%= fishCounts[fish] %></td>
                             </tr>
                         <% } %>
@@ -26,13 +26,13 @@
             </div>
         <br>
         <div class="row">
-            <table class="table">
+            <table class="table"> <!-- Table of all angler reports -->
                 <tr>
                     <th>View Report</th>
                     <th>Creator</th>
                     <th>Date Recorded</th>
                 </tr>
-                <% for (let report of anglerReports) {%>
+                <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
                     <tr>
                         <td><a href="/anglerReports/<%= report.id%>">details</a></td>
                         <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
@@ -47,7 +47,7 @@
             <div class="col-sm-2"></div>
             <div class="col-sm">
                 <!-- Link to submit new report-->
-                <a href="/anglerReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a>
+                <a href="/anglerReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a> <!-- Button to create new angler report -->
             </div>
             <div class="col-sm-2"></div>
         </div>

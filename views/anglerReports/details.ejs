@@ -9,7 +9,7 @@
         <h3>Date Generated: <%= foundReport.date.getUTCDate() + '-' + (foundReport.date.getUTCMonth() + 1) + '-' + foundReport.date.getUTCFullYear() %></h3>
         <h2>Angler: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
     </div>
-    <div class="row">
+    <div class="row"> <!-- Output general lake report information -->
         <div class="col-md-6 col-sm-12 d-flex flex-column">
             <h4 class="text-center">Lake Town: <%= foundReport.lake %></h4>
             <h4 class="text-center">Lake Town: <%= foundReport.municipality %></h4>
@@ -23,22 +23,22 @@
     </div>
     <div class="row">
         <h2>Fish</h2>
-        <table class="table">
-            <tr>
+        <table class="table"> <!-- Table to display all fish contained within the report -->
+            <tr> <!-- Header row -->
                 <th>Photo</th>
                 <th>Species</th>
                 <th>Weight (lbs)</th>
                 <th>Length (cm)</th>
             </tr>
 
-            <% foundFish.forEach(function (entry) { %>
+            <% foundFish.forEach(function (entry) { %> <!-- Iterate over each fish, create a row for each containing its information -->
                 <tr>
-                    <td class="fishImage">
+                    <td class="fishImage"> <!-- Displays image of the fish -->
                         <% if(entry.photo[0]) {%>
                             <img src='<%= entry.photo[0].url %>' alt="Photo" class="img-fluid">
                         <% } %>
                     </td>
-                    <td><%= entry.species%></td>
+                    <td><%= entry.species%></td> <!-- Outputs all other information associated with the fish -->
                     <td><%= entry.weight%></td>
                     <td><%= entry.length%></td>
                 </tr>
@@ -47,13 +47,13 @@
     </div>
 
     <div class="row">
-        <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
+        <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %> <!-- If the viewing user is the creator of the report, they have the ability to edit and delete the report -->
             <a href="/anglerReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
             <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST" class="btn-block">
                 <button class="btn btn-block btn-outline-danger"> Delete </button>
             </form>
         <% } %>
 
-        <a href="/anglerReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+        <a href="/anglerReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all angler reports -->
     </div>
 </div>

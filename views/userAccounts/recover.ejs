@@ -1,7 +1,7 @@
 <%- include('../partials/head')%>
 
 <script language="javascript">
-    function passwordChanged() {
+    function passwordChanged() { //Password strength meter
         var strength = document.getElementById('strength');
         var strongRegex = new RegExp("^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
         var mediumRegex = new RegExp("^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
@@ -28,7 +28,7 @@
         <form action="/recover" method="POST" class="needs-validation" name="login" novalidate>
             <div class="form-group">
                 <!-- date input, sent under 'date' label-->
-                <label class='form-label' for="recoveryToken">Recovery Code: </label>
+                <label class='form-label' for="recoveryToken">Recovery Code: </label> <!-- User enters the recovery code sent to their email -->
                 <input type="text" id="recoveryToken" placeholder="Email Code" name="recoveryToken" class="form-control" required>
                 <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                 <div class="valid-feedback">
@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
                 <!-- date input, sent under 'date' label-->
-                <label class='form-label' for="password">Password: </label>
+                <label class='form-label' for="password">Password: </label> <!-- User enters and verifies their new password.  Must be 8 characters -->
                 <input type="password" pattern=".{8,}" id="password" placeholder="New Password" name="password" class="form-control" onkeyup="return passwordChanged();" required>
                 <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                 <span id="strength">Type Password</span>
