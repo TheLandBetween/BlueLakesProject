@@ -16,7 +16,7 @@ router.get('/new', isLoggedIn, anglerReports.renderNewForm); // CREATE route, di
 
 router.route('/:id')
     .get(isLoggedIn, catchAsync(anglerReports.showAnglerReport)) // SHOW route
-    .put( isLoggedIn, isCreator, catchAsync(anglerReports.updateAnglerReport)) // EDIT route
+    .put( isLoggedIn, isCreator, upload.array('photo'), catchAsync(anglerReports.updateAnglerReport)) // EDIT route
     .delete(isLoggedIn, catchAsync(anglerReports.deleteAnglerReport)); // DELETE route
 
 router.get('/:id/edit', isLoggedIn, isCreator, catchAsync(anglerReports.renderEditForm)); // EDIT route

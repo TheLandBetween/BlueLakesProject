@@ -143,10 +143,14 @@ module.exports.updateAnglerReport = async (req, res) => {
     console.log(req.body);
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { lake: lake, municipality: municipality, date: date, t_start: t_start, t_end: t_end });
 
+    let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
+    console.log(fishPics);
     const {fish_id} = req.body;
 
     if (fish_id) {
         const { species, length, weight} = req.body;
+        let fishCounter = 0;
+
 
         if (Array.isArray(fish_id)) { //If array, parse every item
             for (let i = 0; i < fish_id.length; i++) {
@@ -158,11 +162,13 @@ module.exports.updateAnglerReport = async (req, res) => {
                     newFish.species = species[i];
                     newFish.length = length[i];
                     newFish.weight = weight[i];
+                    newFish.photo = fishPics[i];
 
                     await newFish.save();
                 } else { //Otherwise, update existing report
-                    const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i]});
+                    const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i], photo: fishPics[fishCounter]});
                 }
+                fishCounter += 1;
             }
         } else { //If not array, perform singular operation
             if (fish_id === "?") { //If no ID is provided, create a new entry
@@ -173,10 +179,11 @@ module.exports.updateAnglerReport = async (req, res) => {
                 newFish.species = species;
                 newFish.length = length;
                 newFish.weight = weight;
+                newFish.photo = fishPics[0]
 
                 await newFish.save();
             } else { //Otherwise, update existing report
-                const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight});
+                const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight, photo: fishPics[0]});
             }
         }
     }

@@ -174,3 +174,7 @@ html, body {
 .pageForm {
     width: 100%;
 }
+
+.fishCard {
+    height: 18rem;
+}
