@@ -6,7 +6,7 @@ const multer = require('multer') // for reading multipart html form data
 const { storage } = require('../cloudinary');
 const upload = multer({ storage })
 
-const anglerReports = require('../controllers/anglerReports');
+const anglerReports = require('../controllers/anglerReports'); //Allows you use methods defined within /controllers/anglerReports
 
 router.route('/')
     .get(isLoggedIn, catchAsync(anglerReports.index)) // INDEX route

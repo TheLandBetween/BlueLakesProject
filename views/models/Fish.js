@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 // create a template for the table (layed out in the db schema)
 const fishSchema = new mongoose.Schema({
-    report_fk: {
+    report_fk: { //Foreign key associated with the parent report
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Angler_Report'

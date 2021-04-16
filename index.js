@@ -144,7 +144,7 @@ app.use('/anglerReports', anglerReportRoutes);
 app.get('/anglerReports/:id/edit', isLoggedIn, (req, res) => {
 });
 
-app.get('/identifyFish', function (req, res) {
+app.get('/identifyFish', function (req, res) { //Delivers a PDF of all fish accepted by the application, with visuals
     let filePath = "/resources/Identify_Fish.pdf";
 
     fs.readFile(__dirname + filePath , function (err,data){

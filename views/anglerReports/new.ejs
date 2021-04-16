@@ -14,7 +14,7 @@
         <form action="/anglerReports" method="post" class="text-center needs-validation" name="submit" novalidate enctype="multipart/form-data">
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="text-left">General Information</h2>
+                    <h2 class="text-left">General Information</h2> <!-- General report information that the user must enter -->
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
@@ -42,13 +42,13 @@
             <div class="row d-flex flex-column">
                 <div class="row d-flex justify-content-around">
                     <h2 class="text-left">Fish Caught</h2>
-                    <a class="text-right" href="/identifyFish">Observe Fish</a>
+                    <a class="text-right" href="/identifyFish">Observe Fish</a> <!-- User can click to see visual of all fish in options -->
                 </div>
 
                 <div class="row sectionHeader">
-                    <div class="container" id="fishes">
-                        <div class="card">
-                            <div class="card-header">
+                    <div class="container" id="fishes"> <!-- Boostrap fish container -->
+                        <div class="card"> <!-- Bootstrap card instantiated for the first fish in the report -->
+                            <div class="card-header"> <!-- Card Header displaying the current fish number -->
                                 <a data-toggle="collapse" href="#collapse-0" aria-expanded="true" aria-controls="collapse-0" id="heading-example" class="d-block">
                                     <i class="fa fa-chevron-down pull-right"></i>
                                     Fish 1
@@ -58,10 +58,10 @@
                                 <div class="card-body">
                                     <div class="form-group d-flex flex-column">
                                         <label class="form-label" for="photo">Picture of Fish: </label>
-                                        <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo" multiple>
+                                        <input class="form-control-file" type="file" accept="image/*" id="fish[${fishCount}][photo]" name="photo" multiple> <!-- File input, only accepts images -->
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="species">Species: </label>
+                                        <label class="form-label" for="species">Species: </label> <!-- Options for fish restricted to species found in local lakes -->
                                         <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
                                             <option value="">Choose Fish...</option>
                                             <option value="Atlantic Salmon">Atlantic Salmon</option>
@@ -138,7 +138,7 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-6">
-                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button>
+                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button> <!-- Button to add additional fish.  Triggers JS method at bottom of the file -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
@@ -146,7 +146,7 @@
             <div class="row">
                 <div class="col-sm-3"></div>
                 <div class="col-sm">
-                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+                    <button type="submit" class="btn btn-outline-primary btn-block">Submit</button> <!-- Button to submit the report -->
                 </div>
                 <div class="col-sm-3"></div>
             </div>
@@ -175,7 +175,7 @@
 
     let fishCount = 0;
 
-    $("#addFish").click(function() {
+    $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to the report
         fishCount = fishCount + 1;
         $("#fishes").append(`
             <div class="card">
