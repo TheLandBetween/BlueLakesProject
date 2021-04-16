@@ -24,7 +24,7 @@
             <div class="form-group">
                 <!-- health input, sent under 'health' label-->
                 <label class='form-label' for="perc_shore_devd">Perc Shore Devd: </label>
-                <input type="text" id="perc_shore_devd" value="<%= lakeReport.perc_shore_devd %>" name="perc_shore_devd" class="form-control" required>
+                <input type="text" id="perc_shore_devd" value="<%= lakeReport.perc_shore_devd %>" name="perc_shore_devd" class="form-control">
             </div>
 
             <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
@@ -54,11 +54,11 @@
                             <div class="form-inline">
                                 <div class="form-group">
                                     <label class='form-label' for="doTempCoordinateX">X-Coordinate: </label>
-                                    <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
+                                    <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.000001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label class='form-label' for="doTempCoordinateY">Y-Coordinate: </label>
-                                    <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
+                                    <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.000001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label class='form-label' for="doTempDepth">Depth: </label>
@@ -100,11 +100,11 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <label class='form-label' for="secchiCoordinateX">X-Coordinate: </label>
-                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
+                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.000001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
                                     </div>
                                     <div class="form-group">
                                         <label class='form-label' for="secchiCoordinateY">Y-Coordinate: </label>
-                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
+                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.000001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
                                     </div>
                                     <div class="form-group">
                                         <label class='form-label' for="secchiDepth">Depth: </label>
@@ -147,11 +147,11 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <label class='form-label' for="phosphorusCoordinateX">X-Coordinate: </label>
-                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
+                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.000001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
                                     </div>
                                     <div class="form-group">
                                         <label class='form-label' for="phosphorusCoordinateY">Y-Coordinate: </label>
-                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
+                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.000001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -190,11 +190,11 @@
                                 <div class="form-inline">
                                     <div class="form-group">
                                         <label class='form-label' for="calciumCoordinateX">X-Coordinate: </label>
-                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.0001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
+                                        <input type="number" value="<%=entry.location.coordinates[0]%>" step="0.000001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
                                     </div>
                                     <div class="form-group">
                                         <label class='form-label' for="calciumCoordinateY">Y-Coordinate: </label>
-                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.0001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
+                                        <input type="number" value="<%=entry.location.coordinates[1]%>" step="0.000001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -281,11 +281,11 @@
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="doTempCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.0001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
+                                <input type="number" step="0.000001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="doTempCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.0001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
+                                <input type="number" step="0.000001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="doTempDepth">Depth: </label>
@@ -322,11 +322,11 @@
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="secchiCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.0001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
+                                <input type="number" step="0.000001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="secchiCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.0001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
+                                <input type="number" step="0.000001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="secchiDepth">Depth: </label>
@@ -358,16 +358,16 @@
                         <input class="form-control" value="?" type="hidden" id="phosphorus_id" name="phosphorus_id">
                         <div class="form-group">
                             <label class='form-label' for="phosphorus">Phosphorus: </label>
-                            <input type="number" id="phosphorus" placeholder="Phosphorus in PPB" name="phosphorus" class="form-control" required>
+                            <input type="number" id="phosphorus" placeholder="Phosphorus in PPM" name="phosphorus" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="phosphorusCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.0001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
+                                <input type="number" step="0.000001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="phosphorusCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.0001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
+                                <input type="number" step="0.000001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -400,11 +400,11 @@
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="calciumCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.0001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
+                                <input type="number" step="0.000001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="calciumCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.0001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
+                                <input type="number" step="0.000001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
                             </div>
                         </div>
                     </div>
