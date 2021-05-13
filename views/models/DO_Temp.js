@@ -17,10 +17,12 @@ const doTempSchema = new mongoose.Schema({
         ref: 'User_Account'
     },
     dissolvedOxygen: {
-        type: Number
+        type: Number,
+        required: true
     },
     temperature: {
-        type: Number
+        type: Number,
+        required: true
     },
     location: {
         type: pointSchema,
@@ -28,6 +30,7 @@ const doTempSchema = new mongoose.Schema({
     },
     depth: {
         type: Number,
+        required: true
     }
 });
 

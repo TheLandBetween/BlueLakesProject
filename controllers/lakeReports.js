@@ -22,6 +22,7 @@ module.exports.renderNewForm = (req, res) => {
 
 //On new lake report submission, creates a new lake health report
 module.exports.createLakeReport = async (req, res) => {
+    // TODO: Seems like this should be a middleware thing, like an isAuthorized that checks their role and what they're submitting
     if (req.user.rank < 2) { //Check if the users rank is less than 2 (only researchers and anglers can access this method)
         req.flash('error', "Your account doesn't have permission."); //If user is a Angler, reject and redirect
         return res.redirect('/');
@@ -30,7 +31,11 @@ module.exports.createLakeReport = async (req, res) => {
     const newReport = new LakeHealthReport(req.body);
     newReport.creator = req.user._id; //Assign the reports creator
 
-    await newReport.save(); //Save the report to the database
+    console.log('new report created based on body, saving next');
+
+    console.log(newReport);
+
+
 
     const {temperature, dissolved_oxygen, secchi_depth, phosphorus, calcium} = req.body; //Get each attribute field from the table
 
@@ -56,6 +61,7 @@ module.exports.createLakeReport = async (req, res) => {
             }
         } else { //Single report, no array just single reading for each
             const currDoTemp = new DO_Temp();
+            console.log("Here: " + typeof temperature);
 
             currDoTemp.report_fk = newReport._id; //Assign parent report foreign key
             currDoTemp.creator = req.user._id; //Assign user ID
@@ -127,6 +133,7 @@ module.exports.createLakeReport = async (req, res) => {
 
     if (calcium) { //Check user submitted the field, if yes execute, otherwise move to next attribute
         const {calciumCoordinateX, calciumCoordinateY} = req.body; //Get rest of associated calcium attributes
+        let calciumReadings = [];
 
         if (Array.isArray(calcium)) { //Check if many calcium were submitted
             for (let i = 0; i < calcium.length; i++) { //Iterate over each calcium
@@ -138,18 +145,24 @@ module.exports.createLakeReport = async (req, res) => {
                 currCalcium.location = { type: 'Point', coordinates: [calciumCoordinateX[i], calciumCoordinateY[i]] };
 
                 await currCalcium.save(); //Save report to database
+                // At this point it will have been succesfully saved, so push to final readings
+                calciumReadings.push(currCalcium)
             }
         } else { //Single calcium report is submitted
             const currCalcium = new Calcium();
 
             currCalcium.report_fk = newReport._id; //Assign parent report foreign key
             currCalcium.creator = req.user._id; //Assign user ID
-            currCalcium.calcium = calcium; //Assign rest of attributes to the phosphorus report
+            currCalcium.calcium = parseInt(calcium); //Assign rest of attributes to the phosphorus report
             currCalcium.location = { type: 'Point', coordinates: [calciumCoordinateX, calciumCoordinateY] };
 
             await currCalcium.save(); //Save report to database
+            calciumReadings.push(currCalcium);
         }
+        newReport.calcium = calciumReadings;
     }
+
+    await newReport.save(); //Save the report to the database
 
     // save success trigger
     req.flash('success', 'Successfully Created Report');
