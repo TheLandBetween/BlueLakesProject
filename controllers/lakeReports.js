@@ -31,18 +31,11 @@ module.exports.createLakeReport = async (req, res) => {
     const newReport = new LakeHealthReport(req.body);
     newReport.creator = req.user._id; //Assign the reports creator
 
-    console.log('new report created based on body, saving next');
-
-    console.log(newReport);
-
-
-
     const {temperature, dissolved_oxygen, secchi_depth, phosphorus, calcium} = req.body; //Get each attribute field from the table
 
     if (temperature) { //Check user submitted the field, if yes execute, otherwise move to next attribute
         const {doTempCoordinateX, doTempCoordinateY, doTempDepth} = req.body; //Get rest of associated DoTemp attributes
-
-        console.log(doTempDepth);
+        let tempReadings = [];
 
         if (Array.isArray(temperature)) { //Check if many DoTemp reports were submitted
             for (let i = 0; i < temperature.length; i++) { //Iterate over each report
@@ -55,13 +48,11 @@ module.exports.createLakeReport = async (req, res) => {
                 currDoTemp.depth = doTempDepth[i];
                 currDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX[i], doTempCoordinateY[i]] }; //Coordinates object (/views/models)
 
-                console.log(currDoTemp);
-
-                await currDoTemp.save(); //Save report to database
+                await currDoTemp.save(); //Save report to database]
+                tempReadings.push(currDoTemp);
             }
         } else { //Single report, no array just single reading for each
             const currDoTemp = new DO_Temp();
-            console.log("Here: " + typeof temperature);
 
             currDoTemp.report_fk = newReport._id; //Assign parent report foreign key
             currDoTemp.creator = req.user._id; //Assign user ID
@@ -70,16 +61,17 @@ module.exports.createLakeReport = async (req, res) => {
             currDoTemp.depth = doTempDepth;
             currDoTemp.location = { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] }; //Coordinates object (/views/models)
 
-            console.log(currDoTemp);
-
             await currDoTemp.save(); //Save report to database
+            tempReadings.push(currDoTemp);
         }
+        // append all temp readings to current report
+        newReport.doTemp = tempReadings;
     }
 
     if (secchi_depth) { //Check user submitted the field, if yes execute, otherwise move to next attribute
         const {secchiCoordinateX, secchiCoordinateY, secchiDepth} = req.body; //Get rest of associated secchi attributes
         //secchi_depth is the secchi reading value, secchiDepth is the depth the reading was measured at
-
+        let secchiReadings = [];
         if (Array.isArray(secchi_depth)) { //Check if many secchi were submitted
             for (let i = 0; i < secchi_depth.length; i++) { //Iterate over each submitted secchi
                 const currSecchi = new Secchi();
@@ -91,6 +83,7 @@ module.exports.createLakeReport = async (req, res) => {
                 currSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX[i], secchiCoordinateY[i]] };
 
                 await currSecchi.save(); //Save report to database
+                secchiReadings.push(currSecchi);
             }
         } else { //Single secchi submitted
             const currSecchi = new Secchi();
@@ -102,11 +95,15 @@ module.exports.createLakeReport = async (req, res) => {
             currSecchi.location = { type: 'Point', coordinates: [secchiCoordinateX, secchiCoordinateY] };
 
             await currSecchi.save();
+            secchiReadings.push(currSecchi);
         }
+        // save secchi readings to current report
+        newReport.secchi_depth = secchiReadings;
     }
 
     if (phosphorus) { //Check user submitted the field, if yes execute, otherwise move to next attribute
         const {phosphorusCoordinateX, phosphorusCoordinateY} = req.body; //Get rest of associated phosphorus attributes
+        let phosphReadings = [];
         if (Array.isArray(phosphorus)) { //Check if many phosphorus were submitted
             for (let i = 0; i < phosphorus.length; i++) { //Iterate over each phosphorus
                 const currPhosphorus = new Phosphorus();
@@ -117,6 +114,7 @@ module.exports.createLakeReport = async (req, res) => {
                 currPhosphorus.location = { type: 'Point', coordinates: [phosphorusCoordinateX[i], phosphorusCoordinateY[i]] };
 
                 await currPhosphorus.save(); //Save report to database
+                phosphReadings.push(currPhosphorus);
             }
         } else { //Single phosphorus reading was submitted
             const currPhosphorus = new Phosphorus();
@@ -127,7 +125,10 @@ module.exports.createLakeReport = async (req, res) => {
             currPhosphorus.location = { type: 'Point', coordinates: [phosphorusCoordinateX, phosphorusCoordinateY] };
 
             await currPhosphorus.save(); //Save report to database
+            phosphReadings.push(currPhosphorus);
         }
+        // add phosph readings to the current lake health report
+        newReport.phosphorus = phosphReadings;
     }
 
 
@@ -159,6 +160,7 @@ module.exports.createLakeReport = async (req, res) => {
             await currCalcium.save(); //Save report to database
             calciumReadings.push(currCalcium);
         }
+        // add all calcium readings to current report
         newReport.calcium = calciumReadings;
     }
 
