@@ -259,7 +259,7 @@ module.exports.updateLakeReport = async (req, res) => {
 
                 await newDoTemp.save(); //Save the new report
             } else { //Otherwise, update existing report using associated ID
-                const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], { dissolvedOxygen: dissolved_oxygen, temperature: temperature, depth: doTempDepth, location: { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] }});
+                const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id, { dissolvedOxygen: dissolved_oxygen, temperature: temperature, depth: doTempDepth, location: { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY] }});
             }
         }
     }
