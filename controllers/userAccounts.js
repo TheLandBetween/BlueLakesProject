@@ -227,5 +227,13 @@ module.exports.recoverUserAccount = async (req, res) => {
             return res.redirect('/login'); //Redirects the user to the login page where they can use their new password
         }
     });
-
 };
+
+module.exports.renderUpdatePreferences = async (req, res) => {res.render('userAccounts/preferences.ejs');};
+module.exports.updatePreferences = async (req, res) => {
+    const { username, distPref, weightPref } = req.body; //Gets updated organization from the form
+    await UserAccount.updateOne({username: username}, {$set: {weightPref: weightPref, distPref: distPref}}); //Updates the users organization.  User can associate with any organization without permission
+
+    req.flash('success', "Organization updated.")
+    res.redirect('/profile')
+}

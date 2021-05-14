@@ -10,21 +10,23 @@
     <div class="row d-flex flex-column">
         <h4 class="text-center sectionHeader">Your Information</h4>
         <div class="row d-flex justify-content-between">
-            <div class="pull-left"><h6><b>Email</b>: <%=currentUser.username%></h6></div>
-            <div class="pull-right"><a href="/changePassword">Change Password</a></div>
+            <h6><b>Email</b>: <%=currentUser.username%></h6>
+            <a href="/changePassword">Change Password</a>
         </div>
         <div class="row d-flex justify-content-between">
-            <div class="pull-left"><h6><b>Name</b>: <%=currentUser.firstName + ' ' + currentUser.lastName%></h6></div>
-            <div class="pull-right"><a href="/updateName">Change Name</a></div>
-
+            <h6><b>Name</b>: <%=currentUser.firstName + ' ' + currentUser.lastName%></h6>
+            <a href="/updateName">Change Name</a>
         </div>
         <div class="row d-flex justify-content-between">
-            <div class="pull-left"><h6><b>Organization</b>: <%=currentUser.organization%></h6></div>
-            <div class="pull-right"><a href="/updateOrganization">Change Organization</a></div>
+           <h6><b>Organization</b>: <%=currentUser.organization%></h6>
+            <a href="/updateOrganization">Change Organization</a>
+        </div>
+        <div class="row d-flex justify-content-between">
+            <h6><b>Weight / Distance Preferences</b>: <%=currentUser.weightPref%> / <%= currentUser.distPref%></h6>
+            <a href="/updatePreferences">Change Preferences</a>
         </div>
         <div class="row d-flex justify-content-center">
             <h6><b>Current Rank</b>: <%=currentUser.rank%></h6>
-
         </div>
     </div>
     <% if(currentUser && currentUser.rank === 3) {%> <!-- User must be rank 3 (administrator) to assign another users rank -->
