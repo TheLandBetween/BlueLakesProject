@@ -20,6 +20,12 @@ const UserSchema = new Schema({
     organization: {
         type: String
     },
+    distPref: {
+        type: String
+    },
+    weightPref: {
+        type: String
+    },
     resetPasswordToken: { //Initialized upon a password reset request, and deleted after password is reset
         type: String
     },

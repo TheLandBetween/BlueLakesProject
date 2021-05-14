@@ -21,8 +21,8 @@ module.exports.renderRegisterForm = async (req, res) => {
 module.exports.registerUser = async (req, res, next) => {
     try {
         let rank = 1; //Default rank for a user is 1, unless upgraded by an administrator after account creation
-        const { username, firstName, lastName, organization, password } = req.body; //Gets all associated credentials from request
-        const newUser = new UserAccount({username, firstName, lastName, organization, rank}); //Creates a new user object
+        const { username, firstName, lastName, organization, password, distPref, weightPref } = req.body; //Gets all associated credentials from request
+        const newUser = new UserAccount({username, firstName, lastName, organization, rank, distPref, weightPref}); //Creates a new user object
         const registeredUser = await UserAccount.register(newUser, password); //Registers the user using their email(username) and password
         // never really a case where this should raise an error as we are awaiting the user account
         // to be registered and have an error catcher on thr async function, but passport requires it
