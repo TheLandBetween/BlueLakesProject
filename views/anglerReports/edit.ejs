@@ -1,254 +1,147 @@
-<!--TODO:
-    - remove BR's
-    - Multiple fish radio buttons are linked
--->
-
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
-<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
-    <div class="container">
-        <%- include('../partials/flash') %> <!-- foundReport is a variable passed in from the controller containing the associated anglerReport object -->
-        <h1 class="text-center">Edit Angler Report</h1>
-        <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h2 class="text-left">General Information</h2>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="form-label" for="lake">Lake Name: </label> <!-- Fills in inputs with all information the user has already submitted with the report, they can choose what to change -->
-                        <input class="form-control" value="<%=foundReport.lake%>" type="text" id="lake" placeholder="Lake Name" name="lake" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="municipality">Municipality: </label>
-                        <input class="form-control" value="<%=foundReport.municipality%>" type="text" id="municipality" placeholder="Municipality" name="municipality" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="date">Date: </label>
-                        <input class="form-control" value="<%= foundReport.date.getUTCFullYear() + '-' + ('0' + (foundReport.date.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + foundReport.date.getUTCDay()).slice(-2)%>" type="date" id="date" placeholder="year-mo-dy" name="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="t_start">Time In: </label>
-                        <input  class="form-control" value="<%=foundReport.t_start%>" type="time" id="t_start" placeholder="hh:mm" name="t_start" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="t_end">Time Out: </label>
-                        <input  class="form-control" value="<%=foundReport.t_end%>" type="time" id="t_end" placeholder="hh:mm" name="t_end" required>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row"> <!-- Now output every fish associated with report, foundFish contains every fish as a list of objects -->
-                <h2 class="text-left">Fish Caught</h2>
-                <a class="text-left" href="/identifyFish">Observe Fish</a> <!-- Leads to document that allows users to view what the fish look like -->
-                <div class="container" id="fishes"> <!-- Fishes container which fish cards can be appended to -->
-                    <% var index = 0; <!-- Current fish index -->
-                    foundFish.forEach(function (entry) {
-                        index += 1; %> <!-- Every fish increments index by 1, index is used to make sure the cards are unique when minimized or examined -->
-                    <div class="card"> <!-- If card aria-controls and href's are the same, minimizing one card will effect another with the same name.  Use indexes to get around this -->
-                        <div class="card-header"> <!-- Top of card -->
-                            <a data-toggle="collapse" href="#collapse-<%=index%>" aria-expanded="true" aria-controls="collapse-<%=index%>" id="heading-example" class="d-block">
-                                <i class="fa fa-chevron-down pull-right"></i>
-                                Fish <%=index%> <!-- Displays the current fish number at the head of the card -->
-                            </a>
+<div class="container centerLogin d-flex justify-content-center">
+    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
+        <%- include('../partials/flash') %>
+        <div class="row header d-flex flex-column">
+            <h1 class="text-center display-4">New Angler Report</h1>
+        </div>
+        <div class="row d-flex flex-column">
+            <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
+                <div class="row d-flex flex-column">
+                    <div class="d-flex justify-content-center">
+                        <p class="h2 text-center">General Information</p> <!-- General report information that the user must enter -->
+                    </div>
+                    <div class="text-left">
+                        <div class="form-group">
+                            <label class="form-label" for="lake">Lake Name: </label> <!-- Fills in inputs with all information the user has already submitted with the report, they can choose what to change -->
+                            <input class="form-control" value="<%=foundReport.lake%>" type="text" id="lake" placeholder="Lake Name" name="lake" required>
                         </div>
-                        <div id="collapse-<%=index%>" class="collapse show" aria-labelledby="heading-example">
-                            <div class="card-body"> <!-- Body is where all the information can be input.  Whole container is wrapped by a form, so duplicate inputs submit as an array of inputs -->
-                                <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id"> <!-- For each existing fish, have a hidden ID field containing its unique database ID.  Used in processing after editing -->
-                                <div class="form-group d-flex flex-column">
-                                    <img>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="species">Species: </label> <!-- Value is initiated as the fish in the report -->
-                                    <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
-                                        <option value="<%=entry.species%>" selected><%=entry.species%></option> <!-- All viable species approved by The Land Between, sorted alphabetically -->
-                                        <option value="Atlantic Salmon">Atlantic Salmon</option>
-                                        <option value="Black Crappie">Black Crappie</option>
-                                        <option value="Bluegill">Bluegill</option>
-                                        <option value="Bowfin">Bowfin</option>
-                                        <option value="Brook Trout">Brook Trout</option>
-                                        <option value="Brown Bullhead">Brown Bullhead</option>
-                                        <option value="Brown Trout (Great Lakes)">Brown Trout (Great Lakes)</option>
-                                        <option value="Brown Trout (Inland)">Brown Trout (Inland)</option>
-                                        <option value="Burbot">Burbot</option>
-                                        <option value="Carp">Carp</option>
-                                        <option value="Channel Catfish">Channel Catfish</option>
-                                        <option value="Chinook Salmon">Chinook Salmon</option>
-                                        <option value="Cisco">Cisco</option>
-                                        <option value="Coho Salmon">Coho Salmon</option>
-                                        <option value="Freshwater Drum">Freshwater Drum</option>
-                                        <option value="Goldeye">Goldeye</option>
-                                        <option value="Lake Trout">Lake Trout</option>
-                                        <option value="Lake Whitefish">Lake Whitefish</option>
-                                        <option value="Largemouth Bass">Largemouth Bass</option>
-                                        <option value="Mooneye">Mooneye</option>
-                                        <option value="Muskellunge">Muskellunge</option>
-                                        <option value="Northern Pike">Northern Pike</option>
-                                        <option value="Pink Salmon">Pink Salmon</option>
-                                        <option value="Pumpkinseed">Pumpkinseed</option>
-                                        <option value="Rainbow Smelt">Rainbow Smelt</option>
-                                        <option value="Rainbow Trout (Great Lakes)">Rainbow Trout (Great Lakes)</option>
-                                        <option value="Rainbow Trout (Inland)">Rainbow Trout (Inland)</option>
-                                        <option value="Rock Bass">Rock Bass</option>
-                                        <option value="Sauger">Sauger</option>
-                                        <option value="Smallmouth Bass">Smallmouth Bass</option>
-                                        <option value="Sturgeon">Sturgeon</option>
-                                        <option value="Walleye">Walleye</option>
-                                        <option value="White Bass">White Bass</option>
-                                        <option value="White Crappie">White Crappie</option>
-                                        <option value="White Perch">White Perch</option>
-                                        <option value="White Sucker">White Sucker</option>
-                                        <option value="Yellow Perch">Yellow Perch</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="length">Length: </label>
-                                    <input class="form-control" value="<%=entry.length%>" type="number" id="length" placeholder="Length of Fish" name="length">
-                                </div>
-                                <div class="form-group">
-                                    <label class="radio-inline" for="Length_Metric">
-                                        <input class="form-control" type="radio" id="centimeters" name="Length_Metric" value="metric" required checked>Centimeters
-                                    </label>
-                                    <label class="radio-inline" for="Length_Metric">
-                                        <input class="form-control" type="radio" id="inches" name="Length_Metric" value="imperial" required>Inches
-                                    </label>
+                        <div class="form-group">
+                            <label class="form-label" for="municipality">Municipality: </label>
+                            <input class="form-control" value="<%=foundReport.municipality%>" type="text" id="municipality" placeholder="Municipality" name="municipality" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="date">Date: </label>
+                            <input class="form-control" value="<%= foundReport.date.getUTCFullYear() + '-' + ('0' + (foundReport.date.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + foundReport.date.getUTCDay()).slice(-2)%>" type="date" id="date" placeholder="year-mo-dy" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="t_start">Time In: </label>
+                            <input  class="form-control" value="<%=foundReport.t_start%>" type="time" id="t_start" placeholder="hh:mm" name="t_start" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="t_end">Time Out: </label>
+                            <input  class="form-control" value="<%=foundReport.t_end%>" type="time" id="t_end" placeholder="hh:mm" name="t_end" required>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="row d-flex flex-column"> <!-- Now output every fish associated with report, foundFish contains every fish as a list of objects -->
+                    <div class="row header d-flex flex-column">
+                        <p class="h2 text-center">Fish Caught</p>
+                        <a class="text-center" href="/identifyFish">Identify Your Fish</a> <!-- User can click to see visual of all fish in options -->
+                    </div>
+
+                    <div class="row sectionHeader">
+                        <div class="col-12" id="fishes"> <!-- Fishes container which fish cards can be appended to -->
+                            <% var index = 0; <!-- Current fish index -->
+                            foundFish.forEach(function (entry) {
+                                index += 1; %> <!-- Every fish increments index by 1, index is used to make sure the cards are unique when minimized or examined -->
+                            <div class="card"> <!-- If card aria-controls and href's are the same, minimizing one card will effect another with the same name.  Use indexes to get around this -->
+                                <div class="card-header"> <!-- Top of card -->
+                                    <a data-toggle="collapse" href="#collapse-<%=index%>" aria-expanded="true" aria-controls="collapse-<%=index%>" id="heading-example" class="d-block text-center">
+                                        <i class="fa fa-chevron-down pull-right"></i>
+                                        Fish <%=index%> <!-- Displays the current fish number at the head of the card -->
+                                    </a>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="weight">Weight: </label>
-                                    <input class="form-control" value="<%=entry.weight%>" type="text" id="weight" placeholder="Weight of Fish" name="weight">
+                                <div id="collapse-<%=index%>" class="collapse show" aria-labelledby="heading-example">
+                                    <div class="card-body text- left"> <!-- Body is where all the information can be input.  Whole container is wrapped by a form, so duplicate inputs submit as an array of inputs -->
+                                        <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id"> <!-- For each existing fish, have a hidden ID field containing its unique database ID.  Used in processing after editing -->
+                                        <div class="form-group d-flex flex-column">
+                                            <img>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="species">Species: </label> <!-- Value is initiated as the fish in the report -->
+                                            <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
+                                                <option value="<%=entry.species%>" selected><%=entry.species%></option> <!-- All viable species approved by The Land Between, sorted alphabetically -->
+                                                <option value="Atlantic Salmon">Atlantic Salmon</option>
+                                                <option value="Black Crappie">Black Crappie</option>
+                                                <option value="Bluegill">Bluegill</option>
+                                                <option value="Bowfin">Bowfin</option>
+                                                <option value="Brook Trout">Brook Trout</option>
+                                                <option value="Brown Bullhead">Brown Bullhead</option>
+                                                <option value="Brown Trout (Great Lakes)">Brown Trout (Great Lakes)</option>
+                                                <option value="Brown Trout (Inland)">Brown Trout (Inland)</option>
+                                                <option value="Burbot">Burbot</option>
+                                                <option value="Carp">Carp</option>
+                                                <option value="Channel Catfish">Channel Catfish</option>
+                                                <option value="Chinook Salmon">Chinook Salmon</option>
+                                                <option value="Cisco">Cisco</option>
+                                                <option value="Coho Salmon">Coho Salmon</option>
+                                                <option value="Freshwater Drum">Freshwater Drum</option>
+                                                <option value="Goldeye">Goldeye</option>
+                                                <option value="Lake Trout">Lake Trout</option>
+                                                <option value="Lake Whitefish">Lake Whitefish</option>
+                                                <option value="Largemouth Bass">Largemouth Bass</option>
+                                                <option value="Mooneye">Mooneye</option>
+                                                <option value="Muskellunge">Muskellunge</option>
+                                                <option value="Northern Pike">Northern Pike</option>
+                                                <option value="Pink Salmon">Pink Salmon</option>
+                                                <option value="Pumpkinseed">Pumpkinseed</option>
+                                                <option value="Rainbow Smelt">Rainbow Smelt</option>
+                                                <option value="Rainbow Trout (Great Lakes)">Rainbow Trout (Great Lakes)</option>
+                                                <option value="Rainbow Trout (Inland)">Rainbow Trout (Inland)</option>
+                                                <option value="Rock Bass">Rock Bass</option>
+                                                <option value="Sauger">Sauger</option>
+                                                <option value="Smallmouth Bass">Smallmouth Bass</option>
+                                                <option value="Sturgeon">Sturgeon</option>
+                                                <option value="Walleye">Walleye</option>
+                                                <option value="White Bass">White Bass</option>
+                                                <option value="White Crappie">White Crappie</option>
+                                                <option value="White Perch">White Perch</option>
+                                                <option value="White Sucker">White Sucker</option>
+                                                <option value="Yellow Perch">Yellow Perch</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="length">Length: </label>
+                                            <input class="form-control" value="<%=entry.length%>" type="number" inputmode="decimal" id="length" placeholder="Length of Fish" name="length">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label" for="weight">Weight: </label>
+                                            <input class="form-control" value="<%=entry.weight%>" type="number" inputmode="decimal" id="weight" placeholder="Weight of Fish" name="weight">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="radio-inline" for="Weight_Metric">
-                                        <input class="form-control" type="radio" id="pounds" name="Weight_Metric" value="metric" required checked>Pounds
-                                    </label>
-                                    <label class="radio-inline" for="Weight_Metric">
-                                        <input class="form-control" type="radio" id="kilograms" name="Weight_Metric" value="imperial" required>Kilograms
-                                    </label>
+                            </div>
+                            <%})%>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-3"></div>
+                                <div class="col-md-12 col-lg-6">
+                                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button> <!-- Button to add additional fish.  Triggers JS method at bottom of the file -->
                                 </div>
+                                <div class="col-md-12 col-lg-3"></div>
                             </div>
                         </div>
                     </div>
-                    <%})%>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm-6">
-                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button> <!-- Click to execute addFish function defined in script at bottom of page.  Adds another boostrap card -->
+                <div class="row">
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-md-12 col-lg-6">
+                        <button type="submit" class="btn btn-outline-primary btn-block">Submit</button> <!-- Button to submit the report -->
+                    </div>
+                    <div class="col-md-12 col-lg-3"></div>
                 </div>
-                <div class="col-sm-3"></div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm">
-                    <button type="submit" class="btn btn-outline-primary btn-block">Update Report</button> <!-- Submit the report -->
-                </div>
-                <div class="col-sm-3"></div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
 <!-- Client Side Form Validation -->
-<script src="js/clientValidation.js"></script>
-
-<script>
-    let fishCount = <%=index%> - 1; //Gets the current count of existing fish from document
-
-    $("#addFish").click(function() { //Adds another bootstrap card upon submission
-        fishCount = fishCount + 1; //Increases the index for each new fish added to the report
-        $("#fishes").append(`
-        <div class="card">
-            <div class="card-header">
-                <a data-toggle="collapse" href="#collapse-${fishCount}" aria-expanded="true" aria-controls="collapse-${fishCount}" id="heading-example" class="d-block">
-                    <i class="fa fa-chevron-down pull-right"></i>
-                    Fish ${fishCount + 1}
-                </a>
-            </div>
-            <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
-                <div class="card-body">
-                    <input class="form-control" value="?" type="hidden" id="fish_id" name="fish_id">
-                    <div class="form-group d-flex flex-column">
-                        <label class="form-label" for="photo">Picture of Fish: </label>
-                        <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo" multiple>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="species">Species: </label>
-                                <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
-                                    <option value="">Choose Fish...</option>
-                                    <option value="Atlantic Salmon">Atlantic Salmon</option>
-                                    <option value="Black Crappie">Black Crappie</option>
-                                    <option value="Bluegill">Bluegill</option>
-                                    <option value="Bowfin">Bowfin</option>
-                                    <option value="Brook Trout">Brook Trout</option>
-                                    <option value="Brown Bullhead">Brown Bullhead</option>
-                                    <option value="Brown Trout (Great Lakes)">Brown Trout (Great Lakes)</option>
-                                    <option value="Brown Trout (Inland)">Brown Trout (Inland)</option>
-                                    <option value="Burbot">Burbot</option>
-                                    <option value="Carp">Carp</option>
-                                    <option value="Channel Catfish">Channel Catfish</option>
-                                    <option value="Chinook Salmon">Chinook Salmon</option>
-                                    <option value="Cisco">Cisco</option>
-                                    <option value="Coho Salmon">Coho Salmon</option>
-                                    <option value="Freshwater Drum">Freshwater Drum</option>
-                                    <option value="Goldeye">Goldeye</option>
-                                    <option value="Lake Trout">Lake Trout</option>
-                                    <option value="Lake Whitefish">Lake Whitefish</option>
-                                    <option value="Largemouth Bass">Largemouth Bass</option>
-                                    <option value="Mooneye">Mooneye</option>
-                                    <option value="Muskellunge">Muskellunge</option>
-                                    <option value="Northern Pike">Northern Pike</option>
-                                    <option value="Pink Salmon">Pink Salmon</option>
-                                    <option value="Pumpkinseed">Pumpkinseed</option>
-                                    <option value="Rainbow Smelt">Rainbow Smelt</option>
-                                    <option value="Rainbow Trout (Great Lakes)">Rainbow Trout (Great Lakes)</option>
-                                    <option value="Rainbow Trout (Inland)">Rainbow Trout (Inland)</option>
-                                    <option value="Rock Bass">Rock Bass</option>
-                                    <option value="Sauger">Sauger</option>
-                                    <option value="Smallmouth Bass">Smallmouth Bass</option>
-                                    <option value="Sturgeon">Sturgeon</option>
-                                    <option value="Walleye">Walleye</option>
-                                    <option value="White Bass">White Bass</option>
-                                    <option value="White Crappie">White Crappie</option>
-                                    <option value="White Perch">White Perch</option>
-                                    <option value="White Sucker">White Sucker</option>
-                                    <option value="Yellow Perch">Yellow Perch</option>
-                                </select>
-                            </div>
-                    <div class="form-group">
-                        <label class="form-label" for="length">Length: </label>
-                        <input class="form-control" type="number" id="length" placeholder="Length of Fish" name="length">
-                    </div>
-                    <div class="form-group">
-                        <label class="radio-inline" for="Length_Metric">
-                            <input class="form-control" type="radio" id="centimeters" name="Length_Metric" value="m" required checked>Centimeters
-                        </label>
-                        <label class="radio-inline" for="Length_Metric">
-                            <input class="form-control" type="radio" id="inches" name="Length_Metric" value="i" required>Inches
-                        </label>
-
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="weight">Weight: </label>
-                        <input class="form-control" type="number" id="weight" placeholder="Weight of Fish" name="weight">
-                    </div>
-                    <div class="form-group">
-                        <label class="radio-inline" for="Weight_Metric">
-                            <input class="form-control" type="radio" id="pounds" name="Weight_Metric" value="l" required checked>Pounds
-                        </label>
-                        <label class="radio-inline" for="Weight_Metric">
-                            <input class="form-control" type="radio" id="kilograms" name="Weight_Metric" value="k" required>Kilograms
-                        </label>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    `)
-    })
-</script>
+<script src="../js/clientValidation.js"></script>
+<script src="../js/newAngler.js"></script>

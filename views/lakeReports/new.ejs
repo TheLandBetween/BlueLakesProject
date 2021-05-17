@@ -24,7 +24,7 @@
         <div class="form-group">
             <!-- health input, sent under 'health' label-->
             <label class='form-label' for="perc_shore_devd">Perc Shore Devd: </label>
-            <input type="Number" id="perc_shore_devd" placeholder="perc shore devd" name="perc_shore_devd" class="form-control" required>
+            <input type="Number" inputmode="decimal" id="perc_shore_devd" placeholder="perc shore devd" name="perc_shore_devd" class="form-control" required>
         </div>
 
         <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
@@ -95,7 +95,7 @@
 </div>
 
 <!-- Client Side Form Validation -->
-<script src="js/clientValidation.js"></script>
+<script src="../js/clientValidation.js"></script>
 
 <script>
     let tempDOCount = 0;
@@ -113,25 +113,25 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label class='form-label' for="temperature">Temperature: </label>
-                            <input type="number" id="temperature" placeholder="Temperature Value" name="temperature" class="form-control" required>
+                            <input type="number" inputmode="decimal" id="temperature" placeholder="Temperature Value" name="temperature" class="form-control" required>
                         </div>
                         </div>
                         <div class="form-group">
                             <label class='form-label' for="dissolved_oxygen">Do Conc: </label>
-                            <input type="number" id="dissolved_oxygen" placeholder="Dissolved Oxygen" name="dissolved_oxygen" class="form-control" required>
+                            <input type="number" inputmode="decimal" id="dissolved_oxygen" placeholder="Dissolved Oxygen" name="dissolved_oxygen" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="doTempCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.000001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="doTempCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.000001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="doTempDepth">Depth: </label>
-                                <input type="number" step="0.01" id="doTempDepth" placeholder="Depth" name="doTempDepth" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.01" id="doTempDepth" placeholder="Depth" name="doTempDepth" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -156,20 +156,20 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label class='form-label' for="secchi_depth">Secchi Depth: </label>
-                            <input type="number" id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
+                            <input type="number" inputmode="decimal" id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="secchiCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.000001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="secchiCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.000001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="secchiDepth">Depth: </label>
-                                <input type="number" step="0.01" id="secchiDepth" placeholder="Depth" name="secchiDepth" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.01" id="secchiDepth" placeholder="Depth" name="secchiDepth" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -193,16 +193,16 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label class='form-label' for="phosphorus">Phosphorus: </label>
-                            <input type="number" id="phosphorus" placeholder="Phosphorus in PPM" name="phosphorus" class="form-control" required>
+                            <input type="number" inputmode="decimal" id="phosphorus" placeholder="Phosphorus in PPM" name="phosphorus" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="phosphorusCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.000001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="phosphorusCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.000001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -226,16 +226,16 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label class='form-label' for="calcium">Calcium: </label>
-                            <input type="number" id="calcium" placeholder="Calcium in PPM" name="calcium" class="form-control" required>
+                            <input type="number" inputmode="decimal" id="calcium" placeholder="Calcium in PPM" name="calcium" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="form-group">
                                 <label class='form-label' for="calciumCoordinateX">X-Coordinate: </label>
-                                <input type="number" step="0.000001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label class='form-label' for="calciumCoordinateY">Y-Coordinate: </label>
-                                <input type="number" step="0.000001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
+                                <input type="number" inputmode="decimal" step="0.000001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
                             </div>
                         </div>
                     </div>
