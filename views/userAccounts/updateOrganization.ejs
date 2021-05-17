@@ -1,19 +1,30 @@
+<!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
-<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
-    <div class="container">
+<%- include('../partials/navbar')%>
+<%- include('../partials/videoBG')%>
+
+<div class="container centerLogin d-flex justify-content-center">
+    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
         <%- include('../partials/flash') %>
-        <h1>Update Organization</h1>
-        <form action="/updateOrganization" method="POST" class="needs-validation" name="updateOrganization" novalidate>
-            <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username"> <!-- Hidden input for requesting users username -->
-            <div class="form-group">
-                <label class='form-label' for="organization">First Name: </label> <!-- Filled with current organization, user can change and submit a new organization -->
-                <input type="text" value="<%=currentUser.organization%>" id="organization" placeholder="Your Organization" name="organization" class="form-control" required>
-            </div>
-            <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm">
-                    <button type="submit" class="btn btn-outline-primary btn-block">Update Organization</button>
+        <div class="row header d-flex flex-column">
+            <h1 class="text-center display-4">Update Organization</h1>
+        </div>
+        <div class="row d-flex flex-column">
+            <form action="/updateOrganization" method="POST" class="needs-validation" name="updateOrganization" novalidate>
+                <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username"> <!-- Hidden input for requesting users username -->
+                <div class="form-group">
+                    <label class='form-label' for="organization">Organization: </label> <!-- Filled with current organization, user can change and submit a new organization -->
+                    <input type="text" id="organization" placeholder="<%=currentUser.organization%>" name="organization" class="form-control" required>
                 </div>
-                <div class="col-sm-3"></div>
-            </div>
-        </form>
+                <div class="row">
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-md-12 col-lg-6">
+                        <button type="submit" class="btn btn-outline-primary btn-block">Update Organization</button>
+                    </div>
+                    <div class="col-md-12 col-lg-3"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

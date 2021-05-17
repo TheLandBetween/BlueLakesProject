@@ -94,25 +94,10 @@
     </div>
 </div>
 
+<!-- Client Side Form Validation -->
+<script src="js/clientValidation.js"></script>
+
 <script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
-        'use strict';
-
-        const forms = document.querySelectorAll('.needs-validation')
-
-        Array.from(forms).forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })();
-
     let tempDOCount = 0;
     $("#addtemp_DO").click(function() { //Add a card to the TempDO container
         tempDOCount = tempDOCount + 1;

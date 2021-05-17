@@ -1,27 +1,6 @@
 <%- include('../partials/head')%>
 <%- include('../partials/videoBG')%>
 
-<script language="javascript">
-    function passwordChanged() { //Password strength meter
-        var strength = document.getElementById('strength');
-        var strongRegex = new RegExp("^(?=.{14,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
-        var mediumRegex = new RegExp("^(?=.{10,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
-        var enoughRegex = new RegExp("(?=.{8,}).*", "g");
-        var pwd = document.getElementById("password");
-        if (pwd.value.length == 0) {
-            strength.innerHTML = 'Type Password';
-        } else if (false == enoughRegex.test(pwd.value)) {
-            strength.innerHTML = 'More Characters (At least 8)';
-        } else if (strongRegex.test(pwd.value)) {
-            strength.innerHTML = '<span style="color:green">Strong!</span>';
-        } else if (mediumRegex.test(pwd.value)) {
-            strength.innerHTML = '<span style="color:orange">Medium! (Add symbols, capitals, numbers)</span>';
-        } else {
-            strength.innerHTML = '<span style="color:red">Weak! (Add symbols, capitals, numbers)</span>';
-        }
-    }
-</script>
-
 <div class="container centerLogin d-flex justify-content-center">
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
         <%- include('../partials/flash') %>
@@ -112,22 +91,5 @@
     </div>
 </div>
 
-<script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (function() {
-        'use strict';
-
-        const forms = document.querySelectorAll('.needs-validation')
-
-        Array.from(forms).forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })();
-</script>
+<!-- Client Side Form Validation -->
+<script src="js/clientValidation.js"></script>

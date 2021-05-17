@@ -6,7 +6,7 @@
 <div class="container centerLogin d-flex justify-content-center">
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
        <%- include('../partials/flash') %>
-        <h1>Change Password</h1>
+        <h1>Change Weight / Distance Preferences</h1>
         <form action="/updatePreferences" method="POST" class="needs-validation" name="updatePreferences" novalidate>
             <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username"> <!-- Hidden input containing the users username (email) -->
             <div class="form-group">
@@ -37,3 +37,8 @@
                 <div class="col-md-12 col-lg-3"></div>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Client Side Form Validation -->
+<script src="js/clientValidation.js"></script>
