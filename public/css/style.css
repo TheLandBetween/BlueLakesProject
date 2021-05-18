@@ -174,3 +174,7 @@ html, body {
 .pageForm {
     width: 100%;
 }
+
+.stackedButtons {
+    padding: 1.5vh 0;
+}
