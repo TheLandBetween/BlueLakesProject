@@ -7,7 +7,7 @@
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
         <%- include('../partials/flash') %>
         <div class="row header d-flex flex-column">
-            <h1 class="text-center display-4">New Angler Report</h1>
+            <h1 class="text-center display-4">Edit Angler Report</h1>
         </div>
         <div class="row d-flex flex-column">
             <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
@@ -58,7 +58,7 @@
                                     </a>
                                 </div>
                                 <div id="collapse-<%=index%>" class="collapse show" aria-labelledby="heading-example">
-                                    <div class="card-body text- left"> <!-- Body is where all the information can be input.  Whole container is wrapped by a form, so duplicate inputs submit as an array of inputs -->
+                                    <div class="card-body text-left"> <!-- Body is where all the information can be input.  Whole container is wrapped by a form, so duplicate inputs submit as an array of inputs -->
                                         <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id"> <!-- For each existing fish, have a hidden ID field containing its unique database ID.  Used in processing after editing -->
                                         <div class="form-group d-flex flex-column">
                                             <img>
@@ -143,5 +143,8 @@
 </div>
 
 <!-- Client Side Form Validation -->
-<script src="../js/clientValidation.js"></script>
-<script src="../js/newAngler.js"></script>
+<script src="../../js/clientValidation.js"></script>
+<script>
+    let fishCount = <%=index%> - 1;
+</script>
+<script src="../../js/angler.js"></script>

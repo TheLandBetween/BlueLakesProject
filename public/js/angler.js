@@ -1,4 +1,3 @@
-let fishCount = 0;
 
 $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to the report
     fishCount = fishCount + 1;
@@ -12,6 +11,7 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
             </div>
             <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
                 <div class="card-body text-left">
+                    <input class="form-control" value="?" type="hidden" id="fish_id" name="fish_id">
                     <div class="form-group d-flex flex-column">
                         <label class="form-label" for="photo">Picture of Fish: </label>
                         <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo">
