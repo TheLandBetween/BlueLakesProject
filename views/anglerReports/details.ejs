@@ -6,33 +6,75 @@
     <div class="row header d-flex flex-column justify-content-center">
         <%- include('../partials/flash')%>
         <h1 class="display-4">Angler Report</h1>
-        <h1><%= foundReport.date %></h1>
-        <h3>Date Generated: <%= foundReport.date.getUTCFullYear() + '-' + ('0' + (foundReport.date.getUTCMonth()+1)).slice(-2) + '-' + ('0' + foundReport.date.getUTCDate()).slice(-2) %></h3>
         <h2>Angler: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
+        <h3>Date Generated: <%= foundReport.date.getUTCFullYear() + '-' + ('0' + (foundReport.date.getUTCMonth()+1)).slice(-2) + '-' + ('0' + foundReport.date.getUTCDate()).slice(-2) %></h3>
     </div>
     <div class="row"> <!-- Output general lake report information -->
-        <div class="col-md-6 col-sm-12 d-flex flex-column">
-            <h4 class="text-center">Lake Town: <%= foundReport.lake %></h4>
-            <h4 class="text-center">Municipality: <%= foundReport.municipality %></h4>
-            <h4 class="text-center">Angler Name: <%= foundReport.angler_name%></h4>
+        <div class="col-md-12 col-lg-6 d-flex flex-column">
+            <div class="row">
+                <div class="col-md-2 d-flex flex-column justify-content-center text-right">
+                    <i class="fa fa-home fa-2x"></i>
+                </div>
+                <div class="col-md-10 d-flex flex-column">
+                    <h3 class="marginStrip"><%= foundReport.lake.trim().replace(/^\w/, (c) => c.toUpperCase())%></h3>
+                    <h5 class="text-muted">Town</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 d-flex flex-column justify-content-center text-right">
+                    <i class="fa fa-building fa-2x"></i>
+                </div>
+                <div class="col-md-10 d-flex flex-column">
+                    <h3 class="marginStrip"><%= foundReport.municipality.trim().replace(/^\w/, (c) => c.toUpperCase())%></h3>
+                    <h5 class="text-muted">Municipality</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 d-flex flex-column justify-content-center text-right">
+                    <i class="fa fa-home fa-2x"></i>
+                </div>
+                <div class="col-md-10 d-flex flex-column">
+                    <h3 class="marginStrip"><%= foundReport.angler_name %></h3>
+                    <h5 class="text-muted">Angler</h5>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6 col-sm-12">
-            <h4 class="text-center">Start Time: <%= foundReport.t_start%></h4>
-            <h4 class="text-center">End Time: <%= foundReport.t_end%></h4>
+        <div class="col-md-12 col-lg-6 d-flex flex-column justify-content-center">
+            <div class="row">
+                <div class="col-md-2 d-flex flex-column justify-content-center text-right">
+                    <i class="fa fa-clock-o fa-2x"></i>
+                </div>
+                <div class="col-md-10 d-flex flex-column">
+                    <h3 class="marginStrip"><%= foundReport.t_start %></h3>
+                    <h5 class="text-muted">Time In</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 d-flex flex-column justify-content-center text-right">
+                    <i class="fa fa-clock-o fa-2x"></i>
+                </div>
+                <div class="col-md-10 d-flex flex-column">
+                    <h3 class="marginStrip"><%= foundReport.t_end %></h3>
+                    <h5 class="text-muted">Time Out</h5>
+                </div>
+            </div>
         </div>
 
     </div>
     <div class="row">
-        <h2>Fish</h2>
-        <table class="table"> <!-- Table to display all fish contained within the report -->
-            <tr> <!-- Header row -->
-                <th>Photo</th>
-                <th>Species</th>
-                <th>Weight (<%= currentUser.weightPref %>)</th>
-                <th>Length (<%= currentUser.distPref %>)</th>
-            </tr>
+        <div class="col-12">
+            <h2 class="text-center">Fish</h2>
+        </div>
+        <div class="col-12">
+            <table class="table"> <!-- Table to display all fish contained within the report -->
+                <tr> <!-- Header row -->
+                    <th>Photo</th>
+                    <th>Species</th>
+                    <th>Weight (<%= currentUser.weightPref %>)</th>
+                    <th>Length (<%= currentUser.distPref %>)</th>
+                </tr>
 
-            <% foundFish.forEach(function (entry) { %> <!-- Iterate over each fish, create a row for each containing its information -->
+                <% foundFish.forEach(function (entry) { %> <!-- Iterate over each fish, create a row for each containing its information -->
                 <tr>
                     <td class="fishImage"> <!-- Displays image of the fish -->
                         <% if(entry.photo[0]) {%>
@@ -43,18 +85,26 @@
                     <td><%= entry.weight%></td>
                     <td><%= entry.length%></td>
                 </tr>
-            <%})%>
-        </table>
-    </div>
+                <%})%>
+            </table>
+        </div>
 
+    </div>
+    <!-- Bottom Buttons -->
     <div class="row">
         <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %> <!-- If the viewing user is the creator of the report, they have the ability to edit and delete the report -->
-            <a href="/anglerReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
-            <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST" class="btn-block">
-                <button class="btn btn-block btn-outline-danger"> Delete </button>
-            </form>
+            <div class="col-md-12 col-lg-6 pr-0">
+                <a href="/anglerReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
+            </div>
+            <div class="col-md-12 col-lg-6 pl-0">
+                <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST" class="btn-block">
+                    <button class="btn btn-block btn-outline-danger"> Delete </button>
+                </form>
+            </div>
         <% } %>
+        <div class="col-md-12 col-lg-12 header">
+            <a href="/anglerReports" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all angler reports -->
 
-        <a href="/anglerReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all angler reports -->
+        </div>
     </div>
 </div>

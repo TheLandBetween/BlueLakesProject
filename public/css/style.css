@@ -178,3 +178,7 @@ html, body {
 .stackedItems {
     padding: 1.5vh 0;
 }
+
+.marginStrip {
+    margin: 0;
+}
