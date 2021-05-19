@@ -1,55 +1,53 @@
-
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
-<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
-    <div class="container">
-        <h1 class="text-center">All Recent Angler Reports</h1>
-            <div class="row" >
-                <div class="col-sm-1"></div>
-                <div class="col-sm bg-white border border-primary">
-                    <table class="table table-sm"> <!-- Table of all species caught, and their counts in the database -->
-                        <tr>
-                            <th>Species of Fish</th>
-                            <th>Count</th>
-                        </tr>
-                        <% for (let fish in fishCounts) {%> <!-- fishCounts is passed in through the controller -->
-                            <tr>
-                                <td><%= fish %></td> <!-- Implemented as a dictionary -->
-                                <td><%= fishCounts[fish] %></td>
-                            </tr>
-                        <% } %>
-                    </table>
-                </div>
-                <div class="col-sm-1"></div>
+
+<div class="container centerLogin d-flex justify-content-center">
+    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
+        <div class="row header d-flex flex-column">
+            <%- include('../partials/flash') %>
+            <h1 class="text-center display-4">All Angler Reports</h1>
+        </div>
+        <div class="row d-flex flex-column">
+            <div class="col-12 bg-white border border-primary">
+                <table class="table table-sm"> <!-- Table of all species caught, and their counts in the database -->
+                    <tr>
+                        <th>Species of Fish</th>
+                        <th>Count</th>
+                    </tr>
+                    <% for (let fish in fishCounts) {%> <!-- fishCounts is passed in through the controller -->
+                    <tr>
+                        <td><%= fish %></td> <!-- Implemented as a dictionary -->
+                        <td><%= fishCounts[fish] %></td>
+                    </tr>
+                    <% } %>
+                </table>
             </div>
-        <br>
-        <div class="row">
-            <table class="table"> <!-- Table of all angler reports -->
-                <tr>
-                    <th>View Report</th>
-                    <th>Creator</th>
-                    <th>Date Recorded</th>
-                </tr>
-                <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
+            <div class="col-12 stackedItems">
+                <table class="table"> <!-- Table of all angler reports -->
+                    <tr>
+                        <th>View Report</th>
+                        <th>Creator</th>
+                        <th>Date Recorded</th>
+                    </tr>
+                    <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
                     <tr>
                         <td><a href="/anglerReports/<%= report.id%>">details</a></td>
                         <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
                         <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
                     </tr>
-                <% } %>
-            </table>
+                    <% } %>
+                </table>
+            </div>
         </div>
-
-
         <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm">
+            <div class="col-md-12 col-lg-3"></div>
+            <div class="col-md-12 col-lg-6">
                 <!-- Link to submit new report-->
                 <a href="/anglerReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a> <!-- Button to create new angler report -->
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-12 col-lg-3"></div>
         </div>
     </div>
 </div>

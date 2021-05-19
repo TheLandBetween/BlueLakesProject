@@ -3,29 +3,29 @@
 <%- include('partials/navbar')%>
 <%- include('partials/videoBG')%>
         <div class="container main-bg d-flex flex-column justify-content-around align-items-center">
+            <%- include('partials/flash') %>
             <div class="row header d-flex flex-column">
-                <%- include('partials/flash') %>
                 <img src="https://res.cloudinary.com/jaredcloud/image/upload/v1617254133/banner_qj6yhr.png" class="img-fluid mx-auto d-block" alt="Blue Lakes Banner">
-                <h1 class="text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></h1>
+                <p class="display-4 text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></p>
             </div>
             <div class="row homeButtons d-flex flex-column">
                 <div class="row">
                     <div class="col-sm-6"> <!-- New Angler report is available for all users -->
-                        <a href="/anglerReports/new" class="btn btn-block secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>New Angler Report</h6></a>
+                        <a href="/anglerReports/new" class="btn btn-block secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Angler Report</h5></a>
                     </div>
                     <div class="col-sm-6">
                         <% if(currentUser && currentUser.rank >= 2) {%> <!-- New lake report is available for all researchers and administrators -->
-                            <a href="/lakeReports/new" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>New Lake Health Report</h6></a>
+                            <a href="/lakeReports/new" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Lake Health Report</h5></a>
                         <% } %>
                     </div>
                 </div>
                 <% if(currentUser && currentUser.rank === 3) {%> <!-- Viewing all angler and lake health reports is reserved to administrators only -->
                     <div class="row">
                         <div class="col-sm-6">
-                            <a href="/anglerReports" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>View All Angler Reports</h6></a>
+                            <a href="/anglerReports" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Angler Reports</h5></a>
                         </div>
                         <div class="col-sm-6">
-                            <a href="/lakeReports" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h6>View All Lake Health Reports</h6></a>
+                            <a href="/lakeReports" class="btn secondary-button-outline btn-block homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Lake Health Reports</h5></a>
                         </div>
                     </div>
                 <% } %>
