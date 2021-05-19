@@ -19,7 +19,7 @@
                         <div class="form-group">
                             <!-- date input, sent under 'date' label-->
                             <label class='form-label' for="date_generated">Date: </label> <!-- Date must be formatted by slices in order to fit in a date input in html -->
-                            <input type="date" id="date_generated" value="<%= lakeReport.date_generated.getUTCFullYear() + '-' + ('0' + (lakeReport.date_generated.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + lakeReport.date_generated.getUTCDay()).slice(-2)%>" name="date_generated" class="form-control" required>
+                            <input type="date" id="date_generated" value="<%= lakeReport.date_generated.getUTCFullYear() + '-' + ('0' + (lakeReport.date_generated.getUTCMonth()+1)).slice(-2) + '-' + ('0' + lakeReport.date_generated.getUTCDate()).slice(-2)%>" name="date_generated" class="form-control" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
