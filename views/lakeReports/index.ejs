@@ -1,43 +1,39 @@
-
 <!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
-<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
-    <div class="container">
-        <h1 class="text-center">All Recent Lake Health Reports</h1>
-            <div class="row" style="height: 20vh;"> <!-- Box intented for any analytics at the top of the page -->
-                <div class="col-sm-1"></div>
-                <div class="col-sm bg-white border border-primary">Lake statistics and graphs</div>
-                <div class="col-sm-1"></div>
-            </div>
 
-        <br>
-
-        <table class="table"> <!-- Table containing a general overview of all lake health reports created -->
-            <tr>
-                <th>View Report</th>
-                <th>Creator</th>
-                <th>Date Recorded</th>
-                <th>Comments</th>
-            </tr>
-            <% for (let report of healthReports) {%> <!-- Iterates over each report and displays some general contents -->
-            <tr>
-                <td><a href="/lakeReports/<%= report.id%>">details</a></td>
-                <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
-                <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
-                <td><%= report.notes %></td>
-            </tr>
-            <% } %>
-        </table>
-
+<div class="container centerLogin d-flex justify-content-center">
+    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
+        <div class="row header d-flex flex-column">
+            <%- include('../partials/flash') %>
+            <h1 class="text-center display-4">All Lake Health Reports</h1>
+        </div>
         <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm">
+            <table class="table"> <!-- Table containing a general overview of all lake health reports created -->
+                <tr>
+                    <th>View Report</th>
+                    <th>Creator</th>
+                    <th>Date Recorded</th>
+                    <th>Comments</th>
+                </tr>
+                <% for (let report of healthReports) {%> <!-- Iterates over each report and displays some general contents -->
+                <tr>
+                    <td><a href="/lakeReports/<%= report.id%>">details</a></td>
+                    <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                    <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
+                    <td><%= report.notes %></td>
+                </tr>
+                <% } %>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-2"></div>
+            <div class="col-md-12 col-lg-8">
                 <!-- Link to submit new report-->
                 <a href="/lakeReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a> <!-- Button to create a new lake health report -->
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-12 col-lg-2"></div>
         </div>
     </div>
 </div>
