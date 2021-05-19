@@ -5,7 +5,7 @@
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
         <%- include('../partials/flash')%> <!-- Displays all information with the associated report -->
-        <h2>Date Generated: <%= foundReport.date.getUTCFullYear() + '-' + ('0' + (foundReport.date.getUTCMonth()+1)).slice(-2) + '-' + ('0' + foundReport.date.getUTCDate()).slice(-2) %></h2>
+        <h2>Date Generated: <%= foundReport.date_generated.getUTCFullYear() + '-' + ('0' + (foundReport.date_generated.getUTCMonth()+1)).slice(-2) + '-' + ('0' + foundReport.date_generated.getUTCDate()).slice(-2) %></h2>
         <h2>Creator: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
 
         <br>
