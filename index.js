@@ -30,6 +30,11 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User_Account = require("./views/models/User_Account");
 
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/scss', express.static(__dirname + '/node_modules/bootstrap/scss'));
+
 uuid();
 express.static(path.join(__dirname, "/public"));
 

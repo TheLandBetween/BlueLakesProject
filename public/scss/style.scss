@@ -1,0 +1,188 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+:root {
+    --main-white: #DBE9EE;
+    --blue-yonder: #4A6FA5;
+    --blue-sapphire: #166088;
+    --cadet: #4F6D7A;
+    --col-blue: #C0D6DF;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0 0;
+    padding: 0 0;
+    font-size: 1rem;
+}
+
+.centerLogin {
+    width: 100%;
+
+}
+
+.login-bg {
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(22,96,136,0.75);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(22,96,136,0.75);
+    box-shadow: 0px 0px 16px 0px rgba(22,96,136,0.75);
+    min-height: 65%;
+    padding-bottom: 2vh;
+    padding-top: 2vh;
+    background-color: var(--main-white);
+    position: relative;
+}
+
+.login-bg > .row {
+    width: 85%;
+}
+
+.login-bg form {
+    width: 100%;
+}
+
+.main-bg {
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(22,96,136,0.75);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(22,96,136,0.75);
+    box-shadow: 0px 0px 16px 0px rgba(22,96,136,0.75);
+    min-height: 100%;
+    padding-bottom: 2vh;
+    background-color: var(--main-white);
+    position: relative;
+}
+
+.main-bg > .container {
+    height: 100%;
+}
+
+.main-bg > .row {
+    width: 85%;
+}
+
+.navbar {
+    /*background: rgb(79,109,122);*/
+    /*background: linear-gradient(180deg, rgba(79,109,122,1) 0%, rgba(79,109,122,0.6993172268907564) 84%, rgba(79,109,122,0) 100%);*/
+
+    background: rgb(79,109,122);
+    background: linear-gradient(180deg, rgba(79,109,122,1) 0%, rgba(79,109,122,0.6993172268907564) 95%, rgba(79,109,122,0) 100%);
+}
+
+.card-header .fa {
+    transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+    transform: rotate(90deg);
+}
+
+.video-hero--content {
+    position: relative;
+    height: 100%;
+    padding-top: 9vh;
+    padding-bottom: 2vh;
+}
+
+.main-btn {
+    background-color: var(--col-blue);
+}
+
+.nav-item {
+    color: white;
+}
+
+.navbar-brand img {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 100%;
+    padding: 5px;
+}
+
+.navbar-brand img:hover {
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(255,255,255,0.75);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(255,255,255,0.75);
+    box-shadow: 0px 0px 16px 0px rgba(255,255,255,0.75);
+    transition: 0.2s ease-in-out;
+}
+
+.nav-item:hover {
+    text-shadow: 0px 0px 2px var(--col-blue);
+    transition: 0.2s;
+}
+
+.dropdown-menu {
+    background: none;
+    border: none;
+}
+
+.dropdown-item {
+    background: rgba(255,255,255,0.25);
+    color: rgb(90, 97, 102);
+}
+
+.dropdown-item:hover {
+    background-color: rgba(22,96,136,0.0);
+    border-left: 3px solid var(--col-blue);
+    text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.92);
+    color: rgb(70, 75, 79);
+
+}
+
+.homeButton {
+    height: 10vh;
+}
+
+.homeButtons .row {
+    padding: 1%;
+}
+
+.main-button-outline {
+    border: 1px solid var(--blue-sapphire);
+
+}
+
+.main-button-outline:hover,
+.main-button-outline:active,
+.main-button-outline:focus,
+.main-button-outline.active {
+    background: var(--blue-sapphire);
+    border-color: var(--blue-sapphire);
+    color: #FFFFFF;
+}
+
+.secondary-button-outline {
+    border-color: var(--blue-yonder);
+}
+
+.secondary-button-outline:hover,
+.secondary-button-outline:active,
+.secondary-button-outline:focus,
+.secondary-button-outline.active {
+    background: var(--col-blue);
+    border-color: var(--col-blue);
+}
+
+.header {
+    padding: 2%;
+    align-items: center;
+}
+
+.fishImage {
+    max-width: 20vw;
+    max-height: 20vh;
+}
+
+.sectionHeader {
+    padding-bottom: 2%;
+}
+
+.pageForm {
+    width: 100%;
+}
+
+.stackedItems {
+    padding: 1.5vh 0;
+}
+
+.marginStrip {
+    margin: 0;
+}
