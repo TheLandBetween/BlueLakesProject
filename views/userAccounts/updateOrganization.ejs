@@ -12,7 +12,7 @@
         <div class="row d-flex flex-column">
             <form action="/updateOrganization" method="POST" class="needs-validation" name="updateOrganization" novalidate>
                 <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username"> <!-- Hidden input for requesting users username -->
-                <div class="form-group">
+                <div class="mb-3">
                     <label class='form-label' for="organization">Organization: </label> <!-- Filled with current organization, user can change and submit a new organization -->
                     <input type="text" id="organization" placeholder="<%=currentUser.organization%>" name="organization" class="form-control" required>
                 </div>

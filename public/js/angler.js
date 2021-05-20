@@ -4,7 +4,7 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
     $("#fishes").append(`
         <div class="card">
             <div class="card-header">
-                <a data-toggle="collapse" href="#collapse-${fishCount}" aria-expanded="true" aria-controls="collapse-${fishCount}" id="heading-example" class="d-block text-center">
+                <a data-bs-toggle="collapse" href="#collapse-${fishCount}" aria-expanded="true" aria-controls="collapse-${fishCount}" id="heading-example" class="d-block text-center">
                     <i class="fa fa-chevron-down pull-right"></i>
                     Fish ${fishCount + 1}
                 </a>
@@ -12,11 +12,11 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
             <div id="collapse-${fishCount}" class="collapse show" aria-labelledby="heading-example">
                 <div class="card-body text-left">
                     <input class="form-control" value="?" type="hidden" id="fish_id" name="fish_id">
-                    <div class="form-group d-flex flex-column">
+                    <div class="mb-3 d-flex flex-column">
                         <label class="form-label" for="photo">Picture of Fish: </label>
                         <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo">
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="form-label" for="species">Species: </label>
                         <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
                             <option value="">Choose Fish...</option>
@@ -59,11 +59,11 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
                             <option value="Yellow Perch">Yellow Perch</option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="form-label" for="length">Length: </label>
                         <input class="form-control" type="number" inputmode="decimal" id="fish[${fishCount}][length]" placeholder="Length of Fish" name="length">
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label class="form-label" for="weight">Weight: </label>
                         <input class="form-control" type="number" inputmode="decimal" id="fish[${fishCount}][weight]" placeholder="Weight of Fish" name="weight">
                     </div>

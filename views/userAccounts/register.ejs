@@ -9,7 +9,7 @@
         </div>
         <div class="row header">
             <form action="/register" method="POST" class="needs-validation" name="submit" novalidate>
-                <div class="form-group">
+                <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="username">Email: </label> <!-- User enters a email, must be in email format -->
                     <input type="email" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
@@ -18,7 +18,7 @@
                         Looks good!
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="firstName">First Name: </label>
                     <input type="text" id="firstName" placeholder="Jane" name="firstName" class="form-control" required>
@@ -27,7 +27,7 @@
                         Looks good!
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="lastName">Last Name: </label>
                     <input type="text" id="lastName" placeholder="Doe" name="lastName" class="form-control" required>
@@ -36,7 +36,7 @@
                         Looks good!
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="organization">Organization: </label> <!-- User is not required to input an organization -->
                     <input type="text" id="organization" placeholder="Associated Organization (Optional)" name="organization" class="form-control">
@@ -45,7 +45,7 @@
                         Looks good!
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="password">Password: </label> <!-- Password must be 8 characters long -->
                     <input type="password" id="password" pattern=".{8,}" placeholder="Doe" name="password" class="form-control" onkeyup="return passwordChanged();" required>
@@ -55,7 +55,7 @@
                         Looks good!
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <div class="row d-flex justify-content-around">
                         <label class="radio-inline" for="distPref">
                             <input class="form-control" type="radio" id="cm" name="distPref" value="cm" required checked>Centimeters
@@ -65,7 +65,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <div class="row d-flex justify-content-around">
                         <label class="radio-inline" for="weightPref">
                             <input class="form-control" type="radio" id="kg" name="weightPref" value="kg" required checked>Kilograms

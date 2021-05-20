@@ -16,23 +16,23 @@
                         <p class="h2 text-center">General Information</p> <!-- General report information that the user must enter -->
                     </div>
                     <div class="text-left">
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="form-label" for="lake">Lake Name: </label> <!-- Fills in inputs with all information the user has already submitted with the report, they can choose what to change -->
                             <input class="form-control" value="<%=foundReport.lake%>" type="text" id="lake" placeholder="Lake Name" name="lake" required>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="form-label" for="municipality">Municipality: </label>
                             <input class="form-control" value="<%=foundReport.municipality%>" type="text" id="municipality" placeholder="Municipality" name="municipality" required>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="form-label" for="date">Date: </label>
                             <input class="form-control" value="<%= foundReport.date.getUTCFullYear() + '-' + ('0' + (foundReport.date.getUTCMonth()+1)).slice(-2) + '-' + ('0' + foundReport.date.getUTCDate()).slice(-2) %>" type="date" id="date" placeholder="year-mo-dy" name="date" required>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="form-label" for="t_start">Time In: </label>
                             <input  class="form-control" value="<%=foundReport.t_start%>" type="time" id="t_start" placeholder="hh:mm" name="t_start" required>
                         </div>
-                        <div class="form-group">
+                        <div class="mb-3">
                             <label class="form-label" for="t_end">Time Out: </label>
                             <input  class="form-control" value="<%=foundReport.t_end%>" type="time" id="t_end" placeholder="hh:mm" name="t_end" required>
                         </div>
@@ -52,7 +52,7 @@
                                 index += 1; %> <!-- Every fish increments index by 1, index is used to make sure the cards are unique when minimized or examined -->
                             <div class="card"> <!-- If card aria-controls and href's are the same, minimizing one card will effect another with the same name.  Use indexes to get around this -->
                                 <div class="card-header"> <!-- Top of card -->
-                                    <a data-toggle="collapse" href="#collapse-<%=index%>" aria-expanded="true" aria-controls="collapse-<%=index%>" id="heading-example" class="d-block text-center">
+                                    <a data-bs-toggle="collapse" href="#collapse-<%=index%>" aria-expanded="true" aria-controls="collapse-<%=index%>" id="heading-example" class="d-block text-center">
                                         <i class="fa fa-chevron-down pull-right"></i>
                                         Fish <%=index%> <!-- Displays the current fish number at the head of the card -->
                                     </a>
@@ -60,10 +60,10 @@
                                 <div id="collapse-<%=index%>" class="collapse show" aria-labelledby="heading-example">
                                     <div class="card-body text-left"> <!-- Body is where all the information can be input.  Whole container is wrapped by a form, so duplicate inputs submit as an array of inputs -->
                                         <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id"> <!-- For each existing fish, have a hidden ID field containing its unique database ID.  Used in processing after editing -->
-                                        <div class="form-group d-flex flex-column">
+                                        <div class="mb-3 d-flex flex-column">
                                             <img>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="mb-3">
                                             <label class="form-label" for="species">Species: </label> <!-- Value is initiated as the fish in the report -->
                                             <select class="form-control custom-select" autocomplete="on" id="fish[${fishCount}][species]" placeholder="Species of Fish" name="species" required>
                                                 <option value="<%=entry.species%>" selected><%=entry.species%></option> <!-- All viable species approved by The Land Between, sorted alphabetically -->
@@ -106,11 +106,11 @@
                                                 <option value="Yellow Perch">Yellow Perch</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="mb-3">
                                             <label class="form-label" for="length">Length: </label>
                                             <input class="form-control" value="<%=entry.length%>" type="number" inputmode="decimal" id="length" placeholder="Length of Fish" name="length">
                                         </div>
-                                        <div class="form-group">
+                                        <div class="mb-3">
                                             <label class="form-label" for="weight">Weight: </label>
                                             <input class="form-control" value="<%=entry.weight%>" type="number" inputmode="decimal" id="weight" placeholder="Weight of Fish" name="weight">
                                         </div>

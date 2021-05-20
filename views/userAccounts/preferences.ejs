@@ -13,7 +13,7 @@
             <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username"> <!-- Hidden input containing the users username (email) -->
             <div class="mb-3">
                 <div class="row d-flex justify-content-around">
-                    <label class="radio-inline" for="distPref">
+                    <label class="radio-inline form-label" for="distPref">
                         <input class="form-control" type="radio" id="cm" name="distPref" value="cm" required <% if (currentUser.distPref == "cm"){ %> checked <% }%>>Centimeters
                     </label>
                     <label class="radio-inline" for="distPref">
