@@ -3,54 +3,54 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 
-<div class="container-fluid centerLogin d-flex justify-content-center">
-    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
-        <%- include('../partials/flash') %>
-        <div class="row header d-flex flex-column">
-            <h1 class="text-center display-2">All Angler Reports</h1>
+<div class="container main-bg bg-light centerLogin d-flex flex-column align-items-center justify-content-center">
+    <%- include('../partials/flash') %>
+    <div class="row header d-flex flex-column">
+        <h1 class="text-center display-2">All Angler Reports</h1>
+    </div>
+    <div class="row d-flex flex-column">
+        <div class="col-12 bg-white border border-primary">
+            <table class="table table-sm"> <!-- Table of all species caught, and their counts in the database -->
+                <tr>
+                    <th>Species of Fish</th>
+                    <th>Count</th>
+                </tr>
+                <% for (let fish in fishCounts) {%> <!-- fishCounts is passed in through the controller -->
+                <tr>
+                    <td><%= fish %></td> <!-- Implemented as a dictionary -->
+                    <td><%= fishCounts[fish] %></td>
+                </tr>
+                <% } %>
+            </table>
         </div>
-        <div class="row d-flex flex-column">
-            <div class="col-12 bg-white border border-primary">
-                <table class="table table-sm"> <!-- Table of all species caught, and their counts in the database -->
-                    <tr>
-                        <th>Species of Fish</th>
-                        <th>Count</th>
-                    </tr>
-                    <% for (let fish in fishCounts) {%> <!-- fishCounts is passed in through the controller -->
-                    <tr>
-                        <td><%= fish %></td> <!-- Implemented as a dictionary -->
-                        <td><%= fishCounts[fish] %></td>
-                    </tr>
-                    <% } %>
-                </table>
-            </div>
-            <div class="col-12 stackedItems">
-                <table class="table"> <!-- Table of all angler reports -->
-                    <tr>
-                        <th>View Report</th>
-                        <th>Creator</th>
-                        <th>Date Recorded</th>
-                    </tr>
-                    <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
-                    <tr>
-                        <td><a href="/anglerReports/<%= report.id%>">details</a></td>
-                        <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
-                        <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
-                    </tr>
-                    <% } %>
-                </table>
+        <div class="col-12 stackedItems">
+            <table class="table"> <!-- Table of all angler reports -->
+                <tr>
+                    <th>View Report</th>
+                    <th>Creator</th>
+                    <th>Date Recorded</th>
+                </tr>
+                <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
+                <tr>
+                    <td><a href="/anglerReports/<%= report.id%>">details</a></td>
+                    <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                    <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
+                </tr>
+                <% } %>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-3"></div>
+        <div class="col-md-12 col-lg-6">
+            <!-- Link to submit new report-->
+            <div class="d-grid gap-2">
+                <a href="/anglerReports/new" class="btn btn-outline-primary" role="button" aria-disabled="true">New Report</a> <!-- Button to create new angler report -->
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 col-lg-3"></div>
-            <div class="col-md-12 col-lg-6">
-                <!-- Link to submit new report-->
-                <div class="d-grid gap-2">
-                    <a href="/anglerReports/new" class="btn btn-outline-primary" role="button" aria-disabled="true">New Report</a> <!-- Button to create new angler report -->
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-3"></div>
-        </div>
+        <div class="col-md-12 col-lg-3"></div>
     </div>
 </div>
 
+<!-- Include proper closing tags -->
+<%- include('../partials/foot')%>

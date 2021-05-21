@@ -3,8 +3,7 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 
-<div class="container-fluid centerLogin d-flex justify-content-center">
-    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
+<div class="container main-bg bg-light centerLogin d-flex flex-column align-items-center justify-content-center">
         <%- include('../partials/flash') %>
         <div class="row header d-flex flex-column text-center">
             <h1 class="display-2">New Angler Report</h1>
@@ -137,8 +136,10 @@
                 </div>
             </form>
         </div>
-    </div>
 </div>
+
+<!-- Include proper closing tags -->
+<%- include('../partials/foot')%>
 
 <!-- Client Side Form Validation -->
 <script src="../js/clientValidation.js"></script>

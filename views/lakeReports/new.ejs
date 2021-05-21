@@ -3,106 +3,107 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 
-<div class="container centerLogin d-flex justify-content-center">
-    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
-        <%- include('../partials/flash') %>
-        <div class="row header d-flex flex-column">
-            <h1 class="text-center display-2">New Health Report</h1>
-        </div>
-        <div class="row d-flex flex-column">
-            <form action="/lakeReports" method="post" class="needs-validation" name="submit" novalidate>
-                <div class="row d-flex flex-column">
-                    <div class="d-flex justify-content-center">
-                        <p class="h2 text-center">General Information</p>
+<div class="container main-bg bg-light centerLogin d-flex flex-column align-items-center justify-content-center">
+    <%- include('../partials/flash') %>
+    <div class="row header d-flex flex-column text-center">
+        <h1 class="display-2">New Health Report</h1>
+    </div>
+    <div class="row d-flex flex-column">
+        <form action="/lakeReports" method="post" class="needs-validation" name="submit" novalidate>
+            <div class="row d-flex flex-column">
+                <div class="d-flex justify-content-center">
+                    <p class="h2 text-center">General Information</p>
+                </div>
+                <div class="text-left">
+                    <div class="mb-3">
+                        <!-- date input, sent under 'date' label-->
+                        <label class='form-label' for="date_generated">Date Recorded: </label>
+                        <input type="date" id="date_generated" placeholder="yyyy-mm-dd" name="date_generated" class="form-control" required>
+                        <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
                     </div>
-                    <div class="text-left">
-                        <div class="mb-3">
-                            <!-- date input, sent under 'date' label-->
-                            <label class='form-label' for="date_generated">Date Recorded: </label>
-                            <input type="date" id="date_generated" placeholder="yyyy-mm-dd" name="date_generated" class="form-control" required>
-                            <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <!-- health input, sent under 'health' label-->
-                            <label class='form-label' for="notes">Notes: </label>
-                            <input type="text" id="notes" placeholder="Additional Notes" name="notes" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <!-- health input, sent under 'health' label-->
-                            <label class='form-label' for="perc_shore_devd">Perc Shore Devd: </label>
-                            <input type="Number" inputmode="decimal" id="perc_shore_devd" placeholder="perc shore devd" name="perc_shore_devd" class="form-control" required>
-                        </div>
+                    <div class="mb-3">
+                        <!-- health input, sent under 'health' label-->
+                        <label class='form-label' for="notes">Notes: </label>
+                        <input type="text" id="notes" placeholder="Additional Notes" name="notes" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <!-- health input, sent under 'health' label-->
+                        <label class='form-label' for="perc_shore_devd">Perc Shore Devd: </label>
+                        <input type="Number" inputmode="decimal" id="perc_shore_devd" placeholder="perc shore devd" name="perc_shore_devd" class="form-control" required>
                     </div>
                 </div>
-                <!--  Extra Entries (Temp, Secchi, Phosp, Calcium -->
-                <div class="container d-flex flex-column">
-                    <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
-                    <div class="row">
-                        <div class="col-12" id="tempDO_Container"> <!-- Each container is initialized as empty, in case the user doesn't want to submit a type of reading with the report -->
-                        </div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-secondary" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- As the user adds readings, cards are added to the associated container -->
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-12"></div>
-                    </div>
-                    <!-- SECCHI DEPTH READING -->
-                    <div class="row stackedItems">
-                        <div class="col-12" id="secchiDepth_Container"></div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-secondary" type="button" id="addSecchi">Add Secchi Reading</button>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-12"></div>
-                    </div>
-                    <!-- PHOSPHORUS READING -->
-                    <div class="row">
-                        <div class="col-12" id="phosphorus_Container"></div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-secondary" type="button" id="addPhosphorus">Add Phosphorus Reading</button>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-12"></div>
-                    </div>
-                    <!-- CALCIUM READING -->
-                    <div class="row stackedItems">
-                        <div class="col-12" id="calcium_Container"></div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-secondary" type="button" id="addCalcium">Add Calcium Reading</button>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-3"></div>
-                        <div class="col-12"></div>
-                    </div>
-                </div>
-                <!-- SUBMIT REPORT -->
+            </div>
+            <!--  Extra Entries (Temp, Secchi, Phosp, Calcium -->
+            <div class="container d-flex flex-column">
+                <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
                 <div class="row">
+                    <div class="col-12" id="tempDO_Container"> <!-- Each container is initialized as empty, in case the user doesn't want to submit a type of reading with the report -->
+                    </div>
                     <div class="col-md-12 col-lg-3"></div>
                     <div class="col-md-12 col-lg-6">
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-outline-primary">Submit</button>
+                            <button class="btn btn-outline-secondary" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- As the user adds readings, cards are added to the associated container -->
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-12"></div>
                 </div>
-            </form>
-        </div>
+                <!-- SECCHI DEPTH READING -->
+                <div class="row stackedItems">
+                    <div class="col-12" id="secchiDepth_Container"></div>
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-secondary" type="button" id="addSecchi">Add Secchi Reading</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-12"></div>
+                </div>
+                <!-- PHOSPHORUS READING -->
+                <div class="row">
+                    <div class="col-12" id="phosphorus_Container"></div>
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-secondary" type="button" id="addPhosphorus">Add Phosphorus Reading</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-12"></div>
+                </div>
+                <!-- CALCIUM READING -->
+                <div class="row stackedItems">
+                    <div class="col-12" id="calcium_Container"></div>
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-secondary" type="button" id="addCalcium">Add Calcium Reading</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-3"></div>
+                    <div class="col-12"></div>
+                </div>
+            </div>
+            <!-- SUBMIT REPORT -->
+            <div class="row">
+                <div class="col-md-12 col-lg-3"></div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-primary">Submit</button>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-3"></div>
+            </div>
+        </form>
     </div>
 </div>
+
+<!-- Include proper closing tags -->
+<%- include('../partials/foot')%>
 
 <!-- Client Side Form Validation -->
 <script src="../js/clientValidation.js"></script>

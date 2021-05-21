@@ -2,73 +2,75 @@
 <%- include('partials/head')%>
 <%- include('partials/navbar')%>
 <%- include('partials/videoBG')%>
-        <div class="container main-bg d-flex flex-column justify-content-around align-items-center">
-            <%- include('partials/flash') %>
-            <div class="row header d-flex flex-column">
-                <img src="https://res.cloudinary.com/jaredcloud/image/upload/v1617254133/banner_qj6yhr.png" class="img-fluid mx-auto d-block" alt="Blue Lakes Banner">
-                <p class="display-2 text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></p>
-            </div>
-            <div class="row homeButtons d-flex flex-column">
-                <div class="row">
-                    <div class="col-sm-6"> <!-- New Angler report is available for all users -->
-                        <a href="/anglerReports/new" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Angler Report</h5></a>
-                    </div>
-                    <div class="col-sm-6">
-                        <% if(currentUser && currentUser.rank >= 2) {%> <!-- New lake report is available for all researchers and administrators -->
-                            <a href="/lakeReports/new" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Lake Health Report</h5></a>
-                        <% } %>
-                    </div>
-                </div>
-                <% if(currentUser && currentUser.rank === 3) {%> <!-- Viewing all angler and lake health reports is reserved to administrators only -->
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="/anglerReports" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Angler Reports</h5></a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="/lakeReports" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Lake Health Reports</h5></a>
-                        </div>
-                    </div>
-                <% } %>
-            </div>
-            <div class="row">
-                <% if(currentUser && currentUser.rank >= 2) {%> <!-- Users table of reports is only displayed if they are a researcher or greater -->
-                    <h3>Your Lake Reports</h3> <!-- If a users account is downgraded, they will not be able to view their reports -->
-                    <table class="table" id="lakeReportTable"> <!-- Outputs a table with general information on all lake health reports submitted by the user -->
-                        <tr>
-                            <th>View Report</th>
-                            <th>Date Recorded</th>
-                            <th>Comments</th>
-                        </tr>
-                        <% for (let report of healthReports) {%>
-                            <tr>
-                                <td><a href="/lakeReports/<%= report.id%>">details</a></td> <!-- Link to index a specific lake health report for more details -->
-                                <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
-                                <td><%= report.notes %></td>
-                            </tr>
-                        <% } %>
-                    </table>
-                <% } %>
-
-                <h3>Your Angler Reports</h3>
-                <table class="table" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
-                    <tr>
-                        <th>View Report</th>
-                        <th>Municipality</th>
-                        <th>Lake</th>
-                        <th>Date Recorded</th>
-                    </tr>
-                    <% for (let report of anglerReports) {%>
-                        <tr>
-                            <td><a href="/anglerReports/<%= report.id%>">details</a></td> <!-- Link to index a specific angler report for more details -->
-                            <td><%= report.municipality%></td>
-                            <td><%= report.lake%></td>
-                            <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
-                        </tr>
-                    <% } %>
-                </table>
-        </div>
-        </div>
+<div class="container main-bg d-flex flex-column justify-content-around align-items-center">
+    <%- include('partials/flash') %>
+    <div class="row header d-flex flex-column">
+        <img src="https://res.cloudinary.com/jaredcloud/image/upload/v1617254133/banner_qj6yhr.png" class="img-fluid mx-auto d-block" alt="Blue Lakes Banner">
+        <p class="display-2 text-center">Welcome <%=currentUser.firstName + " " + currentUser.lastName%></p>
     </div>
+    <div class="row homeButtons d-flex flex-column">
+        <div class="row">
+            <div class="col-sm-6"> <!-- New Angler report is available for all users -->
+                <a href="/anglerReports/new" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Angler Report</h5></a>
+            </div>
+            <div class="col-sm-6">
+                <% if(currentUser && currentUser.rank >= 2) {%> <!-- New lake report is available for all researchers and administrators -->
+                    <a href="/lakeReports/new" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Lake Health Report</h5></a>
+                <% } %>
+            </div>
+        </div>
+        <% if(currentUser && currentUser.rank === 3) {%> <!-- Viewing all angler and lake health reports is reserved to administrators only -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <a href="/anglerReports" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Angler Reports</h5></a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/lakeReports" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Lake Health Reports</h5></a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    <div class="row">
+        <% if(currentUser && currentUser.rank >= 2) {%> <!-- Users table of reports is only displayed if they are a researcher or greater -->
+            <h3>Your Lake Reports</h3> <!-- If a users account is downgraded, they will not be able to view their reports -->
+            <table class="table" id="lakeReportTable"> <!-- Outputs a table with general information on all lake health reports submitted by the user -->
+                <tr>
+                    <th>View Report</th>
+                    <th>Date Recorded</th>
+                    <th>Comments</th>
+                </tr>
+                <% for (let report of healthReports) {%>
+                    <tr>
+                        <td><a href="/lakeReports/<%= report.id%>">details</a></td> <!-- Link to index a specific lake health report for more details -->
+                        <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
+                        <td><%= report.notes %></td>
+                    </tr>
+                <% } %>
+            </table>
+        <% } %>
+
+        <h3>Your Angler Reports</h3>
+        <table class="table" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
+            <tr>
+                <th>View Report</th>
+                <th>Municipality</th>
+                <th>Lake</th>
+                <th>Date Recorded</th>
+            </tr>
+            <% for (let report of anglerReports) {%>
+                <tr>
+                    <td><a href="/anglerReports/<%= report.id%>">details</a></td> <!-- Link to index a specific angler report for more details -->
+                    <td><%= report.municipality%></td>
+                    <td><%= report.lake%></td>
+                    <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
+                </tr>
+            <% } %>
+        </table>
+</div>
+</div>
+
+<!-- Include proper closing tags -->
+<%- include('partials/foot')%>
 
 <script>
     $(document).ready(function () { //Datatable functionality has not yet been implemented.  This would allow for the sorting and querying of tables with native bootstrap

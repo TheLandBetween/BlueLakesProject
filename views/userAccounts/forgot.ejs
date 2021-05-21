@@ -3,9 +3,9 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 
-<div class="container centerLogin d-flex justify-content-center">
-    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
-        <%- include('../partials/flash') %>
+<div class="centerDiv d-flex align-items-center">
+    <div class="container login-bg d-flex flex-column align-items-center justify-content-between bg-light">
+       <%- include('../partials/flash') %>
         <div class="row header d-flex flex-column">
             <h1 class="text-center display-2">Forgot Password</h1>
         </div>
@@ -36,6 +36,9 @@
         </div>
     </div>
 </div>
+
+<!-- Include proper closing tags -->
+<%- include('../partials/foot')%>
 
 <!-- Client Side Form Validation -->
 <script src="js/clientValidation.js"></script>
