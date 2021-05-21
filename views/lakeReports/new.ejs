@@ -7,7 +7,7 @@
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
         <%- include('../partials/flash') %>
         <div class="row header d-flex flex-column">
-            <h1 class="text-center display-4">New Health Report</h1>
+            <h1 class="text-center display-2">New Health Report</h1>
         </div>
         <div class="row d-flex flex-column">
             <form action="/lakeReports" method="post" class="needs-validation" name="submit" novalidate>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <!--  Extra Entries (Temp, Secchi, Phosp, Calcium -->
-                <div class="row d-flex flex-column">
+                <div class="container d-flex flex-column">
                     <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
                     <div class="row">
                         <div class="col-12" id="tempDO_Container"> <!-- Each container is initialized as empty, in case the user doesn't want to submit a type of reading with the report -->

@@ -7,7 +7,7 @@
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
        <%- include('../partials/flash') %>
         <div class="row header d-flex flex-column">
-            <h1 class="text-center display-4">Change Weight / Distance Preferences</h1>
+            <h1 class="text-center display-2">Change Weight / Distance Preferences</h1>
         </div>
         <form action="/updatePreferences" method="POST" class="needs-validation" name="updatePreferences" novalidate>
             <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="username" name="username"> <!-- Hidden input containing the users username (email) -->
