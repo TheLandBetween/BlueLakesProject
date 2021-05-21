@@ -3,11 +3,11 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 
-<div class="container centerLogin d-flex justify-content-center">
+<div class="container-fluid centerLogin d-flex justify-content-center">
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
+        <%- include('../partials/flash') %>
         <div class="row header d-flex flex-column">
-            <%- include('../partials/flash') %>
-            <h1 class="text-center display-4">All Angler Reports</h1>
+            <h1 class="text-center display-2">All Angler Reports</h1>
         </div>
         <div class="row d-flex flex-column">
             <div class="col-12 bg-white border border-primary">
@@ -45,7 +45,9 @@
             <div class="col-md-12 col-lg-3"></div>
             <div class="col-md-12 col-lg-6">
                 <!-- Link to submit new report-->
-                <a href="/anglerReports/new" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">New Report</a> <!-- Button to create new angler report -->
+                <div class="d-grid gap-2">
+                    <a href="/anglerReports/new" class="btn btn-outline-primary" role="button" aria-disabled="true">New Report</a> <!-- Button to create new angler report -->
+                </div>
             </div>
             <div class="col-md-12 col-lg-3"></div>
         </div>

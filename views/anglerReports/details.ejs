@@ -3,7 +3,8 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 <div class="container bg-light main-bg d-flex flex-column align-items-center overflow-aut justify-content-around">
-    <div class="row header d-flex flex-column justify-content-center">
+    <%- include('../partials/flash')%>
+    <div class="row header d-flex flex-column text-center">
         <%- include('../partials/flash')%>
         <h1 class="display-4">Angler Report</h1>
         <h2>Angler: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
@@ -93,17 +94,22 @@
     <div class="row">
         <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %> <!-- If the viewing user is the creator of the report, they have the ability to edit and delete the report -->
             <div class="col-md-12 col-lg-6 pr-0">
-                <a href="/anglerReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
+                <div class="d-grid gap-2">
+                    <a href="/anglerReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary" role="button" aria-disabled="true">Edit Report</a>
+                </div>
             </div>
             <div class="col-md-12 col-lg-6 pl-0">
-                <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST" class="btn-block">
-                    <button class="btn btn-block btn-outline-danger"> Delete </button>
+                <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-danger"> Delete </button>
+                    </div>
                 </form>
             </div>
         <% } %>
         <div class="col-12 header">
-            <a href="/anglerReports" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all angler reports -->
-
+            <div class="d-grid gap-2">
+                <a href="/anglerReports" class="btn btn-outline-primary" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all angler reports -->
+            </div>
         </div>
     </div>
 </div>

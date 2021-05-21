@@ -3,11 +3,8 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 <div class="container bg-light main-bg d-flex flex-column align-items-center overflow-aut justify-content-around">
-    <div class="container-fluid">
-        <%- include('../partials/flash')%>
-
-    </div>
-    <div class="row header d-flex flex-column justify-content-center">
+    <%- include('../partials/flash')%>
+    <div class="row header d-flex flex-column text-center">
         <h1 class="display-4">Lake Health Report</h1>
         <h2>Creator: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
         <h3>Date Generated: <%= foundReport.date_generated.getUTCFullYear() + '-' + ('0' + (foundReport.date_generated.getUTCMonth()+1)).slice(-2) + '-' + ('0' + foundReport.date_generated.getUTCDate()).slice(-2) %></h3>
@@ -116,16 +113,22 @@
     <div class="row">
         <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %> <!-- If the current user is the creator of the report, they are given the option to edit or delete the report -->
         <div class="col-md-12 col-lg-6 pr-0">
-            <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
+            <div class="d-grid gap-2">
+                <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary" role="button" aria-disabled="true">Edit Report</a>
+            </div>
         </div>
         <div class="col-md-12 col-lg-6 pl-0">
             <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
-                <button class="btn btn-block btn-outline-danger"> Delete </button>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-danger"> Delete </button>
+                </div>
             </form>
         </div>
         <% } %>
         <div class="col-12 header">
-            <a href="/lakeReports" class="btn btn-outline-primary btn-block" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all reports -->
+            <div class="d-grid gap-2">
+                <a href="/lakeReports" class="btn btn-outline-primary" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all reports -->
+            </div>
         </div>
     </div>
 </div>

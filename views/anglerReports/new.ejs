@@ -3,11 +3,11 @@
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
 
-<div class="container centerLogin d-flex justify-content-center">
+<div class="container-fluid centerLogin d-flex justify-content-center">
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
         <%- include('../partials/flash') %>
-        <div class="row header d-flex flex-column">
-            <h1 class="text-center display-4">New Angler Report</h1>
+        <div class="row header d-flex flex-column text-center">
+            <h1 class="display-2">New Angler Report</h1>
         </div>
         <div class="row d-flex flex-column">
             <form action="/anglerReports" method="post" class="needs-validation" name="submit" novalidate enctype="multipart/form-data">
@@ -117,7 +117,9 @@
                             <div class="row">
                                 <div class="col-md-12 col-lg-3"></div>
                                 <div class="col-md-12 col-lg-6">
-                                    <button class="btn btn-outline-secondary btn-block" type="button" id="addFish">Add Fish</button> <!-- Button to add additional fish.  Triggers JS method at bottom of the file -->
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-outline-secondary" type="button" id="addFish">Add Fish</button> <!-- Button to add additional fish.  Triggers JS method at bottom of the file -->
+                                    </div>
                                 </div>
                                 <div class="col-md-12 col-lg-3"></div>
                             </div>
@@ -127,7 +129,9 @@
                 <div class="row">
                     <div class="col-md-12 col-lg-3"></div>
                     <div class="col-md-12 col-lg-6">
-                        <button type="submit" class="btn btn-outline-primary btn-block">Submit</button> <!-- Button to submit the report -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-outline-primary">Submit</button> <!-- Button to submit the report -->
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-3"></div>
                 </div>
