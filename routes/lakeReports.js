@@ -3,11 +3,11 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, isCreator, validateLakeReport } = require('../middleware');
 
-const lakeReports = require('../controllers/lakeReports');
+const lakeReports = require('../controllers/lakeReports'); //Allows you to use methods defined in /controllers/lakeReports
 
 router.route('/')
     .get(isLoggedIn, catchAsync(lakeReports.index)) // INDEX route
-    .post(isLoggedIn, catchAsync(lakeReports.createLakeReport)); // CREATE route
+    .post(isLoggedIn,  catchAsync(lakeReports.createLakeReport)); // CREATE route
 
 router.get('/new', isLoggedIn, lakeReports.renderNewForm); // CREATE route
 

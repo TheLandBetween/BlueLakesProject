@@ -2,22 +2,42 @@
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
-<div class="container bg-light main-bg d-flex align-items-center overflow-auto">
-    <div class="container">
-        <%- include('../partials/flash')%>
-        <h2>Date Generated: <%= foundReport.date_generated.getUTCDate() + '-' + (foundReport.date_generated.getUTCMonth() + 1) + '-' + foundReport.date_generated.getUTCFullYear() %></h2>
+<div class="container bg-light main-bg d-flex flex-column align-items-center overflow-aut justify-content-around">
+    <%- include('../partials/flash')%>
+    <div class="row header d-flex flex-column text-center">
+        <h1 class="display-2">Lake Health Report</h1>
         <h2>Creator: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>
+        <h3>Date Generated: <%= foundReport.date_generated.getUTCFullYear() + '-' + ('0' + (foundReport.date_generated.getUTCMonth()+1)).slice(-2) + '-' + ('0' + foundReport.date_generated.getUTCDate()).slice(-2) %></h3>
+    </div>
+    <!-- Output general lake report information -->
+    <div class="row d-flex justify-content-around">
+        <div class="col-md-12 col-lg-6">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-2 d-flex flex-column text-right">
+                    <i class="fa fa-sticky-note fa-2x"></i>
+                </div>
+                <div class="col-md-10 d-flex flex-column">
+                    <h3 class="marginStrip"><%= foundReport.notes %></h3>
+                    <h5 class="text-muted">Notes</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-6 stackedItems d-flex justify-content-center">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-2 d-flex flex-column text-right">
+                    <i class="fa fa-sticky-note fa-2x"></i>
+                </div>
+                <div class="col-md-10 d-flex flex-column">
+                    <h3 class="marginStrip"><%= foundReport.perc_shore_devd %></h3>
+                    <h5 class="text-muted">Perc Shore Devd</h5>
+                </div>
+            </div>
+        </div>
 
-        <br>
-
-        <h4>Level of Concern: <%= foundReport.level_of_concern %></h4>
-
-        <br>
-
-        <h4>Notes: <%= foundReport.notes%></h4>
-        <h4>Perc Shore Devd: <%= foundReport.perc_shore_devd%></h4>
-
-        <% if (foundDoTemp.length) { %>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <% if (foundDoTemp.length) { %> <!-- Displays a table of DoTemp readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Temperature</th>
@@ -35,9 +55,10 @@
                     </tr>
                 <%})%>
             </table>
-        <%}%>
-
-        <% if (foundSecchi.length) { %>
+            <%}%>
+        </div>
+        <div class="col-12">
+            <% if (foundSecchi.length) { %> <!-- Displays a table of secchi readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Secchi</th>
@@ -53,9 +74,10 @@
                     </tr>
                 <%})%>
             </table>
-        <%}%>
-
-        <% if (foundPhosphorus.length) { %>
+            <%}%>
+        </div>
+        <div class="col-12">
+            <% if (foundPhosphorus.length) { %> <!-- Displays a table of Phosphorus readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Phosphorus</th>
@@ -69,9 +91,10 @@
                     </tr>
                 <%})%>
             </table>
-        <%}%>
-
-        <% if (foundCalcium.length) { %>
+            <%}%>
+        </div>
+        <div class="col-12">
+            <% if (foundCalcium.length) { %> <!-- Displays a table of calcium readings if there are any associated with the report -->
             <table class="table">
                 <tr>
                     <th>Calcium</th>
@@ -84,15 +107,33 @@
                     </tr>
                 <%})%>
             </table>
-        <%}%>
-
-        <br>
-        <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %>
-        <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">Edit Report</a>
-        <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
-            <button class="btn btn-block btn-outline-danger"> Delete </button>
-        </form>
+            <%}%>
+        </div>
+    </div>
+    <div class="row">
+        <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %> <!-- If the current user is the creator of the report, they are given the option to edit or delete the report -->
+        <div class="col-md-12 col-lg-1"></div>
+        <div class="col-md-12 col-lg-5 p-0">
+            <div class="d-grid gap-2">
+                <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary" role="button" aria-disabled="true">Edit Report</a>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-5 p-0">
+            <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-danger"> Delete </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12 col-lg-1"></div>
         <% } %>
-
-        <a href="/lakeReports" class="btn btn-outline-secondary btn-block" role="button" aria-disabled="true">View All Reports</a>
+        <div class="col-12 header">
+            <div class="d-grid gap-2">
+                <a href="/lakeReports" class="btn btn-outline-primary" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all reports -->
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Include proper closing tags -->
+<%- include('../partials/foot')%>

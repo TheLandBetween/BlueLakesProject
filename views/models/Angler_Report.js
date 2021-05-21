@@ -8,7 +8,7 @@ const anglerDiariesSchema = new mongoose.Schema({
     creator: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'User_Account'
+        ref: 'User_Account' //Allows you to reference fields found in the 'UserAccount' schema
     },
     lake: {
         type: String,
@@ -23,15 +23,15 @@ const anglerDiariesSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date
+        type: Date //Stored in UTC format
     },
     t_start: {
-        type: String
+        type: String //Time is stored as a string
     },
     t_end: {
         type: String
     },
-    fish: [fishSchema]
+    fish: [fishSchema] //This is required to allow fish data to be submitted alongside an angler report
 });
 
 // assign it to a variable to create instances of the model

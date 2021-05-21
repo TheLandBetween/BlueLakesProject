@@ -2,66 +2,75 @@
 <%- include('../partials/head')%>
 <%- include('../partials/navbar')%>
 <%- include('../partials/videoBG')%>
-<div class="container main-bg d-flex flex-column align-items-center justify-content-around">
-    <div class="row header d-flex flex-column">
-        <%- include('../partials/flash') %>
-        <h1 class="text-center display-4">Your Profile</h1>
-    </div>
-    <div class="row d-flex flex-column">
-        <h4 class="text-center sectionHeader">Your Information</h4>
-        <div class="row d-flex justify-content-between">
-            <div class="pull-left"><h6><b>Email</b>: <%=currentUser.username%></h6></div>
-            <div class="pull-right"><a href="/changePassword">Change Password</a></div>
+<div class="centerDiv d-flex align-items-center">
+    <div class="container login-bg d-flex flex-column align-items-center justify-content-between bg-light">
+       <%- include('../partials/flash') %>
+        <div class="row header d-flex flex-column">
+            <h1 class="text-center display-2">Your Profile</h1>
         </div>
-        <div class="row d-flex justify-content-between">
-            <div class="pull-left"><h6><b>Name</b>: <%=currentUser.firstName + ' ' + currentUser.lastName%></h6></div>
-            <div class="pull-right"><a href="/updateName">Change Name</a></div>
-
-        </div>
-        <div class="row d-flex justify-content-between">
-            <div class="pull-left"><h6><b>Organization</b>: <%=currentUser.organization%></h6></div>
-            <div class="pull-right"><a href="/updateOrganization">Change Organization</a></div>
-        </div>
-        <div class="row d-flex justify-content-center">
-            <h6><b>Current Rank</b>: <%=currentUser.rank%></h6>
-
-        </div>
-    </div>
-    <% if(currentUser && currentUser.rank === 3) {%>
-    <div class="row d-flex flex-column">
-        <h4 class="text-center">Set User Rank</h4>
         <div class="row d-flex flex-column">
-            <h6>Rank Options</h6>
-            <ul>
-                <li>1 - Angler</li>
-                <li>2 - Researcher</li>
-                <li>3 - Administrator</li>
-            </ul>
+            <h4 class="text-center sectionHeader">Your Information</h4>
+            <div class="row d-flex justify-content-between">
+                <h6><b>Email</b>: <%=currentUser.username%></h6>
+                <a href="/changePassword">Change Password</a>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <h6><b>Name</b>: <%=currentUser.firstName + ' ' + currentUser.lastName%></h6>
+                <a href="/updateName">Change Name</a>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <h6><b>Organization</b>: <%=currentUser.organization%></h6>
+                <a href="/updateOrganization">Change Organization</a>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <h6><b>Weight / Distance Preferences</b>: <%=currentUser.weightPref%> / <%= currentUser.distPref%></h6>
+                <a href="/updatePreferences">Change Preferences</a>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <h6><b>Current Rank</b>: <%=currentUser.rank%></h6>
+            </div>
         </div>
-        <div class="row d-flex">
-            <form action="/updateRank" method="post" class="text-center needs-validation form-inline pageForm" name="submitUpdateUser" novalidate>
-                <div class="form-row col-sm-12 d-flex justify-content-between sectionHeader">
-                    <div class="col-sm-6 d-flex align-items-center justify-content-center">
-                        <label class='form-label' for="update_username">Email: </label>
-                        <input type="email" id="update_username" placeholder="user@host.com" name="update_username" class="form-control" required>
+        <% if(currentUser && currentUser.rank === 3) {%> <!-- User must be rank 3 (administrator) to assign another users rank -->
+        <div class="row d-flex flex-column">
+            <h4 class="text-center">Set User Rank</h4>
+            <div class="row d-flex flex-column">
+                <h6>Rank Options</h6>
+                <ul>
+                    <li>1 - Angler</li>
+                    <li>2 - Researcher</li>
+                    <li>3 - Administrator</li>
+                </ul>
+            </div>
+            <div class="row d-flex">
+                <form action="/updateRank" method="post" class="text-center needs-validation form-inline pageForm" name="submitUpdateUser" novalidate>
+                    <div class="mb-3 col-sm-12 d-flex justify-content-between sectionHeader">
+                        <div class="col-sm-6 d-flex align-items-center justify-content-center">
+                            <label class='form-label' for="update_username">Email: </label> <!-- Email of the account to update -->
+                            <input type="email" id="update_username" placeholder="user@host.com" name="update_username" class="form-control" required>
+                        </div>
+                        <div class="col-sm-6 d-flex align-items-center justify-content-center">
+                            <label class='form-label' for="update_rank">Rank: </label> <!-- Desired rank, must be within 1 and 3 -->
+                            <input type="number" min="1" max="3" id="update_rank" value="1" name="update_rank" class="form-control" required>
+                        </div>
                     </div>
-                    <div class="col-sm-6 d-flex align-items-center justify-content-center">
-                        <label class='form-label' for="update_rank">Rank: </label>
-                        <input type="number" min="1" max="3" id="update_rank" value="1" name="update_rank" class="form-control" required>
+                    <div class="mb-3 col-12">
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-outline-primary">Update Rank</button>
+                            </div>
+                        </div>
+                        <div class="col-mg-12 col-lg-3"></div>
                     </div>
-                </div>
-                <div class="form-row col-sm-12">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-6">
-                        <button type="submit" class="btn btn-sm btn-outline-primary btn-block">Update Rank</button>
-                    </div>
-                    <div class="col-sm-3"></div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <% } %>
         </div>
-        <% } %>
     </div>
 </div>
+
+<!-- Include proper closing tags -->
+<%- include('../partials/foot')%>
 
 <script>
     (function() {

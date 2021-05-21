@@ -1,45 +1,48 @@
-<nav class="navbar navbar-dark navbar-expand-lg fixed-top">
-    <a class="navbar-brand" href="/">
-        <img src="https://res.cloudinary.com/jaredcloud/image/upload/v1617254133/fishLogo_ywjwub.png" alt="">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/anglerReports/new">New Angler Report <span class="sr-only">(current)</span></a>
-            </li>
-            <% if(currentUser && currentUser.rank === 3) {%>
-            <li class="nav-item">
-                <a class="nav-link" href="/anglerReports/">All Angler Reports <span class="sr-only">(current)</span></a>
-            </li>
-            <% }%>
-            <% if(currentUser && currentUser.rank >= 2) {%>
-                <li class="nav-item">
-                    <a class="nav-link" href="/lakeReports/new">New Lake Report <span class="sr-only">(current)</span></a>
+<nav class="navbar navbar-dark navbar-expand-xl fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="https://res.cloudinary.com/jaredcloud/image/upload/v1617254133/fishLogo_ywjwub.png" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"> <!-- Any rank can create a new angler report -->
+                    <a class="nav-link" href="/anglerReports/new">New Angler Report <span class="sr-only">(current)</span></a>
                 </li>
-            <% }%>
-            <% if(currentUser && currentUser.rank === 3) {%>
-            <li class="nav-item">
-                <a class="nav-link" href="/lakeReports/">All Lake Reports <span class="sr-only">(current)</span></a>
-            </li>
-            <% }%>
-        </ul>
-        <div class="nav-item dropdown navbar-nav">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                My Account
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <% if (!currentUser) {%>
-                <a class="dropdown-item" href="/login">Login</a>
-                <a class="dropdown-item" href="/register">Register</a>
-                <% } else { %>
-                    <a class="dropdown-item" href="/profile">My Profile</a>
-                    <a class="dropdown-item" href="/logout">Logout</a>
-                <% } %>
-            </div>
+                <% if(currentUser && currentUser.rank === 3) {%> <!-- Can only view all angler reports if rank is administrator -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/anglerReports/">All Angler Reports <span class="sr-only">(current)</span></a>
+                    </li>
+                <% }%>
+                <% if(currentUser && currentUser.rank >= 2) {%> <!-- Can create new lake report if rank is researcher(2) or greater (administrator(3)) -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/lakeReports/new">New Lake Report <span class="sr-only">(current)</span></a>
+                    </li>
+                <% }%>
+                <% if(currentUser && currentUser.rank === 3) {%> <!-- Can view all lake reports if rank is administrator -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/lakeReports/">All Lake Reports <span class="sr-only">(current)</span></a>
+                    </li>
+                <% }%>
+            </ul>
+            <form class="d-flex">
+                <div class="nav-item dropdown navbar-nav">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        My Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <% if (!currentUser) {%> <!-- If user is not logged in, display login/register.  Should never be displayed though, since navbar is only used on pages where the user is logged in -->
+                        <a class="dropdown-item" href="/login">Login</a>
+                        <a class="dropdown-item" href="/register">Register</a>
+                        <% } else { %> <!-- Allow user to visit there profile to perform account operations, or logout and end their current session -->
+                        <a class="dropdown-item" href="/profile">My Profile</a>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                        <% } %>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </nav>

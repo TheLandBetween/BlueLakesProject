@@ -6,7 +6,7 @@ const pointSchema = mongoose.model("Point").schema;
 
 // create a template for the table (layed out in the db schema)
 const doTempSchema = new mongoose.Schema({
-    report_fk: {
+    report_fk: { //Foreign key associated with the parent report
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Lake_Health_Report'
@@ -17,10 +17,12 @@ const doTempSchema = new mongoose.Schema({
         ref: 'User_Account'
     },
     dissolvedOxygen: {
-        type: Number
+        type: Number,
+        required: true
     },
     temperature: {
-        type: Number
+        type: Number,
+        required: true
     },
     location: {
         type: pointSchema,
@@ -28,6 +30,7 @@ const doTempSchema = new mongoose.Schema({
     },
     depth: {
         type: Number,
+        required: true
     }
 });
 

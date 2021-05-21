@@ -30,6 +30,11 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User_Account = require("./views/models/User_Account");
 
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/scss', express.static(__dirname + '/node_modules/bootstrap/scss'));
+
 uuid();
 express.static(path.join(__dirname, "/public"));
 
@@ -144,7 +149,7 @@ app.use('/anglerReports', anglerReportRoutes);
 app.get('/anglerReports/:id/edit', isLoggedIn, (req, res) => {
 });
 
-app.get('/identifyFish', function (req, res) {
+app.get('/identifyFish', function (req, res) { //Delivers a PDF of all fish accepted by the application, with visuals
     let filePath = "/resources/Identify_Fish.pdf";
 
     fs.readFile(__dirname + filePath , function (err,data){
@@ -170,6 +175,9 @@ app.post('/updateName', isLoggedIn, catchAsync(userAccounts.updateName));
 
 app.get('/updateOrganization', isLoggedIn, catchAsync(userAccounts.renderUpdateOrganization));
 app.post('/updateOrganization', isLoggedIn, catchAsync(userAccounts.updateOrganization));
+
+app.get('/updatePreferences', isLoggedIn, catchAsync(userAccounts.renderUpdatePreferences));
+app.post('/updatePreferences', isLoggedIn, catchAsync(userAccounts.updatePreferences));
 
 
 // LOGIN ROUTE
