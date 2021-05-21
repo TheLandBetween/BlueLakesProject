@@ -151,7 +151,6 @@ module.exports.updateAnglerReport = async (req, res) => {
         const { species, length, weight} = req.body;
         let fishCounter = 0;
 
-
         if (Array.isArray(fish_id)) { //If array, parse every item
             for (let i = 0; i < fish_id.length; i++) {
                 if (fish_id[i] === "?") { //If no ID is provided, create a new entry
@@ -162,11 +161,16 @@ module.exports.updateAnglerReport = async (req, res) => {
                     newFish.species = species[i];
                     newFish.length = length[i];
                     newFish.weight = weight[i];
-                    newFish.photo = fishPics[i];
-
+                    if (fishPics[i]) {
+                        newFish.photo = fishPics[i];
+                    }
                     await newFish.save();
                 } else { //Otherwise, update existing report
-                    const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i], photo: fishPics[fishCounter]});
+                    const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i]});
+                    if (fishPics[fishCounter]) {
+                        newFish.photo = fishPics[fishCounter];
+                        newFish.save();
+                    }
                 }
                 fishCounter += 1;
             }
@@ -179,11 +183,16 @@ module.exports.updateAnglerReport = async (req, res) => {
                 newFish.species = species;
                 newFish.length = length;
                 newFish.weight = weight;
-                newFish.photo = fishPics[0]
-
+                if (fishPics[0] !== []) {
+                    newFish.photo = fishPics[0]
+                }
                 await newFish.save();
             } else { //Otherwise, update existing report
-                const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight, photo: fishPics[0]});
+                const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight});
+                if (fishPics[0] !== []) {
+                    newFish.photo = fishPics[0];
+                    newFish.save();
+                }
             }
         }
     }
