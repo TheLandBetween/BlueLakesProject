@@ -63,7 +63,7 @@
                                     <input class="form-control" value="<%=entry._id%>" type="hidden" id="fish_id" name="fish_id"> <!-- For each existing fish, have a hidden ID field containing its unique database ID.  Used in processing after editing -->
                                     <div class="mb-3 d-flex flex-column">
                                         <label class="form-label text-left" for="photo">Picture of Fish: </label>
-                                        <input class="form-control-file" type="file" id=`fish[<%= index %>][photo]` name="photo" multiple>
+                                        <input class="form-control-file" type="file" accept="image/*" id=`fish[<%= index %>][photo]` name="photo">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="species">Species: </label> <!-- Value is initiated as the fish in the report -->

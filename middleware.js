@@ -1,4 +1,4 @@
-const { lakeReportSchema, anglerReportSchema } = require('./schemas'); // JOI schema, not mongodb schema
+const { lakeReportSchema, anglerReportSchema, userAccountSchema } = require('./schemas'); // JOI schema, not mongodb schema
 const ExpressError = require('./utils/ExpressError');
 const LakeHealthReport = require('./views/models/Lake_Health_Report');
 const AnglerReport = require('./views/models/Angler_Report');
@@ -41,6 +41,17 @@ module.exports.validateAnglerReport = (req, res, next) => { //JOI server-side va
         next();
     }
 };
+
+module.exports.validateUserAccount = (req, res, next) => {
+    const { error } = userAccountSchema.validate(req.body);
+
+    if (error) {
+        const errorMessage = error.details.map(el => el.message).join(',');
+        throw new ExpressError(errorMessage, 400)
+    } else {
+        next();
+    }
+}
 
 module.exports.isCreator = async (req, res, next) => { //Checks if a user is creator of an item they want to access
     const { id } = req.params; //Pulls the ID from the URL

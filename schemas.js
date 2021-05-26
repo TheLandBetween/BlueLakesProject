@@ -44,12 +44,12 @@ module.exports.anglerReportSchema = Joi.object({
 
 
 module.exports.userAccountSchema = Joi.object({
-    // expect a lakeReport object to be submitted from the form
-    userAccount: Joi.object({
-        // This is where all the Joi validation is done.
-        username: Joi.string().required(), // says this must be a string and is required
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
-        password: Joi.number().required()
-    }).required()
+    // This is where all the Joi validation is done.
+    username: Joi.string().required(), // says this must be a string and is required
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    organization: Joi.string().optional().allow('').default("No Organization"),
+    password: Joi.string().required(),
+    distPref: Joi.string().required(),
+    weightPref: Joi.string().required()
 });

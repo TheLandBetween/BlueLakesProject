@@ -159,8 +159,8 @@ app.get('/identifyFish', function (req, res) { //Delivers a PDF of all fish acce
 });
 
 //USER ACCOUNT ROUTING
-app.get('/register', isCurrentlyAuthenticated,catchAsync(userAccounts.renderRegisterForm));
-app.post('/register', catchAsync(userAccounts.registerUser));
+app.get('/register', isCurrentlyAuthenticated, catchAsync(userAccounts.renderRegisterForm));
+app.post('/register', validateUserAccount, catchAsync(userAccounts.registerUser));
 
 //PROFILE PAGE ROUTING
 app.get('/profile', isLoggedIn, catchAsync(userAccounts.renderProfile));
