@@ -7,6 +7,7 @@ module.exports.lakeReportSchema = Joi.object({
     date_generated: Joi.string().required(), // says this must be a string and is required
     notes: Joi.string(),
     perc_shore_devd: Joi.number(),
+
     temperature: {type: [Joi.number(), Joi.array().items(Joi.number())]},
     Metric: Joi.string(),
     dissolved_oxygen: {type: [Joi.number(), Joi.array().items(Joi.number())]},
@@ -31,15 +32,18 @@ module.exports.lakeReportSchema = Joi.object({
     calcium_id: {type: [Joi.string(), Joi.array().items(Joi.string())]}
 });
 
+
 module.exports.anglerReportSchema = Joi.object({
-    // This is where all the Joi validation is done.
-    // TODO: this will be changed once we figure out what needs to be actually submitted
-    // photo: Joi.any(),
     lake: Joi.string().required(),
     municipality: Joi.string().required(),
     date: Joi.date().required(),
     t_start: Joi.string().required(),
     t_end: Joi.string().required(),
+    // Fish Information, gets transferred as single input field with many entries (array)
+    species: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())).required(),
+    length: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.number())).required(),
+    weight: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.number())).required(),
+    fish_id: Joi.any().optional() // will only show up if > 1 fish
 });
 
 
@@ -53,3 +57,4 @@ module.exports.userAccountSchema = Joi.object({
     distPref: Joi.string().required(),
     weightPref: Joi.string().required()
 });
+
