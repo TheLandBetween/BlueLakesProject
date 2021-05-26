@@ -7,7 +7,7 @@ const lakeReports = require('../controllers/lakeReports'); //Allows you to use m
 
 router.route('/')
     .get(isLoggedIn, catchAsync(lakeReports.index)) // INDEX route
-    .post(isLoggedIn,  catchAsync(lakeReports.createLakeReport)); // CREATE route
+    .post(isLoggedIn, validateLakeReport, catchAsync(lakeReports.createLakeReport)); // CREATE route
 
 router.get('/new', isLoggedIn, lakeReports.renderNewForm); // CREATE route
 

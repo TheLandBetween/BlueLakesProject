@@ -20,7 +20,7 @@ module.exports.isCurrentlyAuthenticated = (req, res, next) => { //Checks if the 
     next();
 };
 
-module.exports.validateLakeReport = (req, res, next) => { //JOI server-side validation on form submission (schemas.js)
+module.exports.validateLakeReport = (req, res, next) => {
     const { error } = lakeReportSchema.validate(req.body);
 
     if (error) {
@@ -69,20 +69,4 @@ module.exports.isCreator = async (req, res, next) => { //Checks if a user is cre
             return res.redirect(`/anglerReports/${id}`);
         }
     next();
-};
-
-// server side catch for incorrect submissions to the form
-// if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
-module.exports.validateLakeReport = (req, res, next) => {
-    // run that schema through joi's validate function, which will return an object
-    const reportToBeValidated = new LakeHealthReport(req.body);
-    const { error } = lakeReportSchema.validate(reportToBeValidated);
-    // if that object contains error details, throw an ExpressError
-    if(error){
-        // strip the details array inside the error field in object, and append them to the message being sent to the error
-        const message = error.details.map(elem => elem.message).join(',');
-        throw new ExpressError(message, 400)
-    } else {
-        next();
-    }
 };
