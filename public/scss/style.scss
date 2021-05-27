@@ -197,10 +197,8 @@ html, body {
     margin: 0;
 }
 
-$container-max-widths: (
-        sm: 540px,
-        md: 800px,
-        lg: 960px,
-        xl: 1140px,
-        xxl: 1320px
-)
+@include media-breakpoint-only(md) {
+    html, body {
+        font-size: 2rem;
+    }
+}

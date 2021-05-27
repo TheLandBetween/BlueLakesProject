@@ -10911,4 +10911,10 @@ html, body {
   margin: 0;
 }
 
+@media (min-width: 768px) and (max-width: 991.98px) {
+  html, body {
+    font-size: 2rem;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */

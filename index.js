@@ -29,6 +29,7 @@ const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User_Account = require("./views/models/User_Account");
+const mongoSanitize = require('express-mongo-sanitize');
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
@@ -90,6 +91,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // take current dir name, join it with /views to navigate to views folder
 app.set('views', path.join(__dirname, "/views"));
 
+// Mongo Injection
+app.use(mongoSanitize());
+
 
 
 // Session, and sending to user
@@ -125,6 +129,7 @@ app.use(express.json());
 // will check each request for a tag from flash(), and if its present pass into the local vars of the template loaded as
 // a correspoding variable.
 app.use((req, res, next) => {
+    console.log(req.query);
     res.locals.currentUser = req.user; // pass over the user data to each page so we can access it for styling
     res.locals.success = req.flash('success'); // a success message, pass it over
     res.locals.error = req.flash('error'); // an error message, pass it over
