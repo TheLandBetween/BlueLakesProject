@@ -1,9 +1,33 @@
 // for the Joi library, validating submissions server side
-const Joi = require('joi');
+const BaseJoi = require('joi');
+const sanitizeHtml = require('sanitize-html');
+
+const extension = (joi) => ({
+    type: 'string',
+    base: joi.string(),
+    messages: {
+        'string.escapeHTML': '{{#label}} must not include HTML!'
+    },
+    rules: {
+        escapeHTML: {
+            validate(value, helpers) {
+                const clean = sanitizeHtml(value, {
+                    allowedTags: [],
+                    allowedAttributes: {},
+                });
+                if (clean !== value) return helpers.error('string.escapeHTML', { value })
+                return clean;
+            }
+        }
+    }
+})
+
+// include custom XSS html sanitize
+const Joi = BaseJoi.extend(extension)
 
 module.exports.lakeReportSchema = Joi.object({
     date_generated: Joi.date().required(), // says this must be a string and is required
-    notes: Joi.string().required(),
+    notes: Joi.string().required().escapeHTML(),
     perc_shore_devd: Joi.number().required(),
 
     // Dissolved Oxygen
@@ -36,11 +60,11 @@ module.exports.lakeReportSchema = Joi.object({
 
 
 module.exports.anglerReportSchema = Joi.object({
-    lake: Joi.string(),
-    municipality: Joi.string(),
-    date: Joi.date(),
-    t_start: Joi.string(),
-    t_end: Joi.string(),
+    lake: Joi.string().required().escapeHTML(),
+    municipality: Joi.string().required().escapeHTML(),
+    date: Joi.date().required(),
+    t_start: Joi.string().required().escapeHTML(),
+    t_end: Joi.string().required().escapeHTML(),
     // Fish Information, gets transferred as single input field with many entries (array)
     species: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
     length: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
@@ -51,12 +75,12 @@ module.exports.anglerReportSchema = Joi.object({
 
 module.exports.userAccountSchema = Joi.object({
     // This is where all the Joi validation is done.
-    username: Joi.string(), // says this must be a string and is required
-    firstName: Joi.string(),
-    lastName: Joi.string(),
-    organization: Joi.string().optional().allow('').default("No Organization"),
-    password: Joi.string(),
-    distPref: Joi.string(),
-    weightPref: Joi.string()
+    username: Joi.string().required().escapeHTML(), // says this must be a string and is required
+    firstName: Joi.string().required().escapeHTML(),
+    lastName: Joi.string().required().escapeHTML(),
+    organization: Joi.string().optional().allow('').default("No Organization").escapeHTML(),
+    password: Joi.string().required().escapeHTML(),
+    distPref: Joi.string().required().escapeHTML(),
+    weightPref: Joi.string().required().escapeHTML()
 });
 
