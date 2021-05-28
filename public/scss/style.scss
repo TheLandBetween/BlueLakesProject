@@ -3,7 +3,7 @@
 // Override bootstrap container variables for a more filled screen on mobile
 $container-max-widths: (
         sm: 540px,
-        md: 900px,
+        md: 90%,
         lg: 960px,
         xl: 1140px,
         xxl: 1320px
@@ -199,6 +199,24 @@ html, body {
 
 @include media-breakpoint-only(md) {
     html, body {
-        font-size: 2rem;
+        font-size: 3vw;
+    }
+    input[type="color"],
+    input[type="date"],
+    input[type="datetime"],
+    input[type="datetime-local"],
+    input[type="email"],
+    input[type="month"],
+    input[type="number"],
+    input[type="password"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="text"],
+    input[type="time"],
+    input[type="url"],
+    input[type="week"],
+    select:focus,
+    textarea {
+        font-size: 5vw;
     }
 }

@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-lg-6 stackedItems d-flex justify-content-center">
+        <div class="col-md-12 col-lg-6 stackedItems">
             <div class="row d-flex align-items-center">
                 <div class="col-md-2 d-flex flex-column text-end">
                     <i class="fa fa-sticky-note fa-2x"></i>
@@ -112,22 +112,22 @@
     </div>
     <div class="row">
         <% if(currentUser && foundReport.creator.equals(currentUser._id)) { %> <!-- If the current user is the creator of the report, they are given the option to edit or delete the report -->
-        <div class="col-md-12 col-lg-1"></div>
-        <div class="col-md-12 col-lg-5 p-0">
+        <div class="col-1"></div>
+        <div class="col-5 p-0">
             <div class="d-grid gap-2">
                 <a href="/lakeReports/<%= foundReport._id%>/edit" class="btn btn-outline-secondary" role="button" aria-disabled="true">Edit Report</a>
             </div>
         </div>
-        <div class="col-md-12 col-lg-5 p-0">
+        <div class="col-5 p-0">
             <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
                 <div class="d-grid gap-2">
                     <button class="btn btn-outline-danger"> Delete </button>
                 </div>
             </form>
         </div>
-        <div class="col-md-12 col-lg-1"></div>
+        <div class="col-1"></div>
         <% } %>
-        <div class="col-12 header">
+        <div class="col-12 header ps-0 pe-0">
             <div class="d-grid gap-2">
                 <a href="/lakeReports" class="btn btn-outline-primary" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all reports -->
             </div>
