@@ -30,6 +30,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User_Account = require("./views/models/User_Account");
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet')
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
@@ -78,9 +79,6 @@ const validateUserAccount = (req, res, next) => {
     }
 };
 
-
-
-
 //initiate the calling of methodoverride with ?_method=METHOD
 app.use(methodOverride('_method'));
 
@@ -93,15 +91,57 @@ app.set('views', path.join(__dirname, "/views"));
 
 // Mongo Injection
 app.use(mongoSanitize());
+app.use(helmet());
 
-
+// Accepted script sources
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com/",
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+];
+// Accepted style sources
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+];
+// Accepted connect sources
+const connectSrcUrls = [
+];
+// Accepted font sources
+const fontSrcUrls = [];
+// helmet custom configuration for content security policy.
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/jaredcloud/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+                "https://images.unsplash.com/",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
 
 // Session, and sending to user
 const sessionConfig = {
+    name: 'session',
     secret: 'thisshouldbebetter',
     resave: false,
     saveUninitialized: true,
     cookie: {
+        httpOnly: true, // dont allow cookies to be viewable in JS
+        // secure: true, Cookies only over HTTPS, for deployment
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,// Date.now provides in ms, this is to expire in a week
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -129,7 +169,6 @@ app.use(express.json());
 // will check each request for a tag from flash(), and if its present pass into the local vars of the template loaded as
 // a correspoding variable.
 app.use((req, res, next) => {
-    console.log(req.query);
     res.locals.currentUser = req.user; // pass over the user data to each page so we can access it for styling
     res.locals.success = req.flash('success'); // a success message, pass it over
     res.locals.error = req.flash('error'); // an error message, pass it over
