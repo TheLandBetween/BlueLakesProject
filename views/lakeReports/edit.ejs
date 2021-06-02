@@ -36,10 +36,10 @@
                 </div>
             </div>
             <!--  Extra Entries (Temp, Secchi, Phosp, Calcium -->
-            <div class="row d-flex flex-column">
+            <div class="row d-flex flex-column align-content-center">
                 <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
-                <div class="row">
-                    <div class="col-12" id="tempDO_Container"> <!-- Container for DoTemp readings -->
+                <div class="col-12" id="tempDO_Container"> <!-- Container for DoTemp readings -->
+                    <div class="row">
                         <% var tempDOIndex = 0;
                         foundDoTemp.forEach(function (entry) { <!-- Adds each doTemp to its own card for the user to edit -->
                             tempDOIndex += 1; %>
@@ -80,14 +80,17 @@
                             </div>
                         <%})%>
                     </div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-md-12 col-lg-6">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-secondary" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- Button to add another card below current readings -->
+                    <div class="row">
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-secondary" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- Button to add another card below current readings -->
+                            </div>
                         </div>
+                        <div class="col-md-12 col-lg-6"></div>
                     </div>
-                    <div class="col-md-12 col-lg-6"></div>
                 </div>
+
                 <!-- SECCHI DEPTH READING -->
                 <div class="row stackedItems">
                     <div class="col-12" id="secchiDepth_Container"> <!-- Container for secchi readings -->
