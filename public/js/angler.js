@@ -14,7 +14,7 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
                     <input class="form-control" value="?" type="hidden" id="fish_id" name="fish_id">
                     <div class="mb-3 d-flex flex-column">
                         <label class="form-label" for="photo">Picture of Fish: </label>
-                        <input class="form-control-file" type="file" id="fish[${fishCount}][photo]" name="photo">
+                        <input class="form-control-file" type="file" accept="image/*" id="fish[${fishCount}][photo]" name="photo">
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="species">Species: </label>

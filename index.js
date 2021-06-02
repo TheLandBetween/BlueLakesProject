@@ -49,7 +49,6 @@ const mongoose = require('mongoose');
 //MONGO
 const mongo = require('mongodb');
 const assert = require('assert');
-const URI = 'mongodb+srv://bluelakes:pbTk3KiYV2yg6LQ4@cluster0.xk0y2.mongodb.net/BlueLakes?retryWrites=true&w=majority'
 
 // setup Routes
 const lakeReportRoutes = require('./routes/lakeReports');

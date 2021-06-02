@@ -9,7 +9,7 @@
         <h1 class="text-center display-2">Edit Angler Report</h1>
     </div>
     <div class="row d-flex flex-column">
-        <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
+        <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" enctype="multipart/form-data" novalidate>
             <div class="row d-flex flex-column">
                 <div class="d-flex justify-content-center">
                     <p class="h2 text-center">General Information</p> <!-- General report information that the user must enter -->

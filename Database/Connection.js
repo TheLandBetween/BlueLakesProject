@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const {MongoClient} = require('mongodb');
 
 //MongoDB URI connection with credentials in the .ENV file
-const URI = 'mongodb+srv://' + process.env.MONGODB_USER + ':' + process.env.MONGODB_PASS + '@cluster0.xk0y2.mongodb.net/BlueLakes?retryWrites=true&w=majority'
+const URI = 'mongodb+srv://' + process.env.MONGODB_USER + ':' + process.env.MONGODB_PASS + '@bluelakes.y8ojb.mongodb.net/bluelakes?retryWrites=true&w=majority'
 
 //Connect to the Mongo Atlas database
 connectDB = async () => {

@@ -148,11 +148,9 @@ module.exports.updateAnglerReport = async (req, res) => {
     const { id } = req.params; //Gets the report ID from the URL
     // find angler report with given id
     const {lake, municipality, date, t_start, t_end} = req.body; //Gets values associated with the Angler Report object
-    console.log(req.body);
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { lake: lake, municipality: municipality, date: date, t_start: t_start, t_end: t_end }); //Updates the angler report with the new values
 
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
-    console.log(fishPics);
     const {fish_id} = req.body;
 
     if (fish_id) {
