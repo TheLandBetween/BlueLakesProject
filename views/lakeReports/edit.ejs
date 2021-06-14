@@ -8,9 +8,10 @@
     <div class="row header d-flex flex-column">
         <h1 class="text-center display-2">Edit Health Report</h1>
     </div>
-    <div class="row d-flex flex-column">
+    <div class="row">
         <form action="/lakeReports/<%= lakeReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" novalidate>
-            <div class="row d-flex flex-column">
+            <!-- General Information -->
+            <div class="col d-flex flex-column">
                 <div class="d-flex justify-content-center">
                     <p class="h2 text-center">General Information</p>
                 </div>
@@ -36,10 +37,10 @@
                 </div>
             </div>
             <!--  Extra Entries (Temp, Secchi, Phosp, Calcium -->
-            <div class="row d-flex flex-column align-content-center">
+            <div class="col d-flex flex-column align-content-center">
                 <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
-                <div class="col-12" id="tempDO_Container"> <!-- Container for DoTemp readings -->
-                    <div class="row">
+                <div class="row" id="tempDO_Container"> <!-- Container for DoTemp readings -->
+                    <div class="col">
                         <% var tempDOIndex = 0;
                         foundDoTemp.forEach(function (entry) { <!-- Adds each doTemp to its own card for the user to edit -->
                             tempDOIndex += 1; %>
