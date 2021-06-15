@@ -4,10 +4,10 @@
 <div class="container centerLogin d-flex justify-content-center">
     <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
         <%- include('../partials/flash') %>
-        <div class="row header d-flex">
-            <div class="col-12 d-flex justify-content-center"><h1 class="display-2">Register</h1></div>
+        <div class="row header d-flex text-center">
+            <h1 class="display-2 header">Register</h1>
         </div>
-        <div class="row header">
+        <div class="row">
             <form action="/register" method="POST" class="needs-validation" name="submit" novalidate>
                 <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
@@ -56,23 +56,19 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <div class="row d-flex justify-content-around">
-                        <label class="radio-inline" for="distPref">
-                            <input class="form-control" type="radio" id="cm" name="distPref" value="cm" required checked>Centimeters
-                        </label>
-                        <label class="radio-inline" for="distPref">
-                            <input class="form-control" type="radio" id="inch" name="distPref" value="inch" required>Inches
-                        </label>
+                    <div class="btn-group container-fluid" role="group">
+                        <input class="btn-check" type="radio" name="distPref" id="cm" value="cm" required checked>
+                        <label class="btn btn-primary" for="cm">Centimeters</label>
+                        <input class="btn-check" type="radio" name="distPref" id="inch" value="inch" required>
+                        <label class="btn btn-primary" for="inch">Inches</label>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <div class="row d-flex justify-content-around">
-                        <label class="radio-inline" for="weightPref">
-                            <input class="form-control" type="radio" id="kg" name="weightPref" value="kg" required checked>Kilograms
-                        </label>
-                        <label class="radio-inline" for="weightPref">
-                            <input class="form-control" type="radio" id="lbs" name="weightPref" value="lbs" required>Pounds
-                        </label>
+                    <div class="btn-group container-fluid" role="group">
+                        <input class="btn-check" type="radio" name="weightPref" id="kg" value="kg" required>
+                        <label class="btn btn-primary" for="kg">Kilograms</label>
+                        <input class="btn-check" type="radio" name="weightPref" id="lbs" value="lbs" required checked>
+                        <label class="btn btn-primary" for="lbs">Pounds</label>
                     </div>
                 </div>
                 <div class="row">
