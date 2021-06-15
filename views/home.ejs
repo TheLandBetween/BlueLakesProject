@@ -97,7 +97,7 @@
                 <tbody>
                     <% for (let report of healthReports) {%>
                         <tr>
-                            <td><a href="/lakeReports/<%= report.id%>" class="rowLink">details</a></td> <!-- Link to index a specific lake health report for more details -->
+                            <td><a href="/lakeReports/<%= report.id%>" class="rowLink styledA">details</a></td> <!-- Link to index a specific lake health report for more details -->
                             <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
                             <td><%= report.notes %></td>
                         </tr>
