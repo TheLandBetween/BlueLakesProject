@@ -64,17 +64,17 @@
         <table class="table table-hover" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
             <thead>
                 <tr class="table-info">
-                    <th>View Report</th>
-                    <th>Municipality</th>
+                    <th>Fish Caught</th>
+                    <th>Time Spent</th>
                     <th>Lake</th>
-                    <th>Date Recorded</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 <% for (let report of anglerReports) {%>
                     <tr>
-                        <td><a href="/anglerReports/<%= report.id%>" class="rowLink">details</a></td> <!-- Link to index a specific angler report for more details -->
-                        <td><%= report.municipality%></td>
+                        <td><a href="/anglerReports/<%= report.id%>" class="rowLink styledA"><%= report.fishCount %></a></td> <!-- Link to index a specific angler report for more details -->
+                        <td><%= report.elapsedTime %></td>
                         <td><%= report.lake%></td>
                         <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
                     </tr>

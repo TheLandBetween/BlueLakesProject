@@ -31,6 +31,9 @@ const anglerDiariesSchema = new mongoose.Schema({
     t_end: {
         type: String
     },
+    elapsedTime: {
+        type: String
+    },
     fish: [fishSchema], //This is required to allow fish data to be submitted alongside an angler report
     fishCount: {
         type: Number,

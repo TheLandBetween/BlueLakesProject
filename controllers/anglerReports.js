@@ -38,6 +38,19 @@ module.exports.renderNewForm = (req, res) => {
     res.render('anglerReports/new');
 };
 
+// Helper function for stripping colons on time strings
+function removeColons(x) {
+    if (x.length === 4) {
+        x = x.slice(0, 1) + x.slice(2);
+    }
+
+    if (x.length === 5) {
+        x = x.slice(0, 2) + x.slice(3);
+    }
+
+    return x;
+}
+
 //Executes once a new angler report is submitted
 module.exports.createAnglerReport = async (req, res) => {
     // strip all photos from the entry and add them to a list. one photo per fish
@@ -49,6 +62,29 @@ module.exports.createAnglerReport = async (req, res) => {
     //Appends the anglers user ID and name to the report, can be used as a foreign key
     newReport.creator = req.user._id;
     newReport.angler_name = req.user.firstName + " " + req.user.lastName;
+
+    // Figure out and set total elapsed time field
+    let strippedStart = removeColons(req.body.t_start);
+    console.log('strippedStart: ', strippedStart);
+
+    let strippedEnd = removeColons(req.body.t_end);
+    console.log('strippedEnd: ', strippedEnd);
+
+    let hourDiff = Math.floor(strippedEnd/100) - Math.floor(strippedStart/100) - 1
+    console.log('hourDiff: ', hourDiff);
+
+    let minDiff = strippedEnd % 100 + (60 - strippedStart % 100);
+    console.log('minDiff: ', minDiff);
+
+    if (minDiff >= 60) {
+        hourDiff += 1;
+        minDiff = minDiff - 60;
+    }
+
+    let elapsedTime = hourDiff.toString() + "hrs " + minDiff.toString() + "min";
+    console.log(elapsedTime)
+
+    newReport.elapsedTime = elapsedTime;
 
     await newReport.save(); //Saves the report to the database, fish are not saved in the report object, but rather associated through a foreign key report ID
 
