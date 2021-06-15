@@ -1,91 +1,90 @@
 <%- include('../partials/head')%>
 <%- include('../partials/videoBG')%>
 
-<div class="container centerLogin d-flex justify-content-center">
-    <div class="container bg-light login-bg d-flex flex-column align-items-center justify-content-center overflow-auto">
-        <%- include('../partials/flash') %>
-        <div class="row header d-flex text-center">
-            <h1 class="display-2 header">Register</h1>
-        </div>
-        <div class="row">
-            <form action="/register" method="POST" class="needs-validation" name="submit" novalidate>
-                <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
-                    <label class='form-label' for="username">Email: </label> <!-- User enters a email, must be in email format -->
-                    <input type="email" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
+<div class="container login-bg bg-light centerLogin d-flex flex-column align-items-center justify-content-center">
+    <div class="row backButton">
+        <a href="/login">
+            <i class="fa fa-arrow-left fa-2x backArrow text-muted"></i>
+        </a>
+    </div>
+    <%- include('../partials/flash') %>
+    <div class="row d-flex text-center">
+        <h1 class="display-2 header">Register</h1>
+    </div>
+    <div class="row">
+        <form action="/register" method="POST" class="needs-validation" name="submit" novalidate>
+            <div class="mb-3">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="username">Email: </label> <!-- User enters a email, must be in email format -->
+                <input type="email" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="firstName">First Name: </label>
+                <input type="text" id="firstName" placeholder="Jane" name="firstName" class="form-control" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="lastName">Last Name: </label>
+                <input type="text" id="lastName" placeholder="Doe" name="lastName" class="form-control" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="organization">Organization: </label> <!-- User is not required to input an organization -->
+                <input type="text" id="organization" placeholder="Fishers inc." name="organization" class="form-control" value="No Organization">
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <!-- date input, sent under 'date' label-->
+                <label class='form-label' for="password">Password: </label> <!-- Password must be 8 characters long -->
+                <input type="password" id="password" pattern=".{8,}" placeholder="Doe" name="password" class="form-control" onkeyup="return passwordChanged();" required>
+                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
+                <span id="strength">Password Strength</span>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="btn-group container-fluid" role="group">
+                    <input class="btn-check" type="radio" name="distPref" id="cm" value="cm" required checked>
+                    <label class="btn btn-primary" for="cm">Centimeters</label>
+                    <input class="btn-check" type="radio" name="distPref" id="inch" value="inch" required>
+                    <label class="btn btn-primary" for="inch">Inches</label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="btn-group container-fluid" role="group">
+                    <input class="btn-check" type="radio" name="weightPref" id="kg" value="kg" required>
+                    <label class="btn btn-primary" for="kg">Kilograms</label>
+                    <input class="btn-check" type="radio" name="weightPref" id="lbs" value="lbs" required checked>
+                    <label class="btn btn-primary" for="lbs">Pounds</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-3"></div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-primary">Register</button>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
-                    <label class='form-label' for="firstName">First Name: </label>
-                    <input type="text" id="firstName" placeholder="Jane" name="firstName" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
-                    <label class='form-label' for="lastName">Last Name: </label>
-                    <input type="text" id="lastName" placeholder="Doe" name="lastName" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
-                    <label class='form-label' for="organization">Organization: </label> <!-- User is not required to input an organization -->
-                    <input type="text" id="organization" placeholder="Associated Organization (Optional)" name="organization" class="form-control">
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
-                    <label class='form-label' for="password">Password: </label> <!-- Password must be 8 characters long -->
-                    <input type="password" id="password" pattern=".{8,}" placeholder="Doe" name="password" class="form-control" onkeyup="return passwordChanged();" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <span id="strength">Password Strength</span>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="btn-group container-fluid" role="group">
-                        <input class="btn-check" type="radio" name="distPref" id="cm" value="cm" required checked>
-                        <label class="btn btn-primary" for="cm">Centimeters</label>
-                        <input class="btn-check" type="radio" name="distPref" id="inch" value="inch" required>
-                        <label class="btn btn-primary" for="inch">Inches</label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <div class="btn-group container-fluid" role="group">
-                        <input class="btn-check" type="radio" name="weightPref" id="kg" value="kg" required>
-                        <label class="btn btn-primary" for="kg">Kilograms</label>
-                        <input class="btn-check" type="radio" name="weightPref" id="lbs" value="lbs" required checked>
-                        <label class="btn btn-primary" for="lbs">Pounds</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-md-12 col-lg-6">
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-outline-primary">Register</button>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-3"></div>
-                </div>
-            </form>
-        </div>
-
-        <div class="row d-flex flex-column header">
-            <a href="/login">Back to Login</a>
-        </div>
+                <div class="col-md-12 col-lg-3"></div>
+            </div>
+        </form>
     </div>
 </div>
 
