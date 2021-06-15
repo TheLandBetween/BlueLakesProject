@@ -10788,13 +10788,6 @@ html, body {
   width: 85%;
 }
 
-.navbar {
-  /*background: rgb(79,109,122);*/
-  /*background: linear-gradient(180deg, rgba(79,109,122,1) 0%, rgba(79,109,122,0.6993172268907564) 84%, rgba(79,109,122,0) 100%);*/
-  background: #4f6d7a;
-  background: linear-gradient(180deg, #4f6d7a 0%, rgba(79, 109, 122, 0.6993172269) 95%, rgba(79, 109, 122, 0) 100%);
-}
-
 .card-header .fa {
   transition: 0.3s transform ease-in-out;
 }
@@ -10810,6 +10803,13 @@ html, body {
 
 .main-btn {
   background-color: var(--col-blue);
+}
+
+.navbar {
+  /*background: rgb(79,109,122);*/
+  /*background: linear-gradient(180deg, rgba(79,109,122,1) 0%, rgba(79,109,122,0.6993172268907564) 84%, rgba(79,109,122,0) 100%);*/
+  background: #4f6d7a;
+  background: linear-gradient(180deg, #4f6d7a 0%, rgba(79, 109, 122, 0.6993172269) 95%, rgba(79, 109, 122, 0) 100%);
 }
 
 .nav-item {
@@ -10835,20 +10835,19 @@ html, body {
 }
 
 .dropdown-menu {
-  background: none;
+  background: #4F6D7AB2;
   border: none;
 }
 
 .dropdown-item {
-  background: rgba(255, 255, 255, 0.25);
-  color: #5a6166;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .dropdown-item:hover {
   background-color: rgba(22, 96, 136, 0);
   border-left: 3px solid var(--col-blue);
   text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.92);
-  color: #464b4f;
+  color: white;
 }
 
 .homeButton {
@@ -10934,6 +10933,27 @@ select:focus,
 textarea {
     font-size: 5vw;
   }
+}
+.styledA {
+  text-decoration: none;
+}
+
+.form-label {
+  font-size: 1.5em;
+}
+
+#anglerReportTable, #lakeReportTable {
+  position: relative;
+}
+
+.rowLink::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2.5em;
+  margin-top: -0.5rem;
 }
 
 /*# sourceMappingURL=style.css.map */

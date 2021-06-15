@@ -71,4 +71,6 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
             </div>
         </div>
     `)
+
+    $('#fishCount').val(fishCount + 1);
 })

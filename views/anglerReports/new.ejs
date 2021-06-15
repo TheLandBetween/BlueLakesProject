@@ -10,9 +10,11 @@
         </div>
         <div class="row d-flex flex-column">
             <form action="/anglerReports" method="post" class="needs-validation" name="submit" novalidate enctype="multipart/form-data">
+
                 <div class="row d-flex flex-column"> <!-- General Information Section -->
                     <div class="d-flex justify-content-center">
                         <p class="h2 text-center">General Information</p> <!-- General report information that the user must enter -->
+                        <input type="hidden" id="fishCount" name='fishCount' value="1" />
                     </div>
                     <div class="text-left">
                         <div class="mb-3">

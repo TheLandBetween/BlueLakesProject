@@ -31,7 +31,11 @@ const anglerDiariesSchema = new mongoose.Schema({
     t_end: {
         type: String
     },
-    fish: [fishSchema] //This is required to allow fish data to be submitted alongside an angler report
+    fish: [fishSchema], //This is required to allow fish data to be submitted alongside an angler report
+    fishCount: {
+        type: Number,
+        required: true
+    }
 });
 
 // assign it to a variable to create instances of the model

@@ -4,8 +4,8 @@
     <div class="container login-bg d-flex flex-column align-items-center justify-content-between bg-light">
         <%- include('../partials/flash') %>
         <div class="row header d-flex">
-            <div class="col-md-6 col-sm-12 d-flex justify-content-center"><h1 class="display-2 header">Login</h1></div>
-            <div class="col-md-6 col-sm-12 d-flex justify-content-center"><img src="https://res.cloudinary.com/the-land-between/image/upload/v1622661876/BlueLakes/banner_qj6yhr_glp2wv.png" class="img-fluid mx-auto d-block" alt="Blue Lakes Banner"></div>
+            <div class="col-md-12 col-lg-6 d-flex justify-content-center"><img src="https://res.cloudinary.com/the-land-between/image/upload/v1622661876/BlueLakes/banner_qj6yhr_glp2wv.png" class="img-fluid mx-auto d-block header" alt="Blue Lakes Banner"></div>
+            <div class="col-md-12 col-lg-6 d-flex justify-content-center"><h1 class="display-2">Login</h1></div>
         </div>
         <div class="row header">
             <form action="/login" method="POST" class="needs-validation" name="login" novalidate>
@@ -32,15 +32,22 @@
                     <div class="col-md-12 col-lg-6">
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-outline-primary">Login</button> <!-- Login, user is authenticated by PassportJS in controllers -->
+                            <a href="/forgot" class="styledA text-center">Forgot Password?</a>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-3"></div>
                 </div>
             </form>
         </div>
-        <div class="row d-flex flex-column header"> <!-- If user doesn't have an account, or forgot their password -->
-            <a href="/register">Register</a>
-            <a href="/forgot">Forgot Password</a>
+        <div class="row"> <!-- If user doesn't have an account, or forgot their password -->
+            <div class="col-md-12 col-lg-3"></div>
+            <div class="col-md-12 col-lg-6">
+                <div class="d-grid gap-2 header">
+                    <a href="/register" class="btn btn-outline-success">Register</a>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-3"></div>
+
         </div>
     </div>
 </div>

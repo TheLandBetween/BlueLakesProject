@@ -71,7 +71,9 @@ module.exports.anglerReportSchema = Joi.object({
     weight: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
     fish_id: Joi.any().optional(), // will only show up if > 1 fish
 
-    photo: Joi.any().optional()
+    photo: Joi.any().optional(),
+
+    fishCount: Joi.number().required()
 });
 
 
