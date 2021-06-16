@@ -9,21 +9,25 @@
         <h1 class="text-center display-2">All Health Reports</h1>
     </div>
     <div class="row">
-        <table class="table"> <!-- Table containing a general overview of all lake health reports created -->
-            <tr>
-                <th>View Report</th>
-                <th>Creator</th>
-                <th>Date Recorded</th>
-                <th>Comments</th>
-            </tr>
-            <% for (let report of healthReports) {%> <!-- Iterates over each report and displays some general contents -->
-            <tr>
-                <td><a href="/lakeReports/<%= report.id%>">details</a></td>
-                <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
-                <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
-                <td><%= report.notes %></td>
-            </tr>
-            <% } %>
+        <table class="table table-hover"> <!-- Table containing a general overview of all lake health reports created -->
+            <thead>
+                <tr class="table-info">
+                    <th>View Report</th>
+                    <th>Creator</th>
+                    <th>Date Recorded</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let report of healthReports) {%> <!-- Iterates over each report and displays some general contents -->
+                <tr>
+                    <td><a href="/lakeReports/<%= report.id%>" class="rowLink styledA">details</a></td>
+                    <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                    <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
+                    <td><%= report.notes %></td>
+                </tr>
+                <% } %>
+            </tbody>
         </table>
     </div>
     <div class="row">

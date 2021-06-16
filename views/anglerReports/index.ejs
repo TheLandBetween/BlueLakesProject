@@ -10,33 +10,41 @@
     </div>
     <div class="row d-flex flex-column">
         <div class="col-12 bg-white border border-primary">
-            <table class="table table-sm"> <!-- Table of all species caught, and their counts in the database -->
-                <tr>
-                    <th>Species of Fish</th>
-                    <th>Count</th>
-                </tr>
-                <% for (let fish in fishCounts) {%> <!-- fishCounts is passed in through the controller -->
-                <tr>
-                    <td><%= fish %></td> <!-- Implemented as a dictionary -->
-                    <td><%= fishCounts[fish] %></td>
-                </tr>
-                <% } %>
+            <table class="table table-sm "> <!-- Table of all species caught, and their counts in the database -->
+                <thead>
+                    <tr class="">
+                        <th>Species of Fish</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let fish in fishCounts) {%> <!-- fishCounts is passed in through the controller -->
+                    <tr>
+                        <td><%= fish %></td> <!-- Implemented as a dictionary -->
+                        <td><%= fishCounts[fish] %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
             </table>
         </div>
         <div class="col-12 stackedItems">
-            <table class="table"> <!-- Table of all angler reports -->
-                <tr>
-                    <th>View Report</th>
-                    <th>Creator</th>
-                    <th>Date Recorded</th>
-                </tr>
-                <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
-                <tr>
-                    <td><a href="/anglerReports/<%= report.id%>">details</a></td>
-                    <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
-                    <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
-                </tr>
-                <% } %>
+            <table class="table table-hover"> <!-- Table of all angler reports -->
+                <thead>
+                    <tr class="table-info">
+                        <th>Fish Caught</th>
+                        <th>Angler</th>
+                        <th>Date Recorded</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
+                    <tr>
+                        <td><a href="/anglerReports/<%= report.id%>" class="styledA rowLink"><%= report.fishCount %></a></td>
+                        <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                        <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
             </table>
         </div>
     </div>
