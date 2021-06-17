@@ -6,11 +6,11 @@
 <div class="centerDiv d-flex align-items-center">
     <div class="container main-bg d-flex flex-column align-items-center justify-content-between bg-light">
        <%- include('../partials/flash') %>
-        <div class="row header d-flex flex-column text-center">
-            <h1 class="display-2">Your Profile</h1>
+        <div class="row header">
+            <h1 class="display-2 text-center">Your Profile</h1>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col">
                 <!-- Name -->
                 <div class="row">
                     <div class="col-md-2 d-flex flex-column justify-content-center text-end">
@@ -51,40 +51,57 @@
                         <h5 class="text-muted">Weight / Distance</h5>
                     </div>
                 </div>
+                <div class="row">
+
+                </div>
             </div>
         </div>
         <% if(currentUser && currentUser.rank === 3) {%> <!-- User must be rank 3 (administrator) to assign another users rank -->
-        <div class="row">
-            <h4>Set User Rank</h4>
-            <h6 class="text-center">Rank Options</h6>
-            <div class="col-md-12 col-lg-4">Angler</div>
-            <div class="col-md-12 col-lg-4">Researcher</div>
-            <div class="col-md-12 col-lg-4">Administrator</div>
-
-            <div class="row d-flex">
+            <div class="row">
                 <form action="/updateRank" method="post" class="text-center needs-validation form-inline pageForm" name="submitUpdateUser" novalidate>
-                    <div class="mb-3 col-sm-12 d-flex justify-content-between sectionHeader">
-                        <div class="col-sm-6 d-flex align-items-center justify-content-center">
-                            <label class='form-label' for="update_username">Email: </label> <!-- Email of the account to update -->
-                            <input type="email" id="update_username" placeholder="user@host.com" name="update_username" class="form-control" required>
+                    <div class="row">
+                        <h4 class="text-center">Set User Rank</h4>
+                        <div class="col-md-12 col-lg-6 d-flex flex-column align-items-center justify-content-center">
+                            <h5>Rank Options</h5>
+                            <ol>
+                                <li>Angler</li>
+                                <li>Researcher</li>
+                                <li>Administrator</li>
+                            </ol>
                         </div>
-                        <div class="col-sm-6 d-flex align-items-center justify-content-center">
-                            <label class='form-label' for="update_rank">Rank: </label> <!-- Desired rank, must be within 1 and 3 -->
-                            <input type="number" min="1" max="3" id="update_rank" value="1" name="update_rank" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="mb-3 col-12">
-                        <div class="col-md-12 col-lg-3"></div>
                         <div class="col-md-12 col-lg-6">
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-outline-primary">Update Rank</button>
+                            <div class="mb-3">
+                                <label class='form-label' for="update_username">Email: </label> <!-- Email of the account to update -->
+                                <input type="email" id="update_username" placeholder="user@host.com" name="update_username" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class='form-label' for="update_rank">Rank: </label> <!-- Desired rank, must be within 1 and 3 -->
+                                <input type="number" min="1" max="3" id="update_rank" value="1" name="update_rank" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-mg-12 col-lg-3"></div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-3"></div>
+                            <div class="col-md-12 col-lg-6">
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-outline-primary">Update Rank</button> <!-- Button to submit the report -->
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-3"></div>
+                        </div>
                     </div>
                 </form>
             </div>
-            <% } %>
+        <% } %>
+
+        <div class="row">
+            <div class="col-12 header ps-0 pe-0">
+                <div class="d-grid gap-2">
+                    <a href="/deleteAccount" class="btn btn-outline-danger" role="button" aria-disabled="true">Delete Account</a> <!-- Button to view all angler reports -->
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </div>
