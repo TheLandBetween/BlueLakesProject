@@ -217,16 +217,19 @@ module.exports.updateProfile = async(req, res) => {
 
     // incase they decide to change email, need to lookup and ensure its not already used in an account
     if (username !== currentUsername) {
+        console.log("changing username")
         // check if for different account w/email
         const matchingAccount = await UserAccount.findOne({username: username});
         if (matchingAccount) {
             req.flash('error', "Email is associated with an account already");
             return res.redirect('/profile')
         }
+        // if no different account can proceed with username swap, need to update session accordingly
+        req.session.passport.user = username;
     }
 
     // Update profile based on id with the saved fields
-    await UserAccount.updateOne({username: username}, {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref}});
+    await UserAccount.updateOne({username: currentUsername}, {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref}});
 
     // redirect to profile page
     res.redirect('/profile');
