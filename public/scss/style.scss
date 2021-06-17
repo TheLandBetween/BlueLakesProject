@@ -189,8 +189,8 @@ html, body {
 }
 
 .stackedItems {
-    padding-top: 1.5vh;
-    padding-bottom: 1.5vh;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
 }
 
 .marginStrip {
@@ -273,4 +273,16 @@ table {
     color: black !important;
     cursor: pointer;
     text-shadow: 0 0 5px rgba(0,0,0,0.33);
+}
+
+.profilePhoto {
+    width: 20vw;
+    border: 1px solid blue;
+    border-radius: 50px;
+    -webkit-box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.15);
+    box-shadow: 0px 0px 15px 2px rgba(0,0,0,0.15);
+}
+
+.updateRank {
+    margin-top: -1.5vh;
 }

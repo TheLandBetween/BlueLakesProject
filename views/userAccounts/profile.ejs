@@ -10,7 +10,12 @@
             <h1 class="display-2 text-center">Your Profile</h1>
         </div>
         <div class="row">
-            <div class="col">
+            <!-- Profile Photo -->
+            <div class="col d-flex justify-content-center align-items-center">
+                <img src="https://res.cloudinary.com/the-land-between/image/upload/q_auto/v1622663504/BlueLakes/fmtqmz3xrtra255w43td.jpg" class="profilePhoto">
+            </div>
+            <!-- Account Details -->
+            <div class="col stackedItems d-flex flex-column justify-content-center">
                 <!-- Name -->
                 <div class="row">
                     <div class="col-md-2 d-flex flex-column justify-content-center text-end">
@@ -51,57 +56,76 @@
                         <h5 class="text-muted">Weight / Distance</h5>
                     </div>
                 </div>
-                <div class="row">
+            </div>
+        </div>
+        <div class="row stackedItems">
+            <!-- Edit Account Button -->
+            <div class="row">
+                <div class="col-md-12 col-lg-3"></div>
+                <div class="col-md-12 col-lg-6">
+                    <div class="d-grid gap-2">
+                        <a href='/updateProfile' class="btn btn-outline-primary" role="button" aria-disabled="true">Edit Details</a> <!-- Button to view all angler reports -->
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-3"></div>
+            </div>
+            <!--  Delete Account Button -->
+            <div class="row">
+                <div class="col-md-12 col-lg-2"></div>
+                <div class="col-md-12 col-lg-8">
+                    <div class="d-grid gap-2">
+                        <button type='button' class="btn btn-outline-danger" role="button" aria-disabled="true" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Account</button> <!-- Button to view all angler reports -->
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-2"></div>
+            </div>
 
+            <!-- Modal to confirm account deletion, prevent people from accidentally clicking it -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Account Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to permanently delete your account?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="/deleteAccount" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <% if(currentUser && currentUser.rank === 3) {%> <!-- User must be rank 3 (administrator) to assign another users rank -->
-            <div class="row">
-                <form action="/updateRank" method="post" class="text-center needs-validation form-inline pageForm" name="submitUpdateUser" novalidate>
-                    <div class="row">
-                        <h4 class="text-center">Set User Rank</h4>
-                        <div class="col-md-12 col-lg-6 d-flex flex-column align-items-center justify-content-center">
-                            <h5>Rank Options</h5>
-                            <ol>
-                                <li>Angler</li>
-                                <li>Researcher</li>
-                                <li>Administrator</li>
-                            </ol>
-                        </div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="mb-3">
-                                <label class='form-label' for="update_username">Email: </label> <!-- Email of the account to update -->
-                                <input type="email" id="update_username" placeholder="user@host.com" name="update_username" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class='form-label' for="update_rank">Rank: </label> <!-- Desired rank, must be within 1 and 3 -->
-                                <input type="number" min="1" max="3" id="update_rank" value="1" name="update_rank" class="form-control" required>
-                            </div>
+            <div class="row stackedItems">
+                <h2 class="text-center">Set User Rank</h2>
+                <form action='/updateRank' method="post" class="updateRank row row-cols-lg-auto g-3 align-items-center justify-content-center needs-validation" name="submitUpdateUser">
+                    <div class="col-12">
+                        <label class="visually-hidden" for="update_username">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-text">@</div>
+                            <input type="email" class="form-control" id="update_username" placeholder="Email" name="update_username" required>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="row">
-                            <div class="col-md-12 col-lg-3"></div>
-                            <div class="col-md-12 col-lg-6">
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-outline-primary">Update Rank</button> <!-- Button to submit the report -->
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-lg-3"></div>
-                        </div>
+
+                    <div class="col-12">
+                        <label class="visually-hidden" for="update_rank">Rank</label>
+                        <select class="form-select" id="update_rank" name="update_rank" required>
+                            <option selected>Choose...</option>
+                            <option value="1">Angler</option>
+                            <option value="2">Researcher</option>
+                            <option value="3">Administrator</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
         <% } %>
-
-        <div class="row">
-            <div class="col-12 header ps-0 pe-0">
-                <div class="d-grid gap-2">
-                    <a href="/deleteAccount" class="btn btn-outline-danger" role="button" aria-disabled="true">Delete Account</a> <!-- Button to view all angler reports -->
-                </div>
-            </div>
-        </div>
         </div>
     </div>
 </div>
