@@ -96,27 +96,6 @@ module.exports.changePassword = async (req, res) => {
     }
 };
 
-module.exports.renderUpdateName = async (req, res) => {res.render('userAccounts/updateName');};
-module.exports.updateName = async (req, res) => {
-    const { username, firstName, lastName } = req.body; //Gets updated first and last name from the form
-
-    await UserAccount.updateOne({username: username}, {$set: {firstName: firstName, lastName: lastName}}); //Updates the users name
-
-    req.flash('success', "Display name updated.") //Redirects back to profile, name should be updated for user to view
-    res.redirect('/profile')
-};
-
-module.exports.renderUpdateOrganization = async (req, res) => {res.render('userAccounts/updateOrganization.ejs');};
-module.exports.updateOrganization = async (req, res) => {
-    const { username, organization } = req.body; //Gets updated organization from the form
-
-    await UserAccount.updateOne({username: username}, {$set: {organization: organization}}); //Updates the users organization.  User can associate with any organization without permission
-
-    req.flash('success', "Organization updated.")
-    res.redirect('/profile')
-};
-
-
 //LOGIN
 module.exports.renderLoginForm = async (req, res) => {
     res.render('userAccounts/login');
@@ -229,27 +208,26 @@ module.exports.recoverUserAccount = async (req, res) => {
     });
 };
 
-module.exports.renderUpdatePreferences = async (req, res) => {res.render('userAccounts/preferences.ejs');};
-module.exports.updatePreferences = async (req, res) => {
-    const { username, distPref, weightPref } = req.body; //Gets updated organization from the form
-    await UserAccount.updateOne({username: username}, {$set: {weightPref: weightPref, distPref: distPref}}); //Updates the users organization.  User can associate with any organization without permission
 
-    req.flash('success', "Organization updated.")
-    res.redirect('/profile')
-}
-
-module.exports.renderUpdateProfile = async(req, res) => {
-
-    // Render editProfile page, userAccount is already accessable
-    res.render('userAccounts/edit.ejs');
-};
+// UPDATE PROFILE ROUTE
+module.exports.renderUpdateProfile = async(req, res) => { res.render('userAccounts/edit.ejs'); };
 module.exports.updateProfile = async(req, res) => {
-    console.log(req.body);
-    res.redirect('/profile');
-
     // Save all fields from form passed in
+    const { currentUsername, username, firstName, lastName, distPref, weightPref } = req.body;
+
+    // incase they decide to change email, need to lookup and ensure its not already used in an account
+    if (username !== currentUsername) {
+        // check if for different account w/email
+        const matchingAccount = await UserAccount.findOne({username: username});
+        if (matchingAccount) {
+            req.flash('error', "Email is associated with an account already");
+            return res.redirect('/profile')
+        }
+    }
 
     // Update profile based on id with the saved fields
+    await UserAccount.updateOne({username: username}, {$set: {username: username, firstName: firstName, lastName: lastName, distPref: distPref, weightPref: weightPref}});
 
     // redirect to profile page
+    res.redirect('/profile');
 }

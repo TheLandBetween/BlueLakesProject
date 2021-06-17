@@ -7,6 +7,7 @@
         </div>
         <div class="row">
             <form action="/updateProfile" method="POST" class="needs-validation" name="submit" novalidate>
+                <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="currentUsername" name="currentUsername"> <!-- Hidden input field holding the users username -->
                 <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="username">Email: </label> <!-- User enters a email, must be in email format -->
