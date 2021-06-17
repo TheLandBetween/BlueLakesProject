@@ -213,7 +213,7 @@ module.exports.recoverUserAccount = async (req, res) => {
 module.exports.renderUpdateProfile = async(req, res) => { res.render('userAccounts/edit.ejs'); };
 module.exports.updateProfile = async(req, res) => {
     // Save all fields from form passed in
-    const { currentUsername, username, firstName, lastName, distPref, weightPref } = req.body;
+    const { currentUsername, username, firstName, lastName, organization, distPref, weightPref } = req.body;
 
     // incase they decide to change email, need to lookup and ensure its not already used in an account
     if (username !== currentUsername) {
@@ -226,7 +226,7 @@ module.exports.updateProfile = async(req, res) => {
     }
 
     // Update profile based on id with the saved fields
-    await UserAccount.updateOne({username: username}, {$set: {username: username, firstName: firstName, lastName: lastName, distPref: distPref, weightPref: weightPref}});
+    await UserAccount.updateOne({username: username}, {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref}});
 
     // redirect to profile page
     res.redirect('/profile');

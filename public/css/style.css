@@ -10934,6 +10934,10 @@ select:focus,
 textarea {
     font-size: 5vw;
   }
+
+  optgroup {
+    font-size: 5vw;
+  }
 }
 .styledA {
   text-decoration: none;
