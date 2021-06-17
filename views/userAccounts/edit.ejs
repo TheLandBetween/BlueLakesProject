@@ -46,18 +46,34 @@
                 </div>
                 <div class="mb-3">
                     <div class="btn-group container-fluid" role="group">
-                        <input class="btn-check" type="radio" name="distPref" id="cm" value="cm" required>
-                        <label class="btn btn-primary" for="cm">Centimeters</label>
-                        <input class="btn-check" type="radio" name="distPref" id="inch" value="inch" required>
-                        <label class="btn btn-primary" for="inch">Inches</label>
+                        <input class="btn-check" type="radio" name="weightPref" id="kg" value="kg" required
+                            <%if(currentUser.weightPref === 'kg'){ %>
+                                <%= "checked" %>
+                            <% } %>
+                        >
+                        <label class="btn btn-primary" for="kg">Kilograms</label>
+                        <input class="btn-check" type="radio" name="weightPref" id="lbs" value="lbs" required
+                            <%if(currentUser.weightPref === 'lbs'){ %>
+                                <%= "checked" %>
+                            <% } %>
+                        >
+                        <label class="btn btn-primary" for="lbs">Pounds</label>
                     </div>
                 </div>
                 <div class="mb-3">
                     <div class="btn-group container-fluid" role="group">
-                        <input class="btn-check" type="radio" name="weightPref" id="kg" value="kg" required>
-                        <label class="btn btn-primary" for="kg">Kilograms</label>
-                        <input class="btn-check" type="radio" name="weightPref" id="lbs" value="lbs" required>
-                        <label class="btn btn-primary" for="lbs">Pounds</label>
+                        <input class="btn-check" type="radio" name="distPref" id="cm" value="cm" required
+                        <%if(currentUser.distPref === 'cm'){ %>
+                            <%= "checked" %>
+                                <% } %>
+                        >
+                        <label class="btn btn-primary" for="cm">Centimeters</label>
+                        <input class="btn-check" type="radio" name="distPref" id="inch" value="inch" required
+                        <%if(currentUser.distPref === 'inch'){ %>
+                            <%= "checked" %>
+                                <% } %>
+                        >
+                        <label class="btn btn-primary" for="inch">Inches</label>
                     </div>
                 </div>
                 <div class="row">

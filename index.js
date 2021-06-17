@@ -225,6 +225,8 @@ app.post('/updatePreferences', isLoggedIn, catchAsync(userAccounts.updatePrefere
 app.get('/updateProfile', isLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
 app.post('/updateProfile', isLoggedIn, catchAsync(userAccounts.updateProfile));
 
+app.delete('/deleteAccount', isLoggedIn, catchAsync(userAccounts.deleteProfile));
+
 
 // LOGIN ROUTE
 app.get('/login', isCurrentlyAuthenticated, catchAsync(userAccounts.renderLoginForm));

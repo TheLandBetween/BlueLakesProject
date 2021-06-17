@@ -234,3 +234,15 @@ module.exports.updateProfile = async(req, res) => {
     // redirect to profile page
     res.redirect('/profile');
 }
+
+module.exports.deleteProfile = async(req, res) => {
+    // get current user from session
+    const userEmail  = req.session.passport.user;
+
+    // Find in Database and delete
+    await UserAccount.findOneAndDelete({username: userEmail});
+
+    // Redirect to login page
+    req.flash('success', "Successfully deleted Account"); //Redirect user
+    res.redirect('/login');
+}
