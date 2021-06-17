@@ -222,6 +222,9 @@ app.post('/updateOrganization', isLoggedIn, catchAsync(userAccounts.updateOrgani
 app.get('/updatePreferences', isLoggedIn, catchAsync(userAccounts.renderUpdatePreferences));
 app.post('/updatePreferences', isLoggedIn, catchAsync(userAccounts.updatePreferences));
 
+app.get('/updateProfile', isLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
+app.post('/updateProfile', isLoggedIn, catchAsync(userAccounts.updateProfile));
+
 
 // LOGIN ROUTE
 app.get('/login', isCurrentlyAuthenticated, catchAsync(userAccounts.renderLoginForm));

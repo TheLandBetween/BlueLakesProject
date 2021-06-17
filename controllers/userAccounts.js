@@ -237,3 +237,19 @@ module.exports.updatePreferences = async (req, res) => {
     req.flash('success', "Organization updated.")
     res.redirect('/profile')
 }
+
+module.exports.renderUpdateProfile = async(req, res) => {
+
+    // Render editProfile page, userAccount is already accessable
+    res.render('userAccounts/edit.ejs');
+};
+module.exports.updateProfile = async(req, res) => {
+    console.log(req.body);
+    res.redirect('/profile');
+
+    // Save all fields from form passed in
+
+    // Update profile based on id with the saved fields
+
+    // redirect to profile page
+}
