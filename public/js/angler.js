@@ -1,6 +1,6 @@
 
 $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to the report
-    fishCount = fishCount + 1;
+    fishCount = fishCount + 1; // val starting @ 0,
     $("#fishes").append(`
         <div class="card">
             <div class="card-header">
@@ -72,5 +72,5 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
         </div>
     `)
 
-    $('#fishCount').val(fishCount + 1);
+    $('#fishCount').val(fishCount + 1); //
 })
