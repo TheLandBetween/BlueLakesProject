@@ -20,6 +20,7 @@ $container-max-widths: (
     --col-blue: #C0D6DF;
     --dark-blue: #091d36;
     --light-blue: #c2d2e9;
+
 }
 
 html, body {
@@ -137,7 +138,7 @@ html, body {
 .dropdown-menu {
     background: var(--main-white);
     border: none;
-    border-left: 0.3em solid var(--dark-blue);
+    border-left: 0.3em solid #5e83ba;
     border-radius: 0;
 }
 
@@ -177,8 +178,8 @@ html, body {
 .main-button-outline:active,
 .main-button-outline:focus,
 .main-button-outline.active {
-    background: var(--blue-sapphire);
-    border-color: var(--blue-sapphire);
+    background: #5e83ba;
+    border-color: #5e83ba;
     color: #FFFFFF;
 }
 

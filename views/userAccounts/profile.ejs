@@ -96,7 +96,7 @@
 
         <% if(currentUser && currentUser.rank === 3) {%> <!-- User must be rank 3 (administrator) to assign another users rank -->
             <div class="row stackedItems">
-                <h2 class="text-center">Set User Rank</h2>
+                <h2 class="text-center">Set User Role</h2>
                 <form action='/updateRank' method="post" class="updateRank row row-cols-lg-auto g-3 align-items-center justify-content-center needs-validation" name="submitUpdateUser">
                     <div class="col-12">
                         <label class="visually-hidden" for="update_username">Email</label>
@@ -109,7 +109,7 @@
                     <div class="col-12">
                         <label class="visually-hidden" for="update_rank">Rank</label>
                         <select class="form-select" id="update_rank" name="update_rank" required>
-                            <option selected>Choose...</option>
+                            <option value="" selected disabled hidden>Choose...</option>
                             <option value="1">Angler</option>
                             <option value="2">Researcher</option>
                             <option value="3">Administrator</option>

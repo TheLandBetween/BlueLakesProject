@@ -11,7 +11,10 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary,
     params: {
-        folder: 'BlueLakes',
+        // Folder is based on their accounts _id to ensure unique
+        folder: (req, file) => {
+            return 'BlueLakes/' + req.user._id;
+        },
         allowedFormats: ['jpeg', 'jpg', 'png']
     }
 });
