@@ -212,6 +212,9 @@ module.exports.recoverUserAccount = async (req, res) => {
 // UPDATE PROFILE ROUTE
 module.exports.renderUpdateProfile = async(req, res) => { res.render('userAccounts/edit.ejs'); };
 module.exports.updateProfile = async(req, res) => {
+    console.log(req.files);
+    let profilePhoto = req.files.map(f => ({url: f.path, filename: f.filename}));
+    console.log(profilePhoto);
     // Save all fields from form passed in
     const { currentUsername, username, firstName, lastName, organization, distPref, weightPref } = req.body;
 

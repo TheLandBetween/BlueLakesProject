@@ -55,7 +55,6 @@ function removeColons(x) {
 module.exports.createAnglerReport = async (req, res) => {
     // strip all photos from the entry and add them to a list. one photo per fish
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
-    console.log(req.body);
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
 

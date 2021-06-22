@@ -31,6 +31,9 @@ const LocalStrategy = require('passport-local');
 const User_Account = require("./views/models/User_Account");
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet')
+const multer = require('multer') // for reading multipart html form data
+const { storage } = require('cloudinary');
+const upload = multer({ storage })
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
@@ -213,17 +216,8 @@ app.post('/updateRank', isLoggedIn, catchAsync(userAccounts.updateRank));
 app.get('/changePassword', isLoggedIn, catchAsync(userAccounts.renderChangePassword));
 app.post('/changePassword', isLoggedIn, catchAsync(userAccounts.changePassword));
 
-app.get('/updateName', isLoggedIn, catchAsync(userAccounts.renderUpdateName));
-app.post('/updateName', isLoggedIn, catchAsync(userAccounts.updateName));
-
-app.get('/updateOrganization', isLoggedIn, catchAsync(userAccounts.renderUpdateOrganization));
-app.post('/updateOrganization', isLoggedIn, catchAsync(userAccounts.updateOrganization));
-
-app.get('/updatePreferences', isLoggedIn, catchAsync(userAccounts.renderUpdatePreferences));
-app.post('/updatePreferences', isLoggedIn, catchAsync(userAccounts.updatePreferences));
-
 app.get('/updateProfile', isLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
-app.post('/updateProfile', isLoggedIn, catchAsync(userAccounts.updateProfile));
+app.post('/updateProfile', isLoggedIn, upload.single('profilePhoto'), catchAsync(userAccounts.updateProfile));
 
 app.delete('/deleteAccount', isLoggedIn, catchAsync(userAccounts.deleteProfile));
 
