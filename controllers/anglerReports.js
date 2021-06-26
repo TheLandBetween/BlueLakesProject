@@ -1,6 +1,11 @@
 const AnglerReport = require("../views/models/Angler_Report");
 const Fish = require("../views/models/Fish");
 
+const defaultFishPhoto = {
+    url: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png',
+    filename: 'defaultFishPhoto'
+}
+
 //Index to view all reports
 module.exports.index = async (req, res) => {
     if (req.user.rank < 3) { //Acount must be rank 3 (Administrator) for the process to execute
@@ -96,6 +101,9 @@ module.exports.createAnglerReport = async (req, res) => {
             if (updatedPhotos.indexOf(i + 1) >= 0) {
                 console.log("fish updating:  ", i + 1)
                 currFish.photo = fishPics[updatedPhotos.indexOf(i + 1)]
+            } else {
+                // if not assign default values
+                currFish.photo = defaultFishPhoto;
             }
 
             // currFish.photo = fishPics[i]  // get current image and assign to fish as only one allowed per upload
@@ -134,6 +142,8 @@ module.exports.createAnglerReport = async (req, res) => {
         // check if user uploaded a photo for fish
         if (fishPics.length > 0) {
             currFish.photo = fishPics[0]
+        } else {
+            currFish.photo = defaultFishPhoto;
         }
 
         // take path + filename from each image uploaded, add to photo object and append to report
@@ -222,6 +232,8 @@ module.exports.updateAnglerReport = async (req, res) => {
                     // if user uploads photo for fish assign it
                     if (updatedPhotos.indexOf(i + 1) >= 0) {
                         newFish.photo = fishPics[updatedPhotos.indexOf(i + 1)];
+                    } else {
+                        newFish.photo = defaultFishPhoto;
                     }
                     await newFish.save();
 
