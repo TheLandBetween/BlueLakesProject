@@ -78,7 +78,7 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
 // Function to Pass Over Updated Photos with corresponding fish
 // Once user adds a file to the photo input, this will trigger and append the current fish's number to the updatedPhotos input
 // This can then be used to assign which new photos goes with which new fish
-$('#editAnglerForm').on('change', 'input:file', function() {
+$('#anglerForm').on('change', 'input:file', function() {
     // get current fish number from id attribute on input
     let currentFishID = $(this).attr('id');
     // strip the number from the full id
