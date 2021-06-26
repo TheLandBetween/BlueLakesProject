@@ -26,7 +26,6 @@ module.exports.index = async (req, res) => {
         } }
     ]);
 
-    console.log(fishCounts[0]);
     fishCounts = fishCounts[0]
 
     // render index.ejs file with the lakeReports 'database'
@@ -81,6 +80,10 @@ module.exports.createAnglerReport = async (req, res) => {
 
     await newReport.save(); //Saves the report to the database, fish are not saved in the report object, but rather associated through a foreign key report ID
 
+    // gather in all updated photos and put into array to deal with when assigning photos
+    let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
+    console.log('uploaded photos: ', updatedPhotos);
+
     if (Array.isArray(req.body.species)) { //Checks if the user submitted one or many fish
         for (let i = 0; i < req.body.species.length; i++) { //If many fish, iterate over each fish.  Each field will submit as array so you can iterate over one array, using same position for other attributes
             const currFish = new Fish(); //Creates a new fish object
@@ -88,7 +91,15 @@ module.exports.createAnglerReport = async (req, res) => {
             currFish.report_fk = newReport._id; //Parent reports ID
             currFish.creator = req.user._id; //ID of user who submitted the fish
             currFish.species = req.body.species[i]; //Saves species field to fish
-            currFish.photo = fishPics[i]  // get current image and assign to fish as only one allowed per upload
+
+            // check to see if user submitted photo for this fish
+            if (updatedPhotos.indexOf(i + 1) >= 0) {
+                console.log("fish updating:  ", i + 1)
+                currFish.photo = fishPics[updatedPhotos.indexOf(i + 1)]
+            }
+
+            // currFish.photo = fishPics[i]  // get current image and assign to fish as only one allowed per upload
+
             // take path + filename from each image uploaded, add to photo object and append to report
             //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
             //TODO: This is weight conversion, needs to be linked to profile
@@ -119,7 +130,12 @@ module.exports.createAnglerReport = async (req, res) => {
         currFish.report_fk = newReport._id; //Parent reports ID
         currFish.creator = req.user._id; //ID of user who submitted the fish
         currFish.species = req.body.species; //Species of the caught fish from user input
-        currFish.photo = fishPics[0] // since one fish upload first corresponding photo
+
+        // check if user uploaded a photo for fish
+        if (fishPics.length > 0) {
+            currFish.photo = fishPics[0]
+        }
+
         // take path + filename from each image uploaded, add to photo object and append to report
         //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
 
@@ -180,14 +196,14 @@ module.exports.updateAnglerReport = async (req, res) => {
     const {lake, municipality, date, t_start, t_end} = req.body; //Gets values associated with the Angler Report object
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { lake: lake, municipality: municipality, date: date, t_start: t_start, t_end: t_end }); //Updates the angler report with the new values
 
+    let reportFishCount = anglerReport.fishCount;
+    let newFishCount = reportFishCount;
+
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
     const {fish_id} = req.body;
 
     // gather in all updated photos and put into array to deal with when assigning photos
     let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
-
-    console.log('Updated Fish Photos: ', updatedPhotos);
-    console.log('photos: ', fishPics);
 
     if (fish_id) {
         const { species, length, weight} = req.body;
@@ -208,6 +224,9 @@ module.exports.updateAnglerReport = async (req, res) => {
                         newFish.photo = fishPics[updatedPhotos.indexOf(i + 1)];
                     }
                     await newFish.save();
+
+                    // update fishCount on angler report due to newly added fish
+                    newFishCount = newFishCount + 1;
                 } else { //Otherwise, update existing report
                     const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i]});
                     // if current fish number has had its photo updated
@@ -233,6 +252,9 @@ module.exports.updateAnglerReport = async (req, res) => {
                     newFish.photo = fishPics[0]
                 }
                 await newFish.save();
+
+                // update fishCount on angler report due to newly added fish
+                newFishCount = newFishCount + 1;
             } else { //Otherwise, update existing report
                 const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight});
                 if (fishPics.length > 0) {
@@ -241,6 +263,12 @@ module.exports.updateAnglerReport = async (req, res) => {
                 }
             }
         }
+    }
+
+    // if new fish have been added, reflect on report fish count in DB
+    if (newFishCount > reportFishCount) {
+        anglerReport.fishCount = newFishCount;
+        anglerReport.save();
     }
 
     req.flash('success', "Successfully updated Angler Report");

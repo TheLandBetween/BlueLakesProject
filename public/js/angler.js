@@ -83,7 +83,6 @@ $('#anglerForm').on('change', 'input:file', function() {
     let currentFishID = $(this).attr('id');
     // strip the number from the full id
     let strippedFishNumber = currentFishID.substring(currentFishID.indexOf('[') + 1, currentFishID.indexOf(']'));
-    console.log("updated fish number: ", strippedFishNumber);
     // append fish number to current updatedPhotos input value which gets passed to backend
     $('#updatedPhotos').val($('#updatedPhotos').val() + strippedFishNumber + ',');
 })

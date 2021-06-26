@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const photoSchema = new mongoose.Schema({
+    url: {
+        type: String,
+        default: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png'
+    },
+    filename: {
+        type: String,
+        default: 'defaultFishPhoto'
+    }
+})
+
 // create a template for the table (layed out in the db schema)
 const fishSchema = new mongoose.Schema({
     report_fk: { //Foreign key associated with the parent report
@@ -23,15 +34,7 @@ const fishSchema = new mongoose.Schema({
     weight: {
         type: Number
     },
-    photo: [
-        {
-            url: {
-                type: String,
-                default: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png'
-            },
-            filename: String
-        }
-    ]
+    photo: [photoSchema]
 });
 
 // assign it to a variable to create instances of the model
