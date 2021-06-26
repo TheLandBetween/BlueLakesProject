@@ -181,6 +181,8 @@ module.exports.renderEditForm = async (req, res) => {
 
 //Update a existing angler report on edit submission
 module.exports.updateAnglerReport = async (req, res) => {
+    console.log(req.body);
+    console.log(req.files);
     const { id } = req.params; //Gets the report ID from the URL
     // find angler report with given id
     const {lake, municipality, date, t_start, t_end} = req.body; //Gets values associated with the Angler Report object

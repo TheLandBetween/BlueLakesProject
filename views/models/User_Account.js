@@ -21,10 +21,12 @@ const UserSchema = new Schema({
         type: String
     },
     distPref: {
-        type: String
+        type: String,
+        required: true
     },
     weightPref: {
-        type: String
+        type: String,
+        required: true
     },
     resetPasswordToken: { //Initialized upon a password reset request, and deleted after password is reset
         type: String
@@ -34,7 +36,12 @@ const UserSchema = new Schema({
     },
     rank: { //Angler(rank=1), Researcher(rank=2), Administrator(rank=3)
         type: Number,
-        required: true
+        required: true,
+        default: 1
+    },
+    profilePhoto: {
+        type: String,
+        default: 'https://res.cloudinary.com/the-land-between/image/upload/v1624667448/BlueLakes/defaultProfilePhoto_sltfqt.png'
     }
 });
 

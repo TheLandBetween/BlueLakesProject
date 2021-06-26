@@ -6,11 +6,11 @@
             <div class="col d-flex justify-content-center"><h1 class="display-2">Edit Profile</h1></div>
         </div>
         <div class="row">
-            <form action="/updateProfile" method="POST" class="needs-validation" name="submit" novalidate enctype="multipart/form-data">
+            <form action="/updateProfile?_method=PUT" method="POST" class="needs-validation" name="submit" enctype="multipart/form-data" novalidate>
                 <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="currentUsername" name="currentUsername"> <!-- Hidden input field holding the users username -->
                 <div class="mb-3 d-flex flex-column">
                     <label class="form-label" for="photo">Profile Picture: </label>
-                    <input class="form-control-file" type="file" accept="image/*" id="profilePhoto" name="profilePhoto">
+                    <input class="form-control-file" type="file" accept="image/*" id="photo" name="photo">
                 </div>
                 <div class="mb-3">
                     <!-- date input, sent under 'date' label-->

@@ -32,7 +32,7 @@ const User_Account = require("./views/models/User_Account");
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet')
 const multer = require('multer') // for reading multipart html form data
-const { storage } = require('cloudinary');
+const { storage } = require('./cloudinary');
 const upload = multer({ storage })
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
@@ -217,7 +217,7 @@ app.get('/changePassword', isLoggedIn, catchAsync(userAccounts.renderChangePassw
 app.post('/changePassword', isLoggedIn, catchAsync(userAccounts.changePassword));
 
 app.get('/updateProfile', isLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
-app.post('/updateProfile', isLoggedIn, upload.single('profilePhoto'), catchAsync(userAccounts.updateProfile));
+app.put('/updateProfile', isLoggedIn, upload.single('photo'), catchAsync(userAccounts.updateProfile));
 
 app.delete('/deleteAccount', isLoggedIn, catchAsync(userAccounts.deleteProfile));
 

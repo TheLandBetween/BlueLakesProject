@@ -212,9 +212,6 @@ module.exports.recoverUserAccount = async (req, res) => {
 // UPDATE PROFILE ROUTE
 module.exports.renderUpdateProfile = async(req, res) => { res.render('userAccounts/edit.ejs'); };
 module.exports.updateProfile = async(req, res) => {
-    console.log(req.files);
-    let profilePhoto = req.files.map(f => ({url: f.path, filename: f.filename}));
-    console.log(profilePhoto);
     // Save all fields from form passed in
     const { currentUsername, username, firstName, lastName, organization, distPref, weightPref } = req.body;
 
@@ -231,8 +228,15 @@ module.exports.updateProfile = async(req, res) => {
         req.session.passport.user = username;
     }
 
+    let profilePath = req.user.profilePhoto;
+    // Profile Photo Swap Check
+    if (req.file) {
+        // if photo has been uploaded, copy path and assign it to path variable to be updated
+        profilePath = req.file.path;
+    }
+
     // Update profile based on id with the saved fields
-    await UserAccount.updateOne({username: currentUsername}, {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref}});
+    await UserAccount.updateOne({username: currentUsername}, {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref, profilePhoto: profilePath}});
 
     // redirect to profile page
     res.redirect('/profile');
