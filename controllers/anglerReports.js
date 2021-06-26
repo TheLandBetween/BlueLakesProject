@@ -87,7 +87,6 @@ module.exports.createAnglerReport = async (req, res) => {
 
     // gather in all updated photos and put into array to deal with when assigning photos
     let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
-    console.log('uploaded photos: ', updatedPhotos);
 
     if (Array.isArray(req.body.species)) { //Checks if the user submitted one or many fish
         for (let i = 0; i < req.body.species.length; i++) { //If many fish, iterate over each fish.  Each field will submit as array so you can iterate over one array, using same position for other attributes
@@ -99,7 +98,6 @@ module.exports.createAnglerReport = async (req, res) => {
 
             // check to see if user submitted photo for this fish
             if (updatedPhotos.indexOf(i + 1) >= 0) {
-                console.log("fish updating:  ", i + 1)
                 currFish.photo = fishPics[updatedPhotos.indexOf(i + 1)]
             } else {
                 // if not assign default values
