@@ -51,6 +51,20 @@ function removeColons(x) {
     return x;
 }
 
+function elapsedTimeCalc(startTime, endTime) {
+    let strippedStart = removeColons(startTime);
+    let strippedEnd = removeColons(endTime);
+    let hourDiff = Math.floor(strippedEnd/100) - Math.floor(strippedStart/100) - 1;
+    let minDiff = strippedEnd % 100 + (60 - strippedStart % 100);
+
+    if (minDiff >= 60) {
+        hourDiff += 1;
+        minDiff = minDiff - 60;
+    }
+
+    return hourDiff.toString() + "hrs " + minDiff.toString() + "min";
+}
+
 //Executes once a new angler report is submitted
 module.exports.createAnglerReport = async (req, res) => {
     // strip all photos from the entry and add them to a list. one photo per fish
@@ -63,19 +77,7 @@ module.exports.createAnglerReport = async (req, res) => {
     newReport.angler_name = req.user.firstName + " " + req.user.lastName;
 
     // Figure out and set total elapsed time field
-    let strippedStart = removeColons(req.body.t_start);
-    let strippedEnd = removeColons(req.body.t_end);
-    let hourDiff = Math.floor(strippedEnd/100) - Math.floor(strippedStart/100) - 1
-    let minDiff = strippedEnd % 100 + (60 - strippedStart % 100);
-
-    if (minDiff >= 60) {
-        hourDiff += 1;
-        minDiff = minDiff - 60;
-    }
-
-    let elapsedTime = hourDiff.toString() + "hrs " + minDiff.toString() + "min";
-
-    newReport.elapsedTime = elapsedTime;
+    newReport.elapsedTime = elapsedTimeCalc(req.body.t_start, req.body.t_end);
 
     await newReport.save(); //Saves the report to the database, fish are not saved in the report object, but rather associated through a foreign key report ID
 
@@ -181,6 +183,13 @@ module.exports.updateAnglerReport = async (req, res) => {
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
     console.log(fishPics.length);
     const {fish_id} = req.body;
+    console.log(fish_id);
+
+    // gather in all updated photos and put into array to deal with when assigning photos
+    // let updatedPhotos = req.body.updatedPhotos.split(',');
+    let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
+
+    console.log(updatedPhotos);
 
     if (fish_id) {
         const { species, length, weight} = req.body;
@@ -202,8 +211,11 @@ module.exports.updateAnglerReport = async (req, res) => {
                     await newFish.save();
                 } else { //Otherwise, update existing report
                     const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i]});
-                    if (fishPics[fishCounter]) {
-                        newFish.photo = fishPics[fishCounter];
+                    // if current fish number has had its photo updated
+                    // will be checking + 1 as fishID's start at 0
+                    if(updatedPhotos.indexOf(i + 1) >= 0) {
+                        // assign photo to corresponding entry in photo array based by multer
+                        newFish.photo = fishPics[updatedPhotos.indexOf(i + 1)];
                         newFish.save();
                     }
                 }
