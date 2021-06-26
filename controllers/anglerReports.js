@@ -64,16 +64,9 @@ module.exports.createAnglerReport = async (req, res) => {
 
     // Figure out and set total elapsed time field
     let strippedStart = removeColons(req.body.t_start);
-    console.log('strippedStart: ', strippedStart);
-
     let strippedEnd = removeColons(req.body.t_end);
-    console.log('strippedEnd: ', strippedEnd);
-
     let hourDiff = Math.floor(strippedEnd/100) - Math.floor(strippedStart/100) - 1
-    console.log('hourDiff: ', hourDiff);
-
     let minDiff = strippedEnd % 100 + (60 - strippedStart % 100);
-    console.log('minDiff: ', minDiff);
 
     if (minDiff >= 60) {
         hourDiff += 1;
@@ -81,7 +74,6 @@ module.exports.createAnglerReport = async (req, res) => {
     }
 
     let elapsedTime = hourDiff.toString() + "hrs " + minDiff.toString() + "min";
-    console.log(elapsedTime)
 
     newReport.elapsedTime = elapsedTime;
 
@@ -181,14 +173,13 @@ module.exports.renderEditForm = async (req, res) => {
 
 //Update a existing angler report on edit submission
 module.exports.updateAnglerReport = async (req, res) => {
-    console.log(req.body);
-    console.log(req.files);
     const { id } = req.params; //Gets the report ID from the URL
     // find angler report with given id
     const {lake, municipality, date, t_start, t_end} = req.body; //Gets values associated with the Angler Report object
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { lake: lake, municipality: municipality, date: date, t_start: t_start, t_end: t_end }); //Updates the angler report with the new values
 
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
+    console.log(fishPics.length);
     const {fish_id} = req.body;
 
     if (fish_id) {
@@ -227,13 +218,13 @@ module.exports.updateAnglerReport = async (req, res) => {
                 newFish.species = species; //All information about the fish
                 newFish.length = length;
                 newFish.weight = weight;
-                if (fishPics[0] !== []) {
+                if (fishPics.length > 0) {
                     newFish.photo = fishPics[0]
                 }
                 await newFish.save();
             } else { //Otherwise, update existing report
                 const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight});
-                if (fishPics[0] !== []) {
+                if (fishPics.length > 0) {
                     newFish.photo = fishPics[0];
                     newFish.save();
                 }
