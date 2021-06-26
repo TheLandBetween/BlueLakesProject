@@ -25,7 +25,10 @@ const fishSchema = new mongoose.Schema({
     },
     photo: [
         {
-            url: String,
+            url: {
+                type: String,
+                default: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png'
+            },
             filename: String
         }
     ]

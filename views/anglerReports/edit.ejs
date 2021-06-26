@@ -9,7 +9,7 @@
         <h1 class="text-center display-2">Edit Angler Report</h1>
     </div>
     <div class="row">
-        <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" enctype="multipart/form-data" novalidate>
+        <form action="/anglerReports/<%= foundReport.id %>?_method=PUT" method="post" class="text-center needs-validation" name="submit" enctype="multipart/form-data" id="editAnglerForm" novalidate>
             <!-- General Info -->
             <div class="col d-flex flex-column">
                 <div class="d-flex justify-content-center">

@@ -181,15 +181,13 @@ module.exports.updateAnglerReport = async (req, res) => {
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { lake: lake, municipality: municipality, date: date, t_start: t_start, t_end: t_end }); //Updates the angler report with the new values
 
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
-    console.log(fishPics.length);
     const {fish_id} = req.body;
-    console.log(fish_id);
 
     // gather in all updated photos and put into array to deal with when assigning photos
-    // let updatedPhotos = req.body.updatedPhotos.split(',');
     let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
 
-    console.log(updatedPhotos);
+    console.log('Updated Fish Photos: ', updatedPhotos);
+    console.log('photos: ', fishPics);
 
     if (fish_id) {
         const { species, length, weight} = req.body;
@@ -205,8 +203,9 @@ module.exports.updateAnglerReport = async (req, res) => {
                     newFish.species = species[i]; //All information about the fish
                     newFish.length = length[i];
                     newFish.weight = weight[i];
-                    if (fishPics[i]) {
-                        newFish.photo = fishPics[i];
+                    // if user uploads photo for fish assign it
+                    if (updatedPhotos.indexOf(i + 1) >= 0) {
+                        newFish.photo = fishPics[updatedPhotos.indexOf(i + 1)];
                     }
                     await newFish.save();
                 } else { //Otherwise, update existing report
