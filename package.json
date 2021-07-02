@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon server.js",
-    "scss": "node-sass --watch public/scss -o public/css"
+    "scss": "node-sass --watch public/scss -o public/css",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
