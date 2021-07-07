@@ -69,34 +69,18 @@
             </div>
         </div>
     </div>
+    <!-- Fish Collected Section -->
     <div class="row">
         <div class="col-12">
-            <h2 class="text-center">Fish</h2>
+            <h2 class="text-center header">Fish Caught</h2>
         </div>
         <div class="col-12">
-            <table class="table"> <!-- Table to display all fish contained within the report -->
-                <tr> <!-- Header row -->
-                    <th>Photo</th>
-                    <th>Species</th>
-                    <th>Weight (<%= currentUser.weightPref %>)</th>
-                    <th>Length (<%= currentUser.distPref %>)</th>
-                </tr>
-
-                <% foundFish.forEach(function (entry) { %> <!-- Iterate over each fish, create a row for each containing its information -->
-                <tr>
-                    <td class="fishImage"> <!-- Displays image of the fish -->
-                        <% if(entry.photo[0]) {%>
-                            <img src='<%= entry.photo[0].url %>' alt="Photo" class="img-fluid">
-                        <% } %>
-                    </td>
-                    <td><%= entry.species%></td> <!-- Outputs all other information associated with the fish -->
-                    <td><%= entry.weight%></td>
-                    <td><%= entry.length%></td>
-                </tr>
-                <%})%>
-            </table>
+            <div class="row row-cols-md-1 row-cols-lg-4">
+                <% foundFish.forEach(function (entry) { %>
+                    <%- include('../partials/viewFish', {entry: entry}); %>
+                <% })%>
+            </div>
         </div>
-
     </div>
     <!-- Bottom Buttons -->
     <div class="row">

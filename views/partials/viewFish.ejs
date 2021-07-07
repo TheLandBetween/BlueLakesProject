@@ -1,0 +1,16 @@
+<div class="col">
+    <div class="card">
+        <% if(entry.photo[0]) { %>
+            <img src='<%= entry.photo[0].url %>' alt="Photo" class="card-img-top">
+        <% } else { %>
+                <img src='https://res.cloudinary.com/the-land-between/image/upload/q_auto/v1624334081/BlueLakes/defaultFishPhoto.png' alt="Photo" class="card-img-top">
+        <%  } %>
+        <div class="card-body">
+            <h4><%= entry.species %></h4>
+            <h5>Weight</h5>
+            <p><%= entry.weight %></p>
+            <h5>Length</h5>
+            <p><%= entry.length %></p>
+        </div>
+    </div>
+</div>
