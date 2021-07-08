@@ -57,10 +57,9 @@
             </div>
         <% } %>
     <% } %>
-
-    <div class="row">
-        <h2 class="text-center header">Your Angler Reports</h2>
-        <table class="table table-hover" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
+    <div class="row stackedItems">
+        <h2 class="text-center">Your Angler Reports</h2>
+        <table class="table table-hover p-0" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
             <thead>
                 <tr class="table-info">
                     <th>Fish Caught</th>
@@ -111,14 +110,7 @@
 <%- include('partials/foot')%>
 
 <script>
-    $(document).ready(function () { //Datatable functionality has not yet been implemented.  This would allow for the sorting and querying of tables with native bootstrap
-        $('#lakeReportTable').DataTable({
-            "paging": false // false to disable pagination (or any other option)
-        });
-        $('.dataTables_length').addClass('bs-select');
-        $('#anglerReportTable').DataTable({
-            "paging": false // false to disable pagination (or any other option)
-        });
-        $('.dataTables_length').addClass('bs-select');
-    });
+    $(document).ready(function() {
+        $('#anglerReportTable').DataTable();
+    })
 </script>

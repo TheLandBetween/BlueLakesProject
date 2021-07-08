@@ -100,6 +100,7 @@ const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
+    "https://cdn.datatables.net"
 ];
 // Accepted style sources
 const styleSrcUrls = [
@@ -107,6 +108,7 @@ const styleSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
+    "https://cdn.datatables.net"
 ];
 // Accepted connect sources
 const connectSrcUrls = [
