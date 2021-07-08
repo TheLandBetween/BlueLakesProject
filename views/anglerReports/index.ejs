@@ -10,7 +10,7 @@
     </div>
     <div class="row d-flex flex-column">
         <div class="col-12 bg-white border border-primary">
-            <table class="table table-sm "> <!-- Table of all species caught, and their counts in the database -->
+            <table class="table table-sm"> <!-- Table of all species caught, and their counts in the database -->
                 <thead>
                     <tr class="">
                         <th>Species of Fish</th>
@@ -28,7 +28,7 @@
             </table>
         </div>
         <div class="col-12 stackedItems">
-            <table class="table table-hover"> <!-- Table of all angler reports -->
+            <table class="table table-hover" id="viewAnglerReportTable"> <!-- Table of all angler reports -->
                 <thead>
                     <tr class="table-info">
                         <th>Fish Caught</th>
@@ -62,3 +62,9 @@
 
 <!-- Include proper closing tags -->
 <%- include('../partials/foot')%>
+
+<script>
+    $(document).ready(function() {
+        $('#viewAnglerReportTable').DataTable();
+    })
+</script>

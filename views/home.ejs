@@ -59,7 +59,7 @@
     <% } %>
     <div class="row stackedItems">
         <h2 class="text-center">Your Angler Reports</h2>
-        <table class="table table-hover p-0" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
+        <table class="table table-hover" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
             <thead>
                 <tr class="table-info">
                     <th>Fish Caught</th>
@@ -82,8 +82,8 @@
     </div>
     <!-- Users table of reports is only displayed if they are a researcher or greater -->
     <% if(currentUser && currentUser.rank >= 2) {%>
-        <div class="row">
-            <h2 class="text-center header">Your Lake Reports</h2> <!-- If a users account is downgraded, they will not be able to view their reports -->
+        <div class="row stackedItems">
+            <h2 class="text-center">Your Lake Reports</h2> <!-- If a users account is downgraded, they will not be able to view their reports -->
             <table class="table table-hover" id="lakeReportTable"> <!-- Outputs a table with general information on all lake health reports submitted by the user -->
                 <thead>
                     <tr class="table-info">
@@ -112,5 +112,6 @@
 <script>
     $(document).ready(function() {
         $('#anglerReportTable').DataTable();
+        $('#lakeReportTable').DataTable();
     })
 </script>
