@@ -372,13 +372,15 @@ module.exports.updateLakeReport = async (req, res) => {
     res.redirect(`/lakeReports/${lakeReport._id}`);
 };
 
+// DELETE ROUTE - Lake Report
 module.exports.deleteLakeReport = async (req, res) => {
     if (req.user.rank < 2) { //User must be rank 2 (researcher) or higher (administrator)
         req.flash('error', "Your account doesn't have permission."); //If user doesn't have correct rank, reject and redirect to home page
         return res.redirect('/');
     }
     const { id } = req.params; //Get report ID from URL
-    await LakeHealthReport.findByIdAndDelete(id); //Delete from database
-    req.flash('success', "Successfully deleted Lake Report"); //Redirect user
-    res.redirect('/lakeReports');
+    res.send(id);
+    // await LakeHealthReport.findByIdAndDelete(id); //Delete from database
+    // req.flash('success', "Successfully deleted Lake Report"); //Redirect user
+    // res.redirect('/lakeReports');
 };
