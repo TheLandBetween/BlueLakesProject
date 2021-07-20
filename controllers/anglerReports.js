@@ -1,5 +1,6 @@
 const AnglerReport = require("../views/models/Angler_Report");
 const Fish = require("../views/models/Fish");
+const { cloudinary } = require('../cloudinary');
 
 const defaultFishPhoto = {
     url: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png',
@@ -287,8 +288,29 @@ module.exports.updateAnglerReport = async (req, res) => {
 
 //Delete angler report method
 module.exports.deleteAnglerReport = async (req, res) => {
-    const { id } = req.params; //Gets report ID from the URL
-    await AnglerReport.findByIdAndDelete(id); //Finds the report by ID and deletes it from the database.  No need to communicate with the angler report object itself.
+    // pull report ID from the URL
+    const { id } = req.params;
+
+    // Delete the report itself from the ID passed in
+    await AnglerReport.findByIdAndDelete(id); //Finds the report by ID and deletes it from the database.
+
+    // Find all fish included in that parent report
+    let foundFish = await Fish.find({report_fk: id});
+
+    // iterate over each fish
+    foundFish.forEach(fish => {
+        // iterate over each photo for the current fish
+        fish.photo.forEach(photo => {
+            // delete from cloudinary
+            cloudinary.uploader.destroy(photo.filename);
+        })
+    })
+
+    // Delete all fish associated with the parent angler report
+    await Fish.deleteMany({report_fk: id})
+
     req.flash('success', "Successfully deleted Angler Report");
     res.redirect('/anglerReports');
+
+
 };

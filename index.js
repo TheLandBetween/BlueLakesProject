@@ -129,7 +129,7 @@ app.use(
                 "'self'",
                 "blob:",
                 "data:",
-                "https://res.cloudinary.com/the-land-between/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+                "https://res.cloudinary.com/the-land-between/",
                 "https://images.unsplash.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
