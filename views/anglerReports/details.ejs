@@ -92,11 +92,29 @@
             </div>
         </div>
         <div class="col-5 p-0">
-            <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-outline-danger"> Delete </button>
+            <div class="d-grid gap-2">
+                <button type='button' class="btn btn-outline-danger" role="button" aria-disabled="true" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button> <!-- Button to view all angler reports -->
+            </div>
+        </div>
+        <!-- Modal to confirm angler report deletion, prevent people from accidentally clicking it -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Angler Report Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to permanently delete this angler report?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <form action='/anglerReports/<%= foundReport._id %>?_method=DELETE' method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="col-1"></div>
         <% } %>

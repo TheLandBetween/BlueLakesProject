@@ -129,21 +129,5 @@
 <!-- Include proper closing tags -->
 <%- include('../partials/foot')%>
 
-<script>
-    (function() {
-        'use strict';
-
-        const forms = document.querySelectorAll('.needs-validation')
-
-        Array.from(forms).forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })();
-</script>
+<!-- Client Side Form Validation -->
+<script src="../js/clientValidation.js"></script>
