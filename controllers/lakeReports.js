@@ -379,8 +379,7 @@ module.exports.deleteLakeReport = async (req, res) => {
         return res.redirect('/');
     }
     const { id } = req.params; //Get report ID from URL
-    res.send(id);
-    // await LakeHealthReport.findByIdAndDelete(id); //Delete from database
-    // req.flash('success', "Successfully deleted Lake Report"); //Redirect user
-    // res.redirect('/lakeReports');
+    await LakeHealthReport.findByIdAndDelete(id); //Delete from database
+    req.flash('success', "Successfully deleted Lake Report"); //Redirect user
+    res.redirect('/lakeReports');
 };
