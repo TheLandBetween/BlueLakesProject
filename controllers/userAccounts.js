@@ -1,4 +1,5 @@
 const UserAccount = require("../views/models/User_Account");
+const { cloudinary } = require('../cloudinary');
 
 // Forgot password items
 const crypto = require('crypto');
@@ -217,7 +218,6 @@ module.exports.updateProfile = async(req, res) => {
 
     // incase they decide to change email, need to lookup and ensure its not already used in an account
     if (username !== currentUsername) {
-        console.log("changing username")
         // check if for different account w/email
         const matchingAccount = await UserAccount.findOne({username: username});
         if (matchingAccount) {
@@ -228,15 +228,29 @@ module.exports.updateProfile = async(req, res) => {
         req.session.passport.user = username;
     }
 
-    let profilePath = req.user.profilePhoto;
+    // Pull existing profile picture
+    let profilePhoto = req.user.profilePhoto;
     // Profile Photo Swap Check
     if (req.file) {
-        // if photo has been uploaded, copy path and assign it to path variable to be updated
-        profilePath = req.file.path;
+        // first can delete previous pfp from DB as new one is uploaded
+        await cloudinary.uploader.destroy(profilePhoto.filename);
+
+        // pull url and filename from multer
+        const url = req.file.path;
+        const filename = req.file.filename;
+
+        // setup as new picture object for mongo schema
+        let newProfilePicture = {
+            url,
+            filename
+        }
+
+        // update profilePhoto variable to be updated in mongo call
+        profilePhoto = newProfilePicture;
     }
 
     // Update profile based on id with the saved fields
-    await UserAccount.updateOne({username: currentUsername}, {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref, profilePhoto: profilePath}});
+    await UserAccount.updateOne({username: currentUsername}, {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref, profilePhoto: profilePhoto}});
 
     // redirect to profile page
     res.redirect('/profile');

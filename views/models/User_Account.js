@@ -40,8 +40,14 @@ const UserSchema = new Schema({
         default: 1
     },
     profilePhoto: {
-        type: String,
-        default: 'https://res.cloudinary.com/the-land-between/image/upload/v1624667448/BlueLakes/defaultProfilePhoto_sltfqt.png'
+        url: {
+            type: String,
+            default: 'https://res.cloudinary.com/the-land-between/image/upload/v1624667448/BlueLakes/defaultProfilePhoto_sltfqt.png'
+        },
+        filename: {
+            type: String,
+            default: "defaultProfilePhoto_sltfqt"
+        }
     }
 });
 
