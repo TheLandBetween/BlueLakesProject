@@ -1,7 +1,7 @@
 const AnglerReport = require("../views/models/Angler_Report");
 const Fish = require("../views/models/Fish");
 const { cloudinary } = require('../cloudinary');
-const { weightConversion, distConversion } = require("../public/js/unitConversion.js")
+const { weightConversion, distConversion, saveWeightConversion, saveDistConversion } = require("../public/js/unitConversion.js")
 
 const defaultFishPhoto = {
     url: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png',
@@ -113,20 +113,12 @@ module.exports.createAnglerReport = async (req, res) => {
             //TODO: This is weight conversion, needs to be linked to profile
             //Weight conversion based on user input, saves metric in database
             if (req.body.weight[i]) {
-                if (req.body.Weight_Metric === 'imperial') { //Check chosen metrics, convert when needed
-                    const conversionRate = 2.20462; //KG to Lb ratio
-                    currFish.weight = req.body.weight[i] * conversionRate;
-                } else
-                    currFish.weight = req.body.weight[i];
+               currFish.weight = saveWeightConversion(req.body.weightPref, req.body.weight[i])
             }
 
             //Length conversion based on user input, saves metric in database
             if (req.body.length[i]) {
-                if (req.body.Length_Metric === 'imperial') {
-                    const conversionRate = 2.54; //Inch to cm ratio
-                    currFish.length = req.body.length[i] * conversionRate;
-                } else
-                    currFish.length = req.body.length[i];
+                currFish.length = saveDistConversion(req.body.distPref, req.body.length[i])
             }
 
             await currFish.save(); //Saves the fish object to the database
@@ -150,19 +142,11 @@ module.exports.createAnglerReport = async (req, res) => {
         //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
 
         if (req.body.weight) {
-            if (req.body.Weight_Metric === 'imperial') { //Check chosen metrics, convert when needed
-                const conversionRate = 2.20462;
-                currFish.weight = req.body.weight * conversionRate;
-            } else
-                currFish.weight = req.body.weight;
+            currFish.weight = saveWeightConversion(req.body.weightPref, req.body.weight)
         }
 
         if (req.body.length) {
-            if (req.body.Length_Metric === 'imperial') {
-                const conversionRate = 2.54;
-                currFish.length = req.body.length * conversionRate;
-            } else
-                currFish.length = req.body.length;
+            currFish.length = saveDistConversion(req.body.distPref, req.body.length)
         }
 
         await currFish.save(); //Saves the fish to the database

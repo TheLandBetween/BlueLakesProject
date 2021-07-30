@@ -67,6 +67,8 @@ module.exports.anglerReportSchema = Joi.object({
     t_end: Joi.string().required().escapeHTML(),
     elapsedTime: Joi.string().required,
     updatedPhotos: Joi.string().allow(''),
+    distPref: Joi.string(),
+    weightPref: Joi.string(),
     // Fish Information, gets transferred as single input field with many entries (array)
     species: Joi.alternatives().try(Joi.string(), Joi.array().items(Joi.string())),
     length: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
