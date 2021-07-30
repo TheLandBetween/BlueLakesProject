@@ -1,6 +1,7 @@
 const AnglerReport = require("../views/models/Angler_Report");
 const Fish = require("../views/models/Fish");
 const { cloudinary } = require('../cloudinary');
+const { weightConversion, distConversion } = require("../public/js/unitConversion.js")
 
 const defaultFishPhoto = {
     url: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png',
@@ -181,7 +182,7 @@ module.exports.showAnglerReport = async (req, res) => {
     const foundReport = await AnglerReport.findById(id).populate('creator'); // passing in creator field from
     const foundFish = await Fish.find({report_fk : foundReport._id},{})
     // send them to the page about the single report
-    res.render('anglerReports/details', { foundReport, foundFish });
+    res.render('anglerReports/details', { foundReport, foundFish, weightConversion, distConversion });
 };
 
 //Renders page to edit a existing angler report

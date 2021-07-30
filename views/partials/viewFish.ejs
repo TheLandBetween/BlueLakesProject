@@ -7,10 +7,10 @@
         <%  } %>
         <div class="card-body">
             <h4><%= entry.species %></h4>
-            <h5>Weight</h5>
-            <p><%= entry.weight %></p>
-            <h5>Length</h5>
-            <p><%= entry.length %></p>
+            <h5>Weight <small class="text-muted"><%= currentUser.weightPref %></small></h5>
+            <p><%= weightConversion(currentUser.weightPref, entry.weight)%></p>
+            <h5>Length <small class="text-muted"><%= currentUser.distPref %></small></h5>
+            <p><%= distConversion(currentUser.distPref, entry.length) %></p>
         </div>
     </div>
 </div>

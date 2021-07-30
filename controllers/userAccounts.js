@@ -263,6 +263,14 @@ module.exports.deleteProfile = async(req, res) => {
     // Find in Database and delete
     await UserAccount.findOneAndDelete({username: userEmail});
 
+    // Delete Profile Picture from Cloudinary
+    let profilePhoto = req.user.profilePhoto;
+    // Filename's are unique in cloudinary and this is the default PFP, don't want this to get deleted
+    if (profilePhoto.filename !== "defaultProfilePhoto_sltfqt") {
+        // if user has changed their pfp, delete it
+        await cloudinary.uploader.destroy(profilePhoto.filename);
+    }
+
     // Redirect to login page
     req.flash('success', "Successfully deleted Account"); //Redirect user
     res.redirect('/login');
