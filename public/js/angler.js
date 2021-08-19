@@ -79,11 +79,22 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
 // Once user adds a file to the photo input, this will trigger and append the current fish's number to the updatedPhotos input
 // This can then be used to assign which new photos goes with which new fish
 $('#anglerForm').on('change', 'input:file', function() {
-    // get current fish number from id attribute on input
-    let currentFishID = $(this).attr('id');
-    // strip the number from the full id
-    let strippedFishNumber = currentFishID.substring(currentFishID.indexOf('[') + 1, currentFishID.indexOf(']'));
-    // append fish number to current updatedPhotos input value which gets passed to backend
-    $('#updatedPhotos').val($('#updatedPhotos').val() + strippedFishNumber + ',');
+    // pull filesize of uploaded file
+    let fileSize = $(this)[0].files[0].size
+    // if greater than cloudinary max, show and clear file
+    if (fileSize > 10485760) {
+        alert ('file size exceeds max')
+        $('#fileError').html('File too Large')
+        $(this).val('')
+    } else {
+        $('#fileError').html('');
+        // get current fish number from id attribute on input
+        let currentFishID = $(this).attr('id');
+        // strip the number from the full id
+        let strippedFishNumber = currentFishID.substring(currentFishID.indexOf('[') + 1, currentFishID.indexOf(']'));
+        // append fish number to current updatedPhotos input value which gets passed to backend
+        $('#updatedPhotos').val($('#updatedPhotos').val() + strippedFishNumber + ',');
+    }
 })
+
 

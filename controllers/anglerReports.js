@@ -106,12 +106,8 @@ module.exports.createAnglerReport = async (req, res) => {
                 currFish.photo = defaultFishPhoto;
             }
 
-            // currFish.photo = fishPics[i]  // get current image and assign to fish as only one allowed per upload
-
             // take path + filename from each image uploaded, add to photo object and append to report
             //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
-            //TODO: This is weight conversion, needs to be linked to profile
-            //Weight conversion based on user input, saves metric in database
             if (req.body.weight[i]) {
                currFish.weight = saveWeightConversion(req.body.weightPref, req.body.weight[i])
             }
