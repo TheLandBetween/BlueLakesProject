@@ -1,4 +1,6 @@
 const UserAccount = require("../views/models/User_Account");
+const AnglerReport = require('../views/models/Angler_Report');
+const Fish = require('../views/models/Fish');
 const { cloudinary } = require('../cloudinary');
 
 // Forgot password items
@@ -25,10 +27,12 @@ module.exports.registerUser = async (req, res, next) => {
         const { username, firstName, lastName, organization, password, distPref, weightPref } = req.body; //Gets all associated credentials from request
         const newUser = new UserAccount({username, firstName, lastName, organization, rank, distPref, weightPref}); //Creates a new user object
         const registeredUser = await UserAccount.register(newUser, password); //Registers the user using their email(username) and password
+
         // never really a case where this should raise an error as we are awaiting the user account
         // to be registered and have an error catcher on thr async function, but passport requires it
         req.login(registeredUser, error => { //Logs the user in after registration and directs them to the home page
             if (error) return next(error);
+            // create user folder in cloudinary
             req.flash("success", "Welcome!");
             res.redirect('/');
         });
@@ -259,6 +263,31 @@ module.exports.updateProfile = async(req, res) => {
 module.exports.deleteProfile = async(req, res) => {
     // get current user from session
     const userEmail  = req.session.passport.user;
+    const currentUser = await UserAccount.findOne({username: userEmail})
+    let photoIdList = [];
+
+    // Delete users cloudinary folder with all images inside
+    // find all fish linked to creator
+    let allFish = await Fish.find({creator: currentUser.id})
+    // iterate over each fish and append the photo filename to photoIdList
+    allFish.forEach(fish => {
+        fish.photo.forEach(photo => {photoIdList.push(photo.filename)});
+    })
+
+    // filter out any default fish photos used from array to ensure we're only looking at user uploaded photos
+    photoIdList = photoIdList.filter(id => {
+        if (id !== 'defaultFishPhoto'){
+            return id
+        }
+    })
+
+    // if photos found, pass that list into delete_resources to delete from cloudinary
+    if (photoIdList.length > 0){
+        console.log('deleting photos')
+        await cloudinary.api.delete_resources(photoIdList, function (error, result) {console.log(result, error)})
+        // delete now empty cloudinary folder with delete_folder
+        await cloudinary.api.delete_folder('BlueLakes/' + currentUser.id, function(error, result) {console.log(result, error)});
+    }
 
     // Find in Database and delete
     await UserAccount.findOneAndDelete({username: userEmail});
@@ -270,6 +299,7 @@ module.exports.deleteProfile = async(req, res) => {
         // if user has changed their pfp, delete it
         await cloudinary.uploader.destroy(profilePhoto.filename);
     }
+
 
     // Redirect to login page
     req.flash('success', "Successfully deleted Account"); //Redirect user
