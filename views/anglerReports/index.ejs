@@ -40,7 +40,12 @@
                     <% for (let report of anglerReports) {%> <!-- Iterates over each angler report in anglerReports (passed in through the controller) -->
                     <tr>
                         <td><a href="/anglerReports/<%= report.id%>" class="styledA rowLink"><%= report.fishCount %></a></td>
-                        <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                        <!--  Deleted user catch, can't display angler name if no creator linked -->
+                        <% if (!report.creator) {%>
+                            <td class="text-muted"><strike>Deleted User</strike></td>
+                        <% } else { %>
+                            <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                        <% } %>
                         <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
                     </tr>
                     <% } %>

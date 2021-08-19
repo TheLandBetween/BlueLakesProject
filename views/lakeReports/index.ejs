@@ -22,7 +22,12 @@
                 <% for (let report of healthReports) {%> <!-- Iterates over each report and displays some general contents -->
                 <tr>
                     <td><a href="/lakeReports/<%= report.id%>" class="rowLink styledA">details</a></td>
-                    <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                    <!--  Deleted user catch, can't display angler name if no creator linked -->
+                    <% if (!report.creator) {%>
+                        <td class="text-muted"><strike>Deleted User</strike></td>
+                    <% } else { %>
+                        <td><%= report.creator.firstName + ' ' + report.creator.lastName %></td>
+                    <% } %>
                     <td><%= (report.date_generated.getUTCMonth() + 1) + '.' + report.date_generated.getUTCDate() + '.' + report.date_generated.getUTCFullYear() %></td>
                     <td><%= report.notes %></td>
                 </tr>
