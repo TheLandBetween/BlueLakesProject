@@ -10,11 +10,12 @@
     </div>
     <div class="row d-flex flex-column">
         <form action="/lakeReports" method="post" class="needs-validation" name="submit" novalidate>
+            <!-- General Information -->
             <div class="row d-flex flex-column">
                 <div class="d-flex justify-content-center">
                     <p class="h2 text-center">General Information</p>
-
                 </div>
+                <!-- Initial Entry Fields -->
                 <div class="text-left">
                     <div class="mb-3">
                         <!-- date input, sent under 'date' label-->
@@ -38,57 +39,60 @@
                 </div>
             </div>
             <!--  Extra Entries (Temp, Secchi, Phosp, Calcium -->
-            <div class="container d-flex flex-column">
-                <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
-                <div class="row">
-                    <div class="col-12" id="tempDO_Container"> <!-- Each container is initialized as empty, in case the user doesn't want to submit a type of reading with the report -->
-                    </div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-md-12 col-lg-6">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-secondary" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- As the user adds readings, cards are added to the associated container -->
+            <div class="row">
+                <div class="container d-flex flex-column">
+                    <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
+                    <div class="row">
+                        <div class="col-12" id="tempDO_Container"> <!-- Each container is initialized as empty, in case the user doesn't want to submit a type of reading with the report -->
                         </div>
-                    </div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-12"></div>
-                </div>
-                <!-- SECCHI DEPTH READING -->
-                <div class="row stackedItems">
-                    <div class="col-12" id="secchiDepth_Container"></div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-md-12 col-lg-6">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-secondary" type="button" id="addSecchi">Add Secchi Reading</button>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-secondary" type="button" id="addtemp_DO">Add Temp/DO Reading</button> <!-- As the user adds readings, cards are added to the associated container -->
+                            </div>
                         </div>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-12"></div>
                     </div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-12"></div>
-                </div>
-                <!-- PHOSPHORUS READING -->
-                <div class="row">
-                    <div class="col-12" id="phosphorus_Container"></div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-md-12 col-lg-6">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-secondary" type="button" id="addPhosphorus">Add Phosphorus Reading</button>
+                    <!-- SECCHI DEPTH READING -->
+                    <div class="row stackedItems">
+                        <div class="col-12" id="secchiDepth_Container"></div>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-secondary" type="button" id="addSecchi">Add Secchi Reading</button>
+                            </div>
                         </div>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-12"></div>
                     </div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-12"></div>
-                </div>
-                <!-- CALCIUM READING -->
-                <div class="row stackedItems">
-                    <div class="col-12" id="calcium_Container"></div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-md-12 col-lg-6">
-                        <div class="d-grid gap-2">
-                            <button class="btn btn-outline-secondary" type="button" id="addCalcium">Add Calcium Reading</button>
+                    <!-- PHOSPHORUS READING -->
+                    <div class="row">
+                        <div class="col-12" id="phosphorus_Container"></div>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-secondary" type="button" id="addPhosphorus">Add Phosphorus Reading</button>
+                            </div>
                         </div>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-12"></div>
                     </div>
-                    <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-12"></div>
+                    <!-- CALCIUM READING -->
+                    <div class="row stackedItems">
+                        <div class="col-12" id="calcium_Container"></div>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-md-12 col-lg-6">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-secondary" type="button" id="addCalcium">Add Calcium Reading</button>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3"></div>
+                        <div class="col-12"></div>
+                    </div>
                 </div>
             </div>
+
             <!-- SUBMIT REPORT -->
             <div class="row">
                 <div class="col-md-12 col-lg-3"></div>
