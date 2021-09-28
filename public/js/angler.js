@@ -61,11 +61,11 @@ $("#addFish").click(function() { //Adds an aditional fish as a bootstrap card to
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="species">Length: </label>
-                        <input class="form-control" type="number" inputmode="decimal" id="fish[${fishCount}][length]" placeholder="Length of Fish" name="length">
+                        <input class="form-control" type="number" min="0" inputmode="decimal" id="fish[${fishCount}][length]" placeholder="Length of Fish" name="length">
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="species">Weight: </label>
-                        <input class="form-control" type="number" inputmode="decimal" id="fish[${fishCount}][weight]" placeholder="Weight of Fish" name="weight">
+                        <input class="form-control" type="number" min="0" inputmode="decimal" id="fish[${fishCount}][weight]" placeholder="Weight of Fish" name="weight">
                     </div>
                 </div>
             </div>
