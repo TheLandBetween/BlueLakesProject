@@ -7,7 +7,7 @@
     <div class="row header d-flex flex-column text-center">
         <h1 class="display-2">Lake Health Report</h1>
         <!--  Deleted user catch, can't display angler name if no creator linked -->
-        <% if (!report.creator) {%>
+        <% if (!foundReport.creator) {%>
             <h2 class="text-muted"><strike>Deleted User</strike></h2>
         <% } else { %>
             <h2>Creator: <%= foundReport.creator.firstName + ' ' + foundReport.creator.lastName %></h2>

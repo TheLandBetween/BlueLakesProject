@@ -33,27 +33,27 @@ module.exports.lakeReportSchema = Joi.object({
     // Dissolved Oxygen
     doTemp_id: Joi.any().optional(), // only if multiple
     temperature: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
-    dissolved_oxygen: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
+    dissolved_oxygen: Joi.alternatives().try(Joi.number().positive(), Joi.array().items(Joi.number().positive())),
     doTempCoordinateX: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
     doTempCoordinateY: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
-    doTempDepth: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
+    doTempDepth: Joi.alternatives().try(Joi.number().positive(), Joi.array().items(Joi.number().positive())),
 
     // Secchi
     secchi_id: Joi.any().optional(), // only if multiple
-    secchi_depth: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
+    secchi_depth: Joi.alternatives().try(Joi.number().positive(), Joi.array().items(Joi.number().positive())),
     secchiCoordinateX: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
     secchiCoordinateY: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
-    secchiDepth: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
+    secchiDepth: Joi.alternatives().try(Joi.number().positive(), Joi.array().items(Joi.number().positive())),
 
     // Phosphorous
     phosphorus_id: Joi.any().optional(), // only if multiple
-    phosphorus: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
+    phosphorus: Joi.alternatives().try(Joi.number().positive(), Joi.array().items(Joi.number().positive())),
     phosphorusCoordinateX: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
     phosphorusCoordinateY: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
 
     // Calcium
     calcium_id: Joi.any().optional(), // only if multiple
-    calcium: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
+    calcium: Joi.alternatives().try(Joi.number().positive(), Joi.array().items(Joi.number().positive())),
     calciumCoordinateX: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
     calciumCoordinateY: Joi.alternatives().try(Joi.number(), Joi.array().items(Joi.number())),
 });

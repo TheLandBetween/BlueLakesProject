@@ -18,7 +18,7 @@ $("#addtemp_DO").click(function() { //Add a card to the TempDO container
                     </div>
                     <div class="mb-3">
                         <label class='form-label' for="dissolved_oxygen">Do Conc: </label>
-                        <input type="number" inputmode="decimal" id="dissolved_oxygen" step="any" placeholder="Dissolved Oxygen" name="dissolved_oxygen" class="form-control" required>
+                        <input type="number" min="0" inputmode="decimal" id="dissolved_oxygen" step="any" placeholder="Dissolved Oxygen" name="dissolved_oxygen" class="form-control" required>
                     </div>
                     <div class="form-inline">
                         <div class="mb-3">
@@ -31,7 +31,7 @@ $("#addtemp_DO").click(function() { //Add a card to the TempDO container
                         </div>
                         <div class="mb-3">
                             <label class='form-label' for="doTempDepth">Depth: </label>
-                            <input type="number" inputmode="decimal" step="0.01" id="doTempDepth" placeholder="Depth" name="doTempDepth" class="form-control" required>
+                            <input type="number" min="0" inputmode="decimal" step="0.01" id="doTempDepth" placeholder="Depth" name="doTempDepth" class="form-control" required>
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@ $("#addSecchi").click(function() { //Add a secchi card to the secchi container
                         <input class="form-control" value="?" type="hidden" id="secchi_id" name="secchi_id">
                         <div class="mb-3">
                             <label class='form-label' for="secchi_depth">Secchi Depth: </label>
-                            <input type="number" inputmode="decimal" step='any' id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
+                            <input type="number" min="0" inputmode="decimal" step='any' id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="mb-3">
@@ -68,7 +68,7 @@ $("#addSecchi").click(function() { //Add a secchi card to the secchi container
                             </div>
                             <div class="mb-3">
                                 <label class='form-label' for="secchiDepth">Depth: </label>
-                                <input type="number" inputmode="decimal" step="0.01" id="secchiDepth" placeholder="Depth" name="secchiDepth" class="form-control" required>
+                                <input type="number" min="0" inputmode="decimal" step="0.01" id="secchiDepth" placeholder="Depth" name="secchiDepth" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -92,7 +92,7 @@ $("#addPhosphorus").click(function() { //Add a phosphorus card to the phosphorus
                         <input class="form-control" value="?" type="hidden" id="phosphorus_id" name="phosphorus_id">
                         <div class="mb-3">
                             <label class='form-label' for="phosphorus">Phosphorus: </label>
-                            <input type="number" inputmode="decimal" step="any" id="phosphorus" placeholder="Phosphorus in PPM" name="phosphorus" class="form-control" required>
+                            <input type="number" min="0" inputmode="decimal" step="any" id="phosphorus" placeholder="Phosphorus in PPM" name="phosphorus" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="mb-3">
@@ -125,7 +125,7 @@ $("#addCalcium").click(function() { //Add a calcium card to the calcium containe
                         <input class="form-control" value="?" type="hidden" id="calcium_id" name="calcium_id">
                         <div class="mb-3">
                             <label class='form-label' for="calcium">Calcium: </label>
-                            <input type="number" inputmode="decimal" id="calcium" step='any' placeholder="Calcium in PPM" name="calcium" class="form-control" required>
+                            <input type="number" min="0" inputmode="decimal" id="calcium" step='any' placeholder="Calcium in PPM" name="calcium" class="form-control" required>
                         </div>
                         <div class="form-inline">
                             <div class="mb-3">
