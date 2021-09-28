@@ -155,10 +155,17 @@
         </div>
         <div class="col-1"></div>
         <% } %>
+
         <div class="col-12 header ps-0 pe-0">
-            <div class="d-grid gap-2">
-                <a href="/lakeReports" class="btn btn-outline-primary" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all reports -->
-            </div>
+            <% if(currentUser.rank === 3) { %>
+                <div class="d-grid gap-2">
+                    <a href="/lakeReports" class="btn btn-outline-primary" role="button" aria-disabled="true">View All Reports</a> <!-- Button to view all reports -->
+                </div>
+            <% } else { %>
+                <div class="d-grid gap-2">
+                    <a href="/" class="btn btn-outline-primary" role="button" aria-disabled="true">View Your Reports</a>
+                </div>
+            <% } %>
         </div>
     </div>
 </div>
