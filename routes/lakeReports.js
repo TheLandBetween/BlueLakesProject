@@ -1,22 +1,32 @@
+// ROUTING file - Lake Health Reports
+// Contains all the routing paths corresponding to Lake Health Reports
+
+// import necessary features & middleware
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn, isCreator, validateLakeReport } = require('../middleware');
+const { isNotLoggedIn, isCreator, validateLakeReport } = require('../middleware');
 
-const lakeReports = require('../controllers/lakeReports'); //Allows you to use methods defined in /controllers/lakeReports
+// import routing methods from Lake Health Report controller file
+const lakeReports = require('../controllers/lakeReports');
 
+// "/lakeReports"
 router.route('/')
-    .get(isLoggedIn, catchAsync(lakeReports.index)) // INDEX route
-    .post(isLoggedIn, validateLakeReport, catchAsync(lakeReports.createLakeReport)); // CREATE route
+    .get(isNotLoggedIn, catchAsync(lakeReports.index)) // INDEX route
+    .post(isNotLoggedIn, validateLakeReport, catchAsync(lakeReports.createLakeReport)); // CREATE route
 
-router.get('/new', isLoggedIn, lakeReports.renderNewForm); // CREATE route
+// "/lakeReports/new"
+router.get('/new', isNotLoggedIn, lakeReports.renderNewForm); // CREATE route
 
+// "/lakeReports/:id"
 router.route('/:id')
-    .get(isLoggedIn, catchAsync(lakeReports.showLakeReport)) // SHOW route
-    .put(isLoggedIn, isCreator, validateLakeReport, catchAsync(lakeReports.updateLakeReport)) // EDIT route  REMEMBER TO VALIDATE
-    .delete(isLoggedIn, catchAsync(lakeReports.deleteLakeReport)); // DELETE route
+    .get(isNotLoggedIn, isCreator, catchAsync(lakeReports.showLakeReport)) // SHOW route
+    .put(isNotLoggedIn, isCreator, validateLakeReport, catchAsync(lakeReports.updateLakeReport)) // EDIT route
+    .delete(isNotLoggedIn, isCreator, catchAsync(lakeReports.deleteLakeReport)); // DELETE route
 
-router.get('/:id/edit', isLoggedIn, isCreator, catchAsync(lakeReports.renderEditForm)); // EDIT route
+// "/lakeReports/:id/edit"
+router.get('/:id/edit', isNotLoggedIn, isCreator, catchAsync(lakeReports.renderEditForm)); // EDIT route
 
+// export router for use in main index file
 module.exports = router;
 

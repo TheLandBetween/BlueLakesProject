@@ -11,7 +11,7 @@ const connectDB = require('./Database/Connection')
 const app = express();
 const fs = require('fs')
 const bcrypt = require('bcrypt');
-const {isLoggedIn, isCurrentlyAuthenticated} = require("./middleware");
+const {isNotLoggedIn, isLoggedIn} = require("./middleware");
 
 //Connect to the remote database
 connectDB();
@@ -181,7 +181,7 @@ app.use((req, res, next) => {
 
 // '/' => home page -- has to be first
 // render sends them a file in the views folder, dont need to include .ejs since we set view engine
-app.get('/', isLoggedIn, async (req, res) => {
+app.get('/', isNotLoggedIn, async (req, res) => {
     const healthReports = await LakeHealthReport.find({creator : req.user._id},{}).sort({"date_generated": -1});
     const anglerReports = await AnglerReport.find({creator : req.user._id},{}).sort({"date": -1});
     res.render('home', {healthReports, anglerReports})
@@ -189,12 +189,12 @@ app.get('/', isLoggedIn, async (req, res) => {
 
 //LAKE HEALTH REPORT ROUTING
 app.use('/lakeReports', lakeReportRoutes);
-app.get('/lakeReports/:id/edit',isLoggedIn , (req, res) => {
+app.get('/lakeReports/:id/edit',isNotLoggedIn , (req, res) => {
 });
 
 //ANGLER REPORT ROUTING
 app.use('/anglerReports', anglerReportRoutes);
-app.get('/anglerReports/:id/edit', isLoggedIn, (req, res) => {
+app.get('/anglerReports/:id/edit', isNotLoggedIn, (req, res) => {
 });
 
 app.get('/identifyFish', function (req, res) { //Delivers a PDF of all fish accepted by the application, with visuals
@@ -207,36 +207,36 @@ app.get('/identifyFish', function (req, res) { //Delivers a PDF of all fish acce
 });
 
 //USER ACCOUNT ROUTING
-app.get('/register', isCurrentlyAuthenticated, catchAsync(userAccounts.renderRegisterForm));
+app.get('/register', isLoggedIn, catchAsync(userAccounts.renderRegisterForm));
 app.post('/register', validateUserAccount, catchAsync(userAccounts.registerUser));
 
 //PROFILE PAGE ROUTING
-app.get('/profile', isLoggedIn, catchAsync(userAccounts.renderProfile));
+app.get('/profile', isNotLoggedIn, catchAsync(userAccounts.renderProfile));
 
-app.post('/updateRank', isLoggedIn, catchAsync(userAccounts.updateRank));
+app.post('/updateRank', isNotLoggedIn, catchAsync(userAccounts.updateRank));
 
-app.get('/changePassword', isLoggedIn, catchAsync(userAccounts.renderChangePassword));
-app.post('/changePassword', isLoggedIn, catchAsync(userAccounts.changePassword));
+app.get('/changePassword', isNotLoggedIn, catchAsync(userAccounts.renderChangePassword));
+app.post('/changePassword', isNotLoggedIn, catchAsync(userAccounts.changePassword));
 
-app.get('/updateProfile', isLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
-app.put('/updateProfile', isLoggedIn, upload.single('photo'), catchAsync(userAccounts.updateProfile));
+app.get('/updateProfile', isNotLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
+app.put('/updateProfile', isNotLoggedIn, upload.single('photo'), catchAsync(userAccounts.updateProfile));
 
-app.delete('/deleteAccount', isLoggedIn, catchAsync(userAccounts.deleteProfile));
+app.delete('/deleteAccount', isNotLoggedIn, catchAsync(userAccounts.deleteProfile));
 
 
 // LOGIN ROUTE
-app.get('/login', isCurrentlyAuthenticated, catchAsync(userAccounts.renderLoginForm));
+app.get('/login', isLoggedIn, catchAsync(userAccounts.renderLoginForm));
 app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(userAccounts.loginUser));
 
 
 // LOGOUT ROUTE
 app.get('/logout', userAccounts.logoutUser);
 
-app.get('/forgot', isCurrentlyAuthenticated, catchAsync(userAccounts.renderForgotForm));
+app.get('/forgot', isLoggedIn, catchAsync(userAccounts.renderForgotForm));
 app.post('/forgot', catchAsync(userAccounts.forgotUserPassword));
 
 //USER ACCOUNT RECOVERY ROUTING
-app.get('/recover', isCurrentlyAuthenticated, catchAsync(userAccounts.renderRecoverForm));
+app.get('/recover', isLoggedIn, catchAsync(userAccounts.renderRecoverForm));
 app.post('/recover', catchAsync(userAccounts.recoverUserAccount));
 
 // 404 error page, request a link that doesnt exist

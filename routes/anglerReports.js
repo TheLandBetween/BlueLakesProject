@@ -1,24 +1,36 @@
+// ROUTING file - Angler Reports
+// Contains all the routing paths corresponding to Angler Reports
+
+// import necessary features & middleware for routes
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn, isCreator, validateAnglerReport } = require('../middleware');
-const multer = require('multer') // for reading multipart html form data
+const { isNotLoggedIn, isCreator, validateAnglerReport } = require('../middleware');
+// import necessary packages for image uploading and processing
+const multer = require('multer');
 const { storage } = require('../cloudinary');
-const upload = multer({ storage })
+const upload = multer({ storage });
 
-const anglerReports = require('../controllers/anglerReports'); //Allows you use methods defined within /controllers/anglerReports
+// import routing methods from Angler Report controller file
+const anglerReports = require('../controllers/anglerReports');
 
+// "/anglerReports"
 router.route('/')
-    .get(isLoggedIn, catchAsync(anglerReports.index)) // INDEX route
-    .post(isLoggedIn, upload.array('photo'), validateAnglerReport, catchAsync(anglerReports.createAnglerReport)) // CREATE route, validate after upload
+    .get(isNotLoggedIn, catchAsync(anglerReports.index)) // INDEX route
+    .post(isNotLoggedIn, upload.array('photo'), validateAnglerReport, catchAsync(anglerReports.createAnglerReport)) // CREATE route
 
-router.get('/new', isLoggedIn, anglerReports.renderNewForm); // CREATE route, display page
 
+// "/anglerReports/new"
+router.get('/new', isNotLoggedIn, anglerReports.renderNewForm); // CREATE route
+
+// "/anglerReports/:id"
 router.route('/:id')
-    .get(isLoggedIn, catchAsync(anglerReports.showAnglerReport)) // SHOW route
-    .put( isLoggedIn, isCreator, upload.array('photo'), validateAnglerReport, catchAsync(anglerReports.updateAnglerReport)) // EDIT route
-    .delete(isLoggedIn, catchAsync(anglerReports.deleteAnglerReport)); // DELETE route
+    .get(isNotLoggedIn, isCreator, catchAsync(anglerReports.showAnglerReport)) // SHOW route
+    .put( isNotLoggedIn, isCreator, upload.array('photo'), validateAnglerReport, catchAsync(anglerReports.updateAnglerReport)) // EDIT route
+    .delete(isNotLoggedIn, isCreator, catchAsync(anglerReports.deleteAnglerReport)); // DELETE route
 
-router.get('/:id/edit', isLoggedIn, isCreator, catchAsync(anglerReports.renderEditForm)); // EDIT route
+// "/anglerReports/:id/edit"
+router.get('/:id/edit', isNotLoggedIn, isCreator, catchAsync(anglerReports.renderEditForm)); // EDIT route
 
+// export router for use in main index file
 module.exports = router;

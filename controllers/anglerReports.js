@@ -1,22 +1,32 @@
+// CONTROLLER file - anglerReports
+// Purpose is to hold all routing methods corresponding to anglerReports
+
+// import necessary models & functions
 const AnglerReport = require("../views/models/Angler_Report");
 const Fish = require("../views/models/Fish");
 const { cloudinary } = require('../cloudinary');
 const { weightConversion, distConversion, saveWeightConversion, saveDistConversion } = require("../public/js/unitConversion.js")
 
+// setup default photo of fish incase user decides not to upload, keeps styling uniform
 const defaultFishPhoto = {
+    // stock photo uploaded to main cloudinary folder
     url: 'https://res.cloudinary.com/the-land-between/image/upload/v1624334081/BlueLakes/defaultFishPhoto.png',
     filename: 'defaultFishPhoto'
 }
 
-//Index to view all reports
+// INDEX ROUTE - "/anglerReports"
+// Provides user with page displaying all angler reports, passes through all angler reports object
 module.exports.index = async (req, res) => {
-    if (req.user.rank < 3) { //Acount must be rank 3 (Administrator) for the process to execute
+    // rank authorization, ensure user is ranked as an administrator
+    if (req.user.rank < 3) {
+        // if user is below admin rank, send them back to homepage with a permission error
         req.flash('error', "Your account doesn't have permission.");
         return res.redirect('/'); //Otherwise reject and redirect to the users home page with error message
     }
-    // async callback to wait for health anglerReports to be received, then respond with webpage
-    const anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1}); //Gets all reports, sorts by newest date
-    let fishCounts = await Fish.aggregate([ //Counts the number of each species of fish to display at the top of the page
+    // search DB for all angler reports, sorting by newest date first
+    const anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1});
+    // get list of fish caught for table at top of page, iterate through each fish and add up species
+    let fishCounts = await Fish.aggregate([
         { "$unwind" : "$species" },
         { "$group": { "_id": "$species", "count": { "$sum": 1} } },
         { "$group": {
@@ -33,66 +43,90 @@ module.exports.index = async (req, res) => {
         } }
     ]);
 
+    // get total number of fish from newest fish
     fishCounts = fishCounts[0]
 
-    // render index.ejs file with the lakeReports 'database'
-    res.render('anglerReports/index', { anglerReports, fishCounts} ); //Renders the page with all reports and fish counts passed through
+    // render Angler Report index.ejs file with the angler reports object as well as fishCount object
+    res.render('anglerReports/index', { anglerReports, fishCounts} );
 };
 
-//Renders form to submit new angler report
+// NEW ROUTE - "/anglerReports/new"
+// Providers user with new angler report entry page
 module.exports.renderNewForm = (req, res) => {
+    // rank authorization, ensure user is ranked as an administrator
+    if (req.user.rank < 3) {
+        // if user is below admin rank, send them back to homepage with a permission error
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/'); //Otherwise reject and redirect to the users home page with error message
+    }
+    // if they are proper rank, send them to new angler report form
     res.render('anglerReports/new');
 };
 
 // Helper function for stripping colons on time strings
-function removeColons(x) {
-    if (x.length === 4) {
-        x = x.slice(0, 1) + x.slice(2);
+//   - currTime is current time inputted from user as Str
+function removeColons(currTime) {
+    // if time is setup as 0:00, split into 0 + 00
+    if (currTime.length === 4) {
+        currTime = currTime.slice(0, 1) + currTime.slice(2);
     }
-
-    if (x.length === 5) {
-        x = x.slice(0, 2) + x.slice(3);
+    // if time is setup as 00:00 split into 00 + 00
+    if (currTime.length === 5) {
+        currTime = currTime.slice(0, 2) + currTime.slice(3);
     }
-
-    return x;
+    // return concatenated time without the colon
+    return currTime;
 }
-
+// Helper function for calculating elapsed time between two points in time
+//   - startTime is a time as Str ("0:00"/"00:00")
+//   - endTime is a time as Str ("0:00"/"00:00")
 function elapsedTimeCalc(startTime, endTime) {
+    // run inputted time values through our removeColons helper function, "0:00" => "000" / "00:00" ==> "0000"
     let strippedStart = removeColons(startTime);
     let strippedEnd = removeColons(endTime);
+
+    // calculate the hour difference between values
     let hourDiff = Math.floor(strippedEnd/100) - Math.floor(strippedStart/100) - 1;
+    // calculate remaining minute difference between the values
     let minDiff = strippedEnd % 100 + (60 - strippedStart % 100);
 
+    // if there are more than 60 minutes remaining increase an hour to the count
     if (minDiff >= 60) {
         hourDiff += 1;
         minDiff = minDiff - 60;
     }
 
+    // return a formatted time string displayed as 0hrs 0min
     return hourDiff.toString() + "hrs " + minDiff.toString() + "min";
 }
 
-//Executes once a new angler report is submitted
+// CREATE ROUTE - "/anglerReports
+// Receives user's angler report data and posts to the DB with the resulting information.
 module.exports.createAnglerReport = async (req, res) => {
     // strip all photos from the entry and add them to a list. one photo per fish
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
     // assigns passed in form to a lake health report object, saving to a variable
     const newReport = new AnglerReport(req.body);
 
-    //Appends the anglers user ID and name to the report, can be used as a foreign key
+    //Appends the anglers user ID and name to the report, is used as a foreign key
     newReport.creator = req.user._id;
     newReport.angler_name = req.user.firstName + " " + req.user.lastName;
 
-    // Figure out and set total elapsed time field
+    // Figure out and set total elapsed time field using our helper function
     newReport.elapsedTime = elapsedTimeCalc(req.body.t_start, req.body.t_end);
 
-    await newReport.save(); //Saves the report to the database, fish are not saved in the report object, but rather associated through a foreign key report ID
+    //Saves the report to the database, fish are not saved in the report object, but rather associated through a foreign key report ID
+    await newReport.save();
 
     // gather in all updated photos and put into array to deal with when assigning photos
     let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
 
-    if (Array.isArray(req.body.species)) { //Checks if the user submitted one or many fish
-        for (let i = 0; i < req.body.species.length; i++) { //If many fish, iterate over each fish.  Each field will submit as array so you can iterate over one array, using same position for other attributes
-            const currFish = new Fish(); //Creates a new fish object
+    //Checks if the user submitted one or many fish
+    if (Array.isArray(req.body.species)) {
+        //If many fish, iterate over each fish. Each field will submit as array so you can iterate over one array, using same position for other attributes
+        for (let i = 0; i < req.body.species.length; i++) {
+            //Creates a new fish object
+            const currFish = new Fish();
 
             currFish.report_fk = newReport._id; //Parent reports ID
             currFish.creator = req.user._id; //ID of user who submitted the fish
@@ -117,54 +151,62 @@ module.exports.createAnglerReport = async (req, res) => {
                 currFish.length = saveDistConversion(req.body.distPref, req.body.length[i])
             }
 
-            await currFish.save(); //Saves the fish object to the database
+            //Saves the fish object to the database
+            await currFish.save();
         }
     }
-    else { //Just a single fish submitted
+    // if not, just a single fish submitted
+    else {
+        // create a new Fish object
         const currFish = new Fish();
 
-        currFish.report_fk = newReport._id; //Parent reports ID
-        currFish.creator = req.user._id; //ID of user who submitted the fish
-        currFish.species = req.body.species; //Species of the caught fish from user input
+        // Assign parents report ID, parent users ID, and species of the fish caught
+        currFish.report_fk = newReport._id;
+        currFish.creator = req.user._id;
+        currFish.species = req.body.species;
 
         // check if user uploaded a photo for fish
         if (fishPics.length > 0) {
+            // if they did, assign it to the current fish
             currFish.photo = fishPics[0]
         } else {
+            // if they didn't upload a photo, assign this fish to the default fish photo
             currFish.photo = defaultFishPhoto;
         }
 
-        // take path + filename from each image uploaded, add to photo object and append to report
-        //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
-
+        // if a weight was inputted (which has to be anyway client side, just server validation)
         if (req.body.weight) {
+            // convert it using our weight conversion helper function based off the current user's preference & save to fish
             currFish.weight = saveWeightConversion(req.body.weightPref, req.body.weight)
         }
-
+        // same as above for length, using our length conversion helper function
         if (req.body.length) {
             currFish.length = saveDistConversion(req.body.distPref, req.body.length)
         }
 
-        await currFish.save(); //Saves the fish to the database
+        //Saves the fish to the database
+        await currFish.save();
     }
 
-    // save success trigger
+    // save success trigger to pass on alert to user
     req.flash('success', 'Successfully Created Report');
-    // redirect back to view angler report page
-    res.redirect(`/anglerReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
+    // redirect back to view angler report page (avoiding refresh)
+    res.redirect(`/anglerReports/${newReport._id}`);
 };
 
-//Renders page to view a single report
+// SHOW ROUTE -- "/anglerReports/:id/"
+// Providers user with page displaying information from single angler report
 module.exports.showAnglerReport = async (req, res) => {
-    // pull id from url
+    // pull id of angler report from url
     const { id } = req.params;
-    // look up the health report corresponding to the id passed in to the url
+    // look up the angler report corresponding to the id passed in to the url
     const foundReport = await AnglerReport.findById(id).populate('creator'); // passing in creator field from
     const foundFish = await Fish.find({report_fk : foundReport._id},{})
     // send them to the page about the single report
     res.render('anglerReports/details', { foundReport, foundFish, weightConversion, distConversion });
 };
 
+// EDIT ROUTE -- "/anglerReports/:id/edit"
 //Renders page to edit a existing angler report
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params; //ID is gathered from the URL
@@ -175,51 +217,68 @@ module.exports.renderEditForm = async (req, res) => {
     }
     const foundFish = await Fish.find({report_fk : foundReport._id},{}) //If report exists, find all fish associated with the report
 
-
     res.render("anglerReports/edit", { foundReport, foundFish }); //Render the page
 };
 
-//Update a existing angler report on edit submission
+// UPDATE ROUTE -- "/anglerReports/:id"
+// Purpose: Update a existing angler report on edit submission and save changes to DB
 module.exports.updateAnglerReport = async (req, res) => {
-    const { id } = req.params; //Gets the report ID from the URL
-    // find angler report with given id
-    const {lake, municipality, date, t_start, t_end} = req.body; //Gets values associated with the Angler Report object
+    //Gets the report ID from the URL
+    const { id } = req.params;
+    // Pull form entries from body of submission
+    const {lake, municipality, date, t_start, t_end} = req.body;
+    // Search for Angler Report based on ID and update corresponding fields
     const anglerReport = await AnglerReport.findByIdAndUpdate(id, { lake: lake, municipality: municipality, date: date, t_start: t_start, t_end: t_end }); //Updates the angler report with the new values
 
+    // update current reports fish count
     let reportFishCount = anglerReport.fishCount;
+    // pull new fish count
     let newFishCount = reportFishCount;
 
+    // extract all photos submitted from form and append to array
     let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
+    // pull fishId from body of form, to see if any submitted
     const {fish_id} = req.body;
 
     // gather in all updated photos and put into array to deal with when assigning photos
     let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
 
+    // if there are multiple fish
     if (fish_id) {
+        // pull species, length, and weight fields from form (will be in array form if multiple submissions)
         const { species, length, weight} = req.body;
+        // set current fish counter index
         let fishCounter = 0;
 
-        if (Array.isArray(fish_id)) { //If array, parse every item
+        // if there are multiple fish submitted, need to iterate over everything for each fish
+        if (Array.isArray(fish_id)) {
+            // iterate over once for each fish
             for (let i = 0; i < fish_id.length; i++) {
-                if (fish_id[i] === "?") { //If no ID is provided, create a new entry
+                // if current fish has no id (didn't exist in report beforehand) then create a new entry
+                if (fish_id[i] === "?") {
+                    // create new fish mongo object
                     const newFish = new Fish();
 
                     newFish.report_fk = anglerReport._id; //Parent angler report foreign key
                     newFish.creator = req.user._id; //ID of user who logged the fish
                     newFish.species = species[i]; //All information about the fish
+                    // TODO: WEIGHT / DISTANCE CONVERSIONS?
                     newFish.length = length[i];
                     newFish.weight = weight[i];
                     // if user uploads photo for fish assign it
                     if (updatedPhotos.indexOf(i + 1) >= 0) {
                         newFish.photo = fishPics[updatedPhotos.indexOf(i + 1)];
                     } else {
+                        // if not, assign default photo
                         newFish.photo = defaultFishPhoto;
                     }
+                    // save new fields to fish object
                     await newFish.save();
 
                     // update fishCount on angler report due to newly added fish
                     newFishCount = newFishCount + 1;
-                } else { //Otherwise, update existing report
+                } else {
+                    //Otherwise, locate fish in DB and update fields for it
                     const newFish = await Fish.findByIdAndUpdate(fish_id[i], { species: species[i], length: length[i], weight: weight[i]});
                     // if current fish number has had its photo updated
                     // will be checking + 1 as fishID's start at 0
@@ -229,26 +288,38 @@ module.exports.updateAnglerReport = async (req, res) => {
                         newFish.save();
                     }
                 }
+                // increase fish counter
                 fishCounter += 1;
             }
-        } else { //If not array, perform singular operation
-            if (fish_id === "?") { //If no ID is provided, create a new entry
+        } else { //If not array, only need to go through that functionality once
+            // if current fish has no id (didn't exist in report beforehand) then create a new entry
+            if (fish_id === "?") {
+                // create new Fish mongo object
                 const newFish = new Fish();
 
                 newFish.report_fk = anglerReport._id; //Parent angler report foreign key
                 newFish.creator = req.user._id; //ID of user who logged the fish
                 newFish.species = species; //All information about the fish
+                // TODO: WEIGHT / DISTANCE CONVERSIONS?
                 newFish.length = length;
                 newFish.weight = weight;
+
+                // if user uploads photo for fish assign it
                 if (fishPics.length > 0) {
                     newFish.photo = fishPics[0]
+                } else {
+                    // if not, assign default photo
+                    newFish.photo = defaultFishPhoto;
                 }
+                // save mongo object with new information
                 await newFish.save();
 
                 // update fishCount on angler report due to newly added fish
                 newFishCount = newFishCount + 1;
             } else { //Otherwise, update existing report
+                // locate fish in DB and update newly entered fields
                 const newFish = await Fish.findByIdAndUpdate(fish_id, { species: species, length: length, weight: weight});
+                // if current fish number has had its photo updated, update the photo for mongodb fish entry
                 if (fishPics.length > 0) {
                     newFish.photo = fishPics[0];
                     newFish.save();
@@ -263,17 +334,19 @@ module.exports.updateAnglerReport = async (req, res) => {
         anglerReport.save();
     }
 
+    // after everything has completed, send to newly created report page with flash success message
     req.flash('success', "Successfully updated Angler Report");
     res.redirect(`/anglerReports/${anglerReport._id}`); //Redirect the user to the updated report
 };
 
-//Delete angler report method
+// DESTROY ROUTE -- "/anglerReports/:id
+// Purpose: Delete angler report from DB & corresponding photos from cloudinary
 module.exports.deleteAnglerReport = async (req, res) => {
     // pull report ID from the URL
     const { id } = req.params;
 
     // Delete the report itself from the ID passed in
-    await AnglerReport.findByIdAndDelete(id); //Finds the report by ID and deletes it from the database.
+    await AnglerReport.findByIdAndDelete(id);
 
     // Find all fish included in that parent report
     let foundFish = await Fish.find({report_fk: id});
@@ -290,8 +363,7 @@ module.exports.deleteAnglerReport = async (req, res) => {
     // Delete all fish associated with the parent angler report
     await Fish.deleteMany({report_fk: id})
 
+    // After successful completion, redirect to all reports with success flash message
     req.flash('success', "Successfully deleted Angler Report");
     res.redirect('/anglerReports');
-
-
 };
