@@ -1,3 +1,4 @@
+<!-- Include necessary header partials -->
 <%- include('../partials/head')%>
 <%- include('../partials/videoBG')%>
 
@@ -13,52 +14,35 @@
     </div>
     <div class="row">
         <form action="/register" method="POST" class="needs-validation" name="submit" novalidate>
+            <!-- Email Entry -->
             <div class="mb-3">
-                <!-- date input, sent under 'date' label-->
                 <label class='form-label' for="username">Email: </label> <!-- User enters a email, must be in email format -->
                 <input type="email" id="username" placeholder="sample@google.ca" name="username" class="form-control" required>
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
             </div>
+            <!-- First Name Entry -->
             <div class="mb-3">
-                <!-- date input, sent under 'date' label-->
                 <label class='form-label' for="firstName">First Name: </label>
                 <input type="text" id="firstName" placeholder="Jane" name="firstName" class="form-control" required>
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
             </div>
+            <!-- Last Name Entry -->
             <div class="mb-3">
-                <!-- date input, sent under 'date' label-->
                 <label class='form-label' for="lastName">Last Name: </label>
                 <input type="text" id="lastName" placeholder="Doe" name="lastName" class="form-control" required>
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
             </div>
+            <!-- Organization Entry -->
             <div class="mb-3">
                 <!-- date input, sent under 'date' label-->
                 <label class='form-label' for="organization">Organization: </label> <!-- User is not required to input an organization -->
                 <input type="text" id="organization" placeholder="Fishers inc." name="organization" class="form-control" value="No Organization">
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
             </div>
+            <!-- Password Entry -->
             <div class="mb-3">
                 <!-- date input, sent under 'date' label-->
                 <label class='form-label' for="password">Password: </label> <!-- Password must be 8 characters long -->
                 <input type="password" id="password" pattern=".{8,}" placeholder="Doe" name="password" class="form-control" onkeyup="return passwordChanged();" required>
-                <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                 <span id="strength">Password Strength</span>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
             </div>
+            <!-- Distance Preference Entry -->
             <div class="mb-3">
                 <div class="btn-group container-fluid" role="group">
                     <input class="btn-check" type="radio" name="distPref" id="cm" value="cm" required checked>
@@ -67,6 +51,7 @@
                     <label class="btn btn-primary" for="inch">Inches</label>
                 </div>
             </div>
+            <!-- Weight Preference Entry -->
             <div class="mb-3">
                 <div class="btn-group container-fluid" role="group">
                     <input class="btn-check" type="radio" name="weightPref" id="kg" value="kg" required>
@@ -75,6 +60,7 @@
                     <label class="btn btn-primary" for="lbs">Pounds</label>
                 </div>
             </div>
+            <!-- Reigster Button  -->
             <div class="row">
                 <div class="col-md-12 col-lg-3"></div>
                 <div class="col-md-12 col-lg-6">

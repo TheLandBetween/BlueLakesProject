@@ -1,10 +1,13 @@
+<!-- Partial for a single fish, will be displayed alongside many others on an angler report display page -->
 <div class="col">
     <div class="card">
+        <!-- If photo was uploaded by user display it, else show a default fish photo for styling -->
         <% if(entry.photo[0]) { %>
             <img src='<%= entry.photo[0].url %>' alt="Photo" class="card-img-top">
         <% } else { %>
                 <img src='https://res.cloudinary.com/the-land-between/image/upload/q_auto/v1624334081/BlueLakes/defaultFishPhoto.png' alt="Photo" class="card-img-top">
         <%  } %>
+        <!-- Display details about fish from DB, species / weight / height -->
         <div class="card-body">
             <h4><%= entry.species %></h4>
             <h5>Weight <small class="text-muted"><%= currentUser.weightPref %></small></h5>

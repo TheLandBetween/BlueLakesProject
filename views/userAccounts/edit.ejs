@@ -1,5 +1,7 @@
+<!-- include the partial at the top of the file-->
 <%- include('../partials/head')%>
 <%- include('../partials/videoBG')%>
+
 <div class="centerDiv d-flex align-items-center">
     <div class="container login-bg d-flex flex-column align-items-center justify-content-between bg-light">
         <div class="row header">
@@ -8,46 +10,32 @@
         <div class="row">
             <form action="/updateProfile?_method=PUT" method="POST" class="needs-validation" name="submit" enctype="multipart/form-data" novalidate>
                 <input class="form-control" value="<%=currentUser.username%>" type="hidden" id="currentUsername" name="currentUsername"> <!-- Hidden input field holding the users username -->
+                <!-- Profile Photo Change -->
                 <div class="mb-3 d-flex flex-column">
                     <label class="form-label" for="photo">Profile Picture: </label>
                     <input class="form-control-file" type="file" accept="image/*" id="photo" name="photo">
                 </div>
+                <!-- Email Entry -->
                 <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="username">Email: </label> <!-- User enters a email, must be in email format -->
                     <input type="email" id="username" value="<%= currentUser.username %>" name="username" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
+                <!-- First Name Entry -->
                 <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="firstName">First Name: </label>
                     <input type="text" id="firstName" value="<%= currentUser.firstName %>" name="firstName" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
+                <!-- Last Name Entry -->
                 <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="lastName">Last Name: </label>
                     <input type="text" id="lastName" value="<%= currentUser.lastName %>" name="lastName" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
+                <!-- Organization Entry -->
                 <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="organization">Organization: </label> <!-- User is not required to input an organization -->
                     <input type="text" id="organization" value="<%= currentUser.organization %>" name="organization" class="form-control" value="No Organization">
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
+                <!-- Weight Preference Entry - kg/lbs -->
                 <div class="mb-3">
                     <div class="btn-group container-fluid" role="group">
                         <input class="btn-check" type="radio" name="weightPref" id="kg" value="kg" required
@@ -64,6 +52,7 @@
                         <label class="btn btn-primary" for="lbs">Pounds</label>
                     </div>
                 </div>
+                <!-- Distance Preference Entry - cm / inch -->
                 <div class="mb-3">
                     <div class="btn-group container-fluid" role="group">
                         <input class="btn-check" type="radio" name="distPref" id="cm" value="cm" required
@@ -80,6 +69,7 @@
                         <label class="btn btn-primary" for="inch">Inches</label>
                     </div>
                 </div>
+                <!-- Submit button -->
                 <div class="row">
                     <div class="col-md-12 col-lg-3"></div>
                     <div class="col-md-12 col-lg-6">

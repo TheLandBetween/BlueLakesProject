@@ -1,3 +1,4 @@
+<!-- Navbar partial to be insert on majority of pages -->
 <nav class="navbar navbar-light navbar-expand-xl fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">
@@ -8,35 +9,41 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Any rank can view home & create a new angler report -->
                 <li class="nav-item">
                     <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item"> <!-- Any rank can create a new angler report -->
+                <li class="nav-item">
                     <a class="nav-link" href="/anglerReports/new">New Angler Report <span class="sr-only">(current)</span></a>
                 </li>
-                <% if(currentUser && currentUser.rank === 3) {%> <!-- Can only view all angler reports if rank is administrator -->
+                <!-- Can only view all angler reports if rank is administrator -->
+                <% if(currentUser && currentUser.rank === 3) {%>
                     <li class="nav-item">
                         <a class="nav-link" href="/anglerReports/">All Angler Reports <span class="sr-only">(current)</span></a>
                     </li>
                 <% }%>
-                <% if(currentUser && currentUser.rank >= 2) {%> <!-- Can create new lake report if rank is researcher(2) or greater (administrator(3)) -->
+                <!-- Can create new lake report if rank is researcher(2) or greater (administrator(3)) -->
+                <% if(currentUser && currentUser.rank >= 2) {%>
                     <li class="nav-item">
                         <a class="nav-link" href="/lakeReports/new">New Lake Report <span class="sr-only">(current)</span></a>
                     </li>
                 <% }%>
-                <% if(currentUser && currentUser.rank === 3) {%> <!-- Can view all lake reports if rank is administrator -->
+                <!-- Can view all lake reports if rank is administrator -->
+                <% if(currentUser && currentUser.rank === 3) {%>
                     <li class="nav-item">
                         <a class="nav-link" href="/lakeReports/">All Lake Reports <span class="sr-only">(current)</span></a>
                     </li>
                 <% }%>
             </ul>
+            <!-- My account dropdown, if user is logged in show them profile and logout, if not show login + register -->
             <form class="d-flex">
                 <div class="nav-item dropdown navbar-nav">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         My Account
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <% if (!currentUser) {%> <!-- If user is not logged in, display login/register.  Should never be displayed though, since navbar is only used on pages where the user is logged in -->
+                        <!-- should actually never come into play since navbar only displayed on logged in pages -->
+                        <% if (!currentUser) {%>
                         <a class="dropdown-item" href="/login">Login</a>
                         <a class="dropdown-item" href="/register">Register</a>
                         <% } else { %> <!-- Allow user to visit there profile to perform account operations, or logout and end their current session -->

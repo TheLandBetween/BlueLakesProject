@@ -1,20 +1,26 @@
+// MongoDB Schema - Single Point Schema, used to represent coordinates in other models (GeoJSON)
+//    type - String (as GeoJSON) - required
+//    coordinates - [Number] - required
+
+// Necessary imports, Mongoose / Point Schema
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// create a template for the table (layed out in the db schema)
+// define single point entry schema
 const point = new mongoose.Schema({
-    type: { //GeoJSON point
+    //GeoJSON point
+    type: {
         type: String,
         enum: ['Point'],
         required: true
     },
-    coordinates: { //Number array, will contain a x at coordinates[0] and a y at coordinates[1]
+    //Number array, will contain a x at coordinates[0] and a y at coordinates[1]
+    coordinates: {
         type: [Number],
         required: true
     }
 });
 
-// assign it to a variable to create instances of the model
+// assign it to a variable to create instances of the model & export for use elsewhere
 const Point = mongoose.model('Point', point);
-
 module.exports = Point;

@@ -1,11 +1,16 @@
+<!-- Error page, should never be shown during production, yet extra hiding on stack incase something does happen -->
+<!-- Include necessary header partials -->
 <%- include('partials/head')%>
 <%- include('partials/navbar')%>
+
 <div class="container bg-light main-bg d-flex align-items-center overflow-auto">
     <div class="container">
-<div class="alert alert-danger" role="alert">
-    <h4 class="alert-heading"><%= err.message %></h4>
-    <% if (process.env.NODE_ENV !== 'production') { %>
-        <p><%= err.stack %></p>
-    <% } %>
-</div>
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading"><%= err.message %></h4>
+            <% if (process.env.NODE_ENV !== 'production') { %>
+                <p><%= err.stack %></p>
+            <% } %>
+        </div>
+
+<!-- Include footer partial for necessary closing tags -->
 <%- include('partials/foot')%>

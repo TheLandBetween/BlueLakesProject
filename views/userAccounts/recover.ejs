@@ -15,34 +15,24 @@
         </div>
         <div class="row d-flex flex-column">
             <form action="/recover" method="POST" class="needs-validation" name="login" novalidate>
+                <!-- Recovery Code Entry -->
                 <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="recoveryToken">Recovery Code: </label> <!-- User enters the recovery code sent to their email -->
                     <input type="text" id="recoveryToken" placeholder="Email Code" name="recoveryToken" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
+                <!-- Password Entry -->
                 <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="password">Password: </label> <!-- User enters and verifies their new password.  Must be 8 characters -->
                     <input type="password" pattern=".{8,}" id="password" placeholder="New Password" name="password" class="form-control" onkeyup="return passwordChanged();" required>
                     <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                     <span id="strength">Type Password</span>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
+                <!-- Password Confirmation Entry -->
                 <div class="mb-3">
-                    <!-- date input, sent under 'date' label-->
                     <label class='form-label' for="password_verify">Re-Enter Password: </label>
                     <input type="password" id="password_verify" placeholder="Re-type New Password" name="password_verify" class="form-control" required>
-                    <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
                 </div>
+                <!-- Submit Button -->
                 <div class="row">
                     <div class="col-md-12 col-lg-3"></div>
                     <div class="col-md-12 col-lg-6">

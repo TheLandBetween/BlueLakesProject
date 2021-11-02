@@ -1,16 +1,25 @@
+// MongoDB Schema - Single Secchi Depth Reading
+//    report_fk - ObjectId - required
+//    creator - ObjectId - required
+//    secchi - Number - Required
+//    location - PointSchema
+//    depth - Number - required
+
+// Necessary imports, Mongoose / Point Schema
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-
 const Point = require("./Point");
 const pointSchema = mongoose.model("Point").schema;
 
-// create a template for the table (layed out in the db schema)
+// define single Secchi reading schema
 const secchiSchema = new mongoose.Schema({
-    report_fk: { //Foreign key associated with the parent report
+    //Foreign key associated with the parent report
+    report_fk: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Lake_Health_Report'
     },
+    // key to link to submitters user account
     creator: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -20,17 +29,18 @@ const secchiSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    location: { //Point schema which contains a x and y
+    //Point schema which contains a x and y
+    location: {
         type: pointSchema,
         coordinates: []
     },
-    depth: { //Couldn't implement z as part of a GeoJSON point, so it is a separate Number field
+    //Couldn't implement z as part of a GeoJSON point, so it is a separate Number field
+    depth: {
         type: Number,
         required: true
     }
 });
 
-// assign it to a variable to create instances of the model
+// assign it to a variable to create instances of the model & export for use elsewhere
 const secchi = mongoose.model('Secchi', secchiSchema);
-
 module.exports = secchi;

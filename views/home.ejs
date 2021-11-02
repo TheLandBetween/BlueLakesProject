@@ -2,6 +2,7 @@
 <%- include('partials/head')%>
 <%- include('partials/navbar')%>
 <%- include('partials/videoBG')%>
+
 <div class="container main-bg d-flex flex-column justify-content-around align-items-center">
     <%- include('partials/flash') %>
     <div class="row header d-flex flex-column">
@@ -11,11 +12,13 @@
     <!-- Buttons showing both new reports + view all for administrators -->
     <% if(currentUser && currentUser.rank === 3) {%>
         <div class="row">
+            <!-- New Angler Report Button -->
             <div class="col-md-12 col-lg-6">
                 <div class="d-grid gap-2">
                     <a href="/anglerReports/new" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Angler Report</h5></a>
                 </div>
             </div>
+            <!-- View All Angler Reports Button -->
             <div class="col-md-12 col-lg-6">
                 <div class="d-grid gap-2">
                     <a href="/anglerReports" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Angler Reports</h5></a>
@@ -23,11 +26,13 @@
             </div>
         </div>
         <div class="row stackedItems">
+            <!-- New Lake Health Report Button -->
             <div class="col-md-12 col-lg-6">
                 <div class="d-grid gap-2">
                     <a href="/lakeReports/new" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>New Lake Health Report</h5></a>
                 </div>
             </div>
+            <!-- View All Lake Health Reports Button -->
             <div class="col-md-12 col-lg-6">
                 <div class="d-grid gap-2">
                     <a href="/lakeReports" class="btn secondary-button-outline homeButton d-flex flex-column justify-content-center" role="button" aria-disabled="true"><h5>View All Lake Health Reports</h5></a>
@@ -36,6 +41,7 @@
         </div>
     <% } else { %>
     <!-- Buttons showing just new reports-->
+        <!-- New Angler Report Button -->
         <div class="row">
             <div class="col-md-12 col-lg-3"></div>
             <div class="col-md-12 col-lg-6">
@@ -45,6 +51,7 @@
             </div>
             <div class="col-md-12 col-lg-3"></div>
         </div>
+        <!-- If user is a lake health administrator, allow them to create a New Lake Health Report-->
         <% if(currentUser && currentUser.rank >= 2) {%>
             <div class="row stackedItems">
                 <div class="col-md-12 col-lg-3"></div>
@@ -58,9 +65,10 @@
         <% } %>
     <% } %>
 
+    <!-- Table containing all angler reports submitted by the user -->
     <div class="row stackedItems">
         <h2 class="text-center">Your Angler Reports</h2>
-        <table class="table table-hover" id="anglerReportTable"> <!-- Table containing all angler reports submitted by the user -->
+        <table class="table table-hover" id="anglerReportTable">
             <thead>
                 <tr class="table-info">
                     <th>Fish Caught</th>
@@ -72,9 +80,13 @@
             <tbody>
                 <% for (let report of anglerReports) {%>
                     <tr>
-                        <td><a href="/anglerReports/<%= report.id%>" class="rowLink styledA"><%= report.fishCount %></a></td> <!-- Link to index a specific angler report for more details -->
+                        <!-- Link to index a specific angler report for more details -->
+                        <td><a href="/anglerReports/<%= report.id%>" class="rowLink styledA"><%= report.fishCount %></a></td>
+                        <!-- time spent during the fishing trip -->
                         <td><%= report.elapsedTime %></td>
+                        <!-- lake the report was on -->
                         <td><%= report.lake%></td>
+                        <!-- Date of report -->
                         <td><%= (report.date.getUTCMonth() + 1) + '.' + report.date.getUTCDate() + '.' + report.date.getUTCFullYear() %></td>
                     </tr>
                 <% } %>
@@ -110,6 +122,7 @@
 <!-- Include proper closing tags -->
 <%- include('partials/foot')%>
 
+<!-- Instantiate the datatables plugin on the (possible) two tables -->
 <script>
     $(document).ready(function() {
         $('#anglerReportTable').DataTable();

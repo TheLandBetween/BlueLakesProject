@@ -1,13 +1,24 @@
+// MongoDB Schema - Single Fish Entry
+//    report_fk - ObjectId - required
+//    creator - ObjectId - required
+//    species - String - required
+//    length - Number
+//    weight - Number
+//    photo - {url: String, filename: String}
+
+// Necessary imports, Mongoose
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// create a template for the table (layed out in the db schema)
+// define Single Fish Entry Schema
 const fishSchema = new mongoose.Schema({
-    report_fk: { //Foreign key associated with the parent report
+    //Foreign key associated with the parent report
+    report_fk: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Angler_Report'
     },
+    // creator key associated to the account who submitted report
     creator: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -31,7 +42,6 @@ const fishSchema = new mongoose.Schema({
     ]
 });
 
-// assign it to a variable to create instances of the model
+// assign it to a variable to create instances of the model & export for use elsewhere
 const Fish = mongoose.model('Fish', fishSchema);
-
 module.exports = Fish;
