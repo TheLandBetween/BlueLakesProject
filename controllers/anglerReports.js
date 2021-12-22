@@ -217,33 +217,41 @@ module.exports.createAnglerReport = async (req, res) => {
 };
 module.exports.mCreateAnglerReport = async (req, res) => {
     // create new angler report based on information passed in
-    console.log(req.body);
-    const { lakeName, municipality, date, timeIn, timeOut, fishCount } = req.body;
-    const newReport = new AnglerReport({lakeName, municipality, date, fishCount});
+    const { lakeName, municipality, date, timeIn, timeOut, fish, fishCount } = req.body;
+    const newReport = new AnglerReport({lake: lakeName, municipality, date, fishCount});
 
     // TODO: timeIn & timeOut formatted differently, erroring
     newReport.elapsedTime = elapsedTimeCalc(timeIn, timeOut);
-    // link angler report creatpr tp current logged in userid
-    console.log('user:', req.user);
 
-    console.log('report');
-    console.log(newReport)
-
-    res.send('success');
-
-
-    // setup angler_name to user first + last name
+    // set creator link and angler name based off of currently signed in user
+    newReport.creator = req.user._id;
+    newReport.angler_name = req.user.firstName + " " + req.user.lastName;
 
     // save angler report
+    await newReport.save();
 
     // check if many fish submitted or just one
-
+    if (fish && fish.length > 0) {
         // if many, create new fish entry for each
+        for (const currFish of fish) {
+            const { species, length, weight } = currFish;
+            const fishEntry = new Fish({species});
 
-        // assign angler reportid to report_fk
-        // assign creator to user logged in
+            // weight conversion
+            fishEntry.weight = saveWeightConversion(req.user.weightPref, weight)
+            // length conversion
+            fishEntry.length = saveDistConversion(req.user.distPref, length)
 
-        // if one, create new fish entry repeating steps
+            //Parent reports ID
+            fishEntry.report_fk = newReport._id;
+            //ID of user who submitted the fish
+            fishEntry.creator = req.user._id;
+
+            await fishEntry.save()
+        }
+    }
+
+    res.send('success');
 }
 
 // SHOW ROUTE -- "/anglerReports/:id/"
