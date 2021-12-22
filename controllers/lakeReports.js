@@ -9,6 +9,11 @@ const Phosphorus = require("../views/models/Phosphorous");
 const Calcium = require("../views/models/Calcium");
 
 // INDEX ROUTE -- "/lakeReports"
+const indexMethod = async () => {
+    const healthReports = await LakeHealthReport.find({}).populate('creator').sort({"date_generated": -1});
+
+    return { healthReports }
+}
 // Purpose: Provide user with index page displaying all lake health reports
 module.exports.index = async (req, res) => {
     // Ensure user is administrator as default users should only be able to see their own
@@ -17,11 +22,20 @@ module.exports.index = async (req, res) => {
         return res.redirect('/');
     }
     // async callback to wait for health lakeReports to be received, then respond with webpage
-    const healthReports = await LakeHealthReport.find({}).populate('creator').sort({"date_generated": -1});
+    let { healthReports } = await indexMethod();
     // render index.ejs file with the lakeReports 'database'
     res.render('lakeReports/index', { healthReports });
 };
+module.exports.mIndex = async (req, res) => {
+    let { healthReports } = await indexMethod();
+    if (req.user) {
+        console.log(req.user);
+    } else {
+        console.log('no req user')
+    }
 
+    res.send({ healthReports });
+}
 // NEW ROUTE -- "/lakeReports/new"
 // Purpose: Renders the form to create a new lake report
 module.exports.renderNewForm = (req, res) => {

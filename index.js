@@ -28,6 +28,8 @@ const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const AuthTokenStrategy = require('passport-auth-token');
+const BearerStrategy = require('passport-http-bearer');
 const User_Account = require("./views/models/User_Account");
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet')
@@ -65,6 +67,8 @@ const userAccounts = require('./controllers/userAccounts');
 
 // JOI Validation Schemas
 const { userAccountSchema } = require('./schemas');
+const jwt = require("jsonwebtoken");
+const UserAccount = require("./views/models/User_Account");
 // server side catch for incorrect submissions to a user account
 // if empty, throw new ExpressError object with corresponding message to be caught by catchAsync func
 const validateUserAccount = (req, res, next) => {
@@ -159,6 +163,21 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session()); // needs to be used after app.use(session())
 passport.use(new LocalStrategy(User_Account.authenticate())); // pass current users session into passport and check if still valid
+// passport.use(new AuthTokenStrategy(User_Account.authenticate()));
+passport.use(new BearerStrategy((token, done) => {
+    console.log(token);
+    let passedToken = token.replace('Bearer ', '');
+    jwt.verify(passedToken, process.env.MOBILE_KEY, async (err, payload) => {
+        if (err) {
+            return done(err);
+        }
+        UserAccount.findById(payload, function(err, user) {
+            if (err) {return done(null, false)}
+            if (!user) {return done(null, false)}
+            return done(null, user, { scope: 'all' })
+        })
+    })
+}))
 
 // define how to store + unstore user auth, which is stored in the user account (provided by passport)
 passport.serializeUser(User_Account.serializeUser());
@@ -209,6 +228,10 @@ app.get('/identifyFish', function (req, res) { //Delivers a PDF of all fish acce
 //USER ACCOUNT ROUTING
 app.get('/register', isLoggedIn, catchAsync(userAccounts.renderRegisterForm));
 app.post('/register', validateUserAccount, catchAsync(userAccounts.registerUser));
+app.post('/mRegister',
+
+    catchAsync(userAccounts.mobileRegister)
+)
 
 //PROFILE PAGE ROUTING
 app.get('/profile', isNotLoggedIn, catchAsync(userAccounts.renderProfile));
@@ -227,10 +250,20 @@ app.delete('/deleteAccount', isNotLoggedIn, catchAsync(userAccounts.deleteProfil
 // LOGIN ROUTE
 app.get('/login', isLoggedIn, catchAsync(userAccounts.renderLoginForm));
 app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(userAccounts.loginUser));
-
+app.post('/mLogin', passport.authenticate('local'), catchAsync(userAccounts.mobileLogin));
+app.post('/mLocalLogin', passport.authenticate('bearer'), catchAsync(userAccounts.mobileLogin))
+// app.post('/mLogin', catchAsync(userAccounts.mobileLogin));
+// app.post('/mLogin',
+//     passport.authenticate(
+//         'authtoken',
+//         {session: false, optional: false}
+//     ), function(req, res) {
+//     res.send('');
+// }, catchAsync(userAccounts.mobileLogin))
 
 // LOGOUT ROUTE
 app.get('/logout', userAccounts.logoutUser);
+app.get('/mLogout', userAccounts.mLogoutUser);
 
 app.get('/forgot', isLoggedIn, catchAsync(userAccounts.renderForgotForm));
 app.post('/forgot', catchAsync(userAccounts.forgotUserPassword));

@@ -14,6 +14,8 @@ const lakeReports = require('../controllers/lakeReports');
 router.route('/')
     .get(isNotLoggedIn, catchAsync(lakeReports.index)) // INDEX route
     .post(isNotLoggedIn, validateLakeReport, catchAsync(lakeReports.createLakeReport)); // CREATE route
+// "/anglerReports/mobile" for mobile reports delivery
+router.get('/m', lakeReports.mIndex);
 
 // "/lakeReports/new"
 router.get('/new', isNotLoggedIn, lakeReports.renderNewForm); // CREATE route

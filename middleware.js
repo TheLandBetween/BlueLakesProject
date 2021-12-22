@@ -6,6 +6,7 @@ const { lakeReportSchema, anglerReportSchema, userAccountSchema } = require('./s
 const ExpressError = require('./utils/ExpressError');
 const LakeHealthReport = require('./views/models/Lake_Health_Report');
 const AnglerReport = require('./views/models/Angler_Report');
+const UserAccount = require("./views/models/User_Account");
 
 // middleware function to check to see if user is currently not logged in.
 // intended use is for pages that user MUST be logged in to view (home, angler reports, lake reports, account, etc..)
@@ -113,3 +114,34 @@ module.exports.isCreator = async (req, res, next) => {
         next();
     }
 };
+
+// Mobile Authentication Middleware, will be used on strictly mobile only routes before having auth in header
+const jwt = require('jsonwebtoken');
+
+module.exports.mobileAuth = async (req, res, next) => {
+    // check for passport authentication first, if not logged in through that we may have to trigger it
+    if (!req.isAuthenticated()){
+        console.log("Mobile user not logged in.");
+
+        const { authorization } = req.headers;
+        if (!authorization) {
+            return res.status(401).send({ error: "You must be logged in"})
+        }
+
+        const token = authorization.replace('Bearer ', '');
+        jwt.verify(token, process.env.MOBILE_KEY, async (err, payload) => {
+            if (err) {
+                return res.status(401).send({ error: "You must be logged in - Token"})
+            }
+
+            // I may be handling this elsewhere?
+            const { userId } = payload
+            const foundUser = await UserAccount.findById(userId);
+            req.user = foundUser;
+            next();
+        })
+    }
+
+
+
+}

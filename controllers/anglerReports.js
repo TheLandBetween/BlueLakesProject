@@ -16,13 +16,11 @@ const defaultFishPhoto = {
 
 // INDEX ROUTE - "/anglerReports"
 // Provides user with page displaying all angler reports, passes through all angler reports object
-module.exports.index = async (req, res) => {
-    // rank authorization, ensure user is ranked as an administrator
-    if (req.user.rank < 3) {
-        // if user is below admin rank, send them back to homepage with a permission error
-        req.flash('error', "Your account doesn't have permission.");
-        return res.redirect('/'); //Otherwise reject and redirect to the users home page with error message
-    }
+
+// TODO: Testing conversion of controllers to function containing main methodoly, then two seperate exports for mobile/desktop call.
+// intention is to seperate res.render/send from sending just the data to the mobile app, without rewriting whole route
+
+let indexMethod = async () => {
     // search DB for all angler reports, sorting by newest date first
     const anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1});
     // get list of fish caught for table at top of page, iterate through each fish and add up species
@@ -30,18 +28,32 @@ module.exports.index = async (req, res) => {
         { "$unwind" : "$species" },
         { "$group": { "_id": "$species", "count": { "$sum": 1} } },
         { "$group": {
-            "_id": null,
+                "_id": null,
                 "counts": {
-                "$push": {
-                    "k": "$_id",
-                    "v": "$count"
+                    "$push": {
+                        "k": "$_id",
+                        "v": "$count"
+                    }
                 }
-            }
-        } },
+            } },
         { "$replaceRoot": {
-            "newRoot": { "$arrayToObject": "$counts" }
-        } }
+                "newRoot": { "$arrayToObject": "$counts" }
+            } }
     ]);
+
+    return { anglerReports, fishCounts }
+}
+// Desktop INDEX route
+module.exports.index = async (req, res) => {
+    // rank authorization, ensure user is ranked as an administrator
+    if (req.user.rank < 3) {
+        // if user is below admin rank, send them back to homepage with a permission error
+        req.flash('error', "Your account doesn't have permission.");
+        return res.redirect('/'); //Otherwise reject and redirect to the users home page with error message
+    }
+
+    // run index method above
+    let { anglerReports, fishCounts } = await indexMethod();
 
     // get total number of fish from newest fish
     fishCounts = fishCounts[0]
@@ -49,6 +61,12 @@ module.exports.index = async (req, res) => {
     // render Angler Report index.ejs file with the angler reports object as well as fishCount object
     res.render('anglerReports/index', { anglerReports, fishCounts} );
 };
+// Mobile INDEX route
+module.exports.mIndex = async (req, res) => {
+    console.log('Mobile Lake Request');
+    let { anglerReports } = await indexMethod();
+    res.send({ anglerReports });
+}
 
 // NEW ROUTE - "/anglerReports/new"
 // Providers user with new angler report entry page
@@ -98,6 +116,10 @@ function elapsedTimeCalc(startTime, endTime) {
 
     // return a formatted time string displayed as 0hrs 0min
     return hourDiff.toString() + "hrs " + minDiff.toString() + "min";
+}
+
+let createAnglerReportMethod = async () => {
+
 }
 
 // CREATE ROUTE - "/anglerReports
@@ -193,18 +215,58 @@ module.exports.createAnglerReport = async (req, res) => {
     // redirect back to view angler report page (avoiding refresh)
     res.redirect(`/anglerReports/${newReport._id}`);
 };
+module.exports.mCreateAnglerReport = async (req, res) => {
+    // create new angler report based on information passed in
+    console.log(req.body);
+    const { lakeName, municipality, date, timeIn, timeOut, fishCount } = req.body;
+    const newReport = new AnglerReport({lakeName, municipality, date, fishCount});
+
+    // TODO: timeIn & timeOut formatted differently, erroring
+    newReport.elapsedTime = elapsedTimeCalc(timeIn, timeOut);
+    // link angler report creatpr tp current logged in userid
+    console.log('user:', req.user);
+
+    console.log('report');
+    console.log(newReport)
+
+    res.send('success');
+
+
+    // setup angler_name to user first + last name
+
+    // save angler report
+
+    // check if many fish submitted or just one
+
+        // if many, create new fish entry for each
+
+        // assign angler reportid to report_fk
+        // assign creator to user logged in
+
+        // if one, create new fish entry repeating steps
+}
 
 // SHOW ROUTE -- "/anglerReports/:id/"
 // Providers user with page displaying information from single angler report
 module.exports.showAnglerReport = async (req, res) => {
     // pull id of angler report from url
     const { id } = req.params;
+    console.log(id)
     // look up the angler report corresponding to the id passed in to the url
     const foundReport = await AnglerReport.findById(id).populate('creator'); // passing in creator field from
     const foundFish = await Fish.find({report_fk : foundReport._id},{})
     // send them to the page about the single report
     res.render('anglerReports/details', { foundReport, foundFish, weightConversion, distConversion });
 };
+module.exports.showAnglerReportMobile = async (req, res) => {
+    console.log('mobile show request')
+    const { id } = req.params;
+    console.log('id: ', id);
+    console.log(req.params.id);
+    const foundReport = await AnglerReport.findById(id).populate('creator'); // passing in creator field from
+    const foundFish = await Fish.find({report_fk : foundReport._id},{})
+    res.send({ foundFish })
+}
 
 // EDIT ROUTE -- "/anglerReports/:id/edit"
 //Renders page to edit a existing angler report

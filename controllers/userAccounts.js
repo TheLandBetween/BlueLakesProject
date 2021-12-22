@@ -7,10 +7,13 @@ const AnglerReport = require('../views/models/Angler_Report');
 const Fish = require('../views/models/Fish');
 const { cloudinary } = require('../cloudinary');
 
+const jwt = require('jsonwebtoken');
+
 // import libraries for our forgot password methodology
 const crypto = require('crypto');
 const { promisify } = require('util');
 const nodemailer = require('nodemailer');
+const passport = require("passport");
 // setup transporter object for communication with GMAIL : app --> client
 const transport = nodemailer.createTransport({
     host: 'smtp.gmail.com', //Use gmail as SMTP transport client
@@ -56,6 +59,29 @@ module.exports.registerUser = async (req, res, next) => {
         res.redirect('/register')
     }
 };
+// mobile version of registerUser, still uses passport but sends JWT token to device for later requests instead of redirect
+module.exports.mobileRegister = async (req, res, next) => {
+    try {
+        console.log("Registering mobile user")
+        // set default rank for user which is 1, only access angler reports
+        let rank = 1;
+        // pull account credentials from body of form submitted
+        const { username, firstName, lastName, organization, password, distPref, weightPref } = req.body;
+        // save details to a newly created UserAccount mongo object (can also throw validation errors if not matching)
+        const newUser = new UserAccount({username, firstName, lastName, organization, rank, distPref, weightPref});
+        // register user through Passport to sign them in to the current session
+        const registeredUser = await UserAccount.register(newUser, password); //Registers the user using their email(username) and password
+
+        req.login(registeredUser, error => {
+            if (error) return res.status(422).send(error.message);
+            const token = jwt.sign({ userId: newUser._id }, process.env.MOBILE_KEY)
+            res.send( { token });
+        })
+    } catch (error) {
+        return res.status(422).send(error.message)
+    }
+}
+
 
 // NEW ROUTE - "/register"
 // Provides user with profile page displaying their information
@@ -144,14 +170,29 @@ module.exports.loginUser = async (req, res) => {
     // redirect to previous page / home
     res.redirect(redirectURL);
 };
-// CREATE ROUTE - "/login"
+module.exports.mobileLogin = async (req, res) => {
+    console.log("Logging in from mobile");
+    const token = jwt.sign({ userId: req.user._id }, process.env.MOBILE_KEY)
+    res.send({ token });
+}
+
+// CREATE ROUTE - "/logout"
 // Purpose: Called after a user successfully log's out through passports functionality
 module.exports.logoutUser = (req, res) => {
     // log out of current session, set flash message, and redirect to login
     req.logout();
-    req.flash("success", "Goodbye");
-    res.redirect('/login');
+    if (req.headers.authorization) {
+        console.log('mobile logout');
+        res.send({ loggedOut: true })
+    } else {
+        req.flash("success", "Goodbye");
+        res.redirect('/login');
+    }
 };
+module.exports.mLogoutUser = (req, res) => {
+    req.logout();
+    res.send({ loggedOut: true })
+}
 
 // ** FORGOT PASSWORD METHODS **
 
