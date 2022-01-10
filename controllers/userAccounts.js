@@ -172,8 +172,9 @@ module.exports.loginUser = async (req, res) => {
 };
 module.exports.mobileLogin = async (req, res) => {
     console.log("Logging in from mobile");
-    const token = jwt.sign({ userId: req.user._id }, process.env.MOBILE_KEY)
-    res.send({ token });
+    const loggedInUser = req.user;
+    const token = jwt.sign({ userId: loggedInUser._id }, process.env.MOBILE_KEY)
+    res.send({ token, loggedInUser });
 }
 
 // CREATE ROUTE - "/logout"

@@ -20,9 +20,16 @@ const defaultFishPhoto = {
 // TODO: Testing conversion of controllers to function containing main methodoly, then two seperate exports for mobile/desktop call.
 // intention is to seperate res.render/send from sending just the data to the mobile app, without rewriting whole route
 
-let indexMethod = async () => {
-    // search DB for all angler reports, sorting by newest date first
-    const anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1});
+let indexMethod = async (creator) => {
+    let anglerReports;
+    if (creator !== null) {
+        // search DB for user's angler reports, sorting by newest date first
+        anglerReports = await AnglerReport.find({creator}).populate('creator').sort({"date": -1});
+    } else {
+        // search DB for all angler reports, sorting by newest date first
+        anglerReports = await AnglerReport.find({}).populate('creator').sort({"date": -1});
+    }
+
     // get list of fish caught for table at top of page, iterate through each fish and add up species
     let fishCounts = await Fish.aggregate([
         { "$unwind" : "$species" },
@@ -52,8 +59,8 @@ module.exports.index = async (req, res) => {
         return res.redirect('/'); //Otherwise reject and redirect to the users home page with error message
     }
 
-    // run index method above
-    let { anglerReports, fishCounts } = await indexMethod();
+    // run index method above, will only be displaying this page to level 3 users so get all requests
+    let { anglerReports, fishCounts } = await indexMethod(null);
 
     // get total number of fish from newest fish
     fishCounts = fishCounts[0]
@@ -64,7 +71,9 @@ module.exports.index = async (req, res) => {
 // Mobile INDEX route
 module.exports.mIndex = async (req, res) => {
     console.log('Mobile Lake Request');
-    let { anglerReports } = await indexMethod();
+    // if currently logged in user is an admin, return all results. if not, return only theirs
+    let creator = req.user.rank < 3 ? req.user._id : null;
+    let { anglerReports } = await indexMethod(creator);
     res.send({ anglerReports });
 }
 
