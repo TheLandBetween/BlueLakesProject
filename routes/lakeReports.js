@@ -16,6 +16,7 @@ router.route('/')
     .post(isNotLoggedIn, validateLakeReport, catchAsync(lakeReports.createLakeReport)); // CREATE route
 // "/anglerReports/mobile" for mobile reports delivery
 router.get('/m', lakeReports.mIndex);
+router.post('/m', lakeReports.mCreateLakeReport);
 
 // "/lakeReports/new"
 router.get('/new', isNotLoggedIn, lakeReports.renderNewForm); // CREATE route

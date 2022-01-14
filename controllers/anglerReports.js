@@ -146,11 +146,11 @@ module.exports.createAnglerReport = async (req, res) => {
     // Figure out and set total elapsed time field using our helper function
     newReport.elapsedTime = elapsedTimeCalc(req.body.t_start, req.body.t_end);
 
-    //Saves the report to the database, fish are not saved in the report object, but rather associated through a foreign key report ID
-    await newReport.save();
-
     // gather in all updated photos and put into array to deal with when assigning photos
     let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
+
+    // Create fish array to be appended to report
+    let reportFish = [];
 
     //Checks if the user submitted one or many fish
     if (Array.isArray(req.body.species)) {
@@ -184,6 +184,9 @@ module.exports.createAnglerReport = async (req, res) => {
 
             //Saves the fish object to the database
             await currFish.save();
+
+            // append to final fish array for report entry
+            reportFish.push(currFish);
         }
     }
     // if not, just a single fish submitted
@@ -217,7 +220,15 @@ module.exports.createAnglerReport = async (req, res) => {
 
         //Saves the fish to the database
         await currFish.save();
+
+        // append to final fish array for report entry
+        reportFish.push(currFish);
     }
+
+    newReport.fish = reportFish;
+
+    //Saves the report to the database
+    await newReport.save();
 
     // save success trigger to pass on alert to user
     req.flash('success', 'Successfully Created Report');
@@ -239,6 +250,9 @@ module.exports.mCreateAnglerReport = async (req, res) => {
     // save angler report
     await newReport.save();
 
+    // // setup
+    // let reportFish = [];
+
     // check if many fish submitted or just one
     if (fish && fish.length > 0) {
         // if many, create new fish entry for each
@@ -257,8 +271,14 @@ module.exports.mCreateAnglerReport = async (req, res) => {
             fishEntry.creator = req.user._id;
 
             await fishEntry.save()
+            //
+            // // append to final fish array for report entry
+            // reportFish.push(currFish);
         }
     }
+
+    // newReport.fish = reportFish;
+    // await newReport.save();
 
     res.send('success');
 }

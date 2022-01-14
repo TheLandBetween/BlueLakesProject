@@ -259,6 +259,72 @@ module.exports.createLakeReport = async (req, res) => {
     // redirect back to view single lakeReports page
     res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 };
+module.exports.mCreateLakeReport = async (req, res) => {
+    const { date, notes, perc_shore_devd, doTemp, secchi, phosph, calcium } = req.body;
+    const newReport = new LakeHealthReport({ date_generated: date, notes, perc_shore_devd })
+    newReport.creator = req.user._id;
+
+    await newReport.save();
+
+    if (doTemp && doTemp.length > 0) {
+        for (const currDoTemp of doTemp) {
+            const { dissolvedOxygen, temperature, depth, location } = currDoTemp;
+            const doTempEntry = new DO_Temp({ dissolvedOxygen, temperature, depth })
+            // deal with location
+
+            // Parent reports ID
+            doTempEntry.report_fk = newReport._id;
+            // ID of user who submitted form
+            doTempEntry.creator = req.user._id;
+
+            await doTempEntry.save();
+        }
+    }
+    if (secchi && secchi.length > 0) {
+        for (const currSecchi of secchi) {
+            const { secchi, depth, location } = currSecchi;
+            const secchiEntry = new Secchi({ secchi, depth })
+            // deal with location
+
+            // Parent reports ID
+            secchiEntry.report_fk = newReport._id;
+            // ID of user who submitted form
+            secchiEntry.creator = req.user._id;
+
+            await secchiEntry.save();
+        }
+    }
+    if (phosph && phosph.length > 0) {
+        for (const currPhosph of phosph) {
+            const { phosph, location } = currPhosph;
+            const phosphEntry = new Secchi({ phosphorous: phosph })
+            // deal with location
+
+            // Parent reports ID
+            phosphEntry.report_fk = newReport._id;
+            // ID of user who submitted form
+            phosphEntry.creator = req.user._id;
+
+            await phosphEntry.save();
+        }
+    }
+    if (calcium && calcium.length > 0) {
+        for (const currCalcium of calcium) {
+            const { calcium, location } = currCalcium;
+            const calciumEntry = new Secchi({ calcium })
+            // deal with location
+
+            // Parent reports ID
+            calciumEntry.report_fk = newReport._id;
+            // ID of user who submitted form
+            calciumEntry.creator = req.user._id;
+
+            await calciumEntry.save();
+        }
+    }
+
+    res.send('success');
+};
 
 // SHOW ROUTE -- "/lakeReport/:id"
 // Purpose: Render single lake report page with details of current report
