@@ -264,7 +264,11 @@ module.exports.mCreateLakeReport = async (req, res) => {
     const newReport = new LakeHealthReport({ date_generated: date, notes, perc_shore_devd })
     newReport.creator = req.user._id;
 
-    await newReport.save();
+    // Place to save created readings and link them to our final report
+    let doTempReadings = [];
+    let secchiReadings = [];
+    let phosphReadings = [];
+    let calciumReadings = [];
 
     if (doTemp && doTemp.length > 0) {
         for (const currDoTemp of doTemp) {
@@ -278,6 +282,9 @@ module.exports.mCreateLakeReport = async (req, res) => {
             doTempEntry.creator = req.user._id;
 
             await doTempEntry.save();
+
+            // push reading to list of doTemps for parent report
+            doTempReadings.push(doTempEntry);
         }
     }
     if (secchi && secchi.length > 0) {
@@ -292,12 +299,15 @@ module.exports.mCreateLakeReport = async (req, res) => {
             secchiEntry.creator = req.user._id;
 
             await secchiEntry.save();
+
+            // push reading to list of secchi for parent report
+            secchiReadings.push(secchiEntry);
         }
     }
     if (phosph && phosph.length > 0) {
         for (const currPhosph of phosph) {
             const { phosph, location } = currPhosph;
-            const phosphEntry = new Secchi({ phosphorous: phosph })
+            const phosphEntry = new Phosphorus({ phosphorus: phosph })
             // deal with location
 
             // Parent reports ID
@@ -306,12 +316,15 @@ module.exports.mCreateLakeReport = async (req, res) => {
             phosphEntry.creator = req.user._id;
 
             await phosphEntry.save();
+
+            // push reading to list of phosph for parent report
+            phosphReadings.push(phosphEntry);
         }
     }
     if (calcium && calcium.length > 0) {
         for (const currCalcium of calcium) {
             const { calcium, location } = currCalcium;
-            const calciumEntry = new Secchi({ calcium })
+            const calciumEntry = new Calcium({ calcium })
             // deal with location
 
             // Parent reports ID
@@ -320,8 +333,20 @@ module.exports.mCreateLakeReport = async (req, res) => {
             calciumEntry.creator = req.user._id;
 
             await calciumEntry.save();
+
+            // push reading to list of calcium for parent report
+            calciumReadings.push(calciumEntry);
         }
     }
+
+    // link final readings to parent report
+    newReport.doTemp = doTempReadings;
+    newReport.secchi_depth = secchiReadings;
+    newReport.phosphorus = phosphReadings;
+    newReport.calcium = calciumReadings;
+
+    // save report to DB
+    await newReport.save();
 
     res.send('success');
 };

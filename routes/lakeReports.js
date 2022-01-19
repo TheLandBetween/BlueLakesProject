@@ -30,6 +30,6 @@ router.route('/:id')
 // "/lakeReports/:id/edit"
 router.get('/:id/edit', isNotLoggedIn, isCreator, catchAsync(lakeReports.renderEditForm)); // EDIT route
 
-// export router for use in main index file
+// export router for use in main index file ||
 module.exports = router;
 
