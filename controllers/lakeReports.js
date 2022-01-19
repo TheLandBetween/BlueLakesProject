@@ -9,8 +9,13 @@ const Phosphorus = require("../views/models/Phosphorous");
 const Calcium = require("../views/models/Calcium");
 
 // INDEX ROUTE -- "/lakeReports"
-const indexMethod = async () => {
-    const healthReports = await LakeHealthReport.find({}).populate('creator').sort({"date_generated": -1});
+const indexMethod = async (creator) => {
+    let healthReports;
+    if (creator !== null) {
+        healthReports = await LakeHealthReport.find({creator}).populate('creator').sort({"date_generated": -1});
+    } else {
+        healthReports = await LakeHealthReport.find({}).populate('creator').sort({"date_generated": -1});
+    }
 
     return { healthReports }
 }
@@ -22,17 +27,13 @@ module.exports.index = async (req, res) => {
         return res.redirect('/');
     }
     // async callback to wait for health lakeReports to be received, then respond with webpage
-    let { healthReports } = await indexMethod();
+    let { healthReports } = await indexMethod(null);
     // render index.ejs file with the lakeReports 'database'
     res.render('lakeReports/index', { healthReports });
 };
 module.exports.mIndex = async (req, res) => {
-    let { healthReports } = await indexMethod();
-    if (req.user) {
-        console.log(req.user);
-    } else {
-        console.log('no req user')
-    }
+    let creator = req.user.rank < 3 ? req.user._id : null;
+    let { healthReports } = await indexMethod(creator);
 
     res.send({ healthReports });
 }
