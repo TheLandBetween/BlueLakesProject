@@ -369,6 +369,49 @@ module.exports.updateProfile = async(req, res) => {
     // redirect to profile page after all successfully updated
     res.redirect('/profile');
 }
+module.exports.mUpdateProfile = async (req, res) => {
+    console.log('Mobile Update Request');
+    const { currentUsername, username, firstName, lastName, organization, distPref, weightPref } = req.body;
+
+    // updated username (email) check
+    if (username !== currentUsername) {
+        const matchingAccount = await UserAccount.findOne({username: username});
+        // if the email is already in use, alert the user accordingly
+        if (matchingAccount) {
+            res.send('error')
+        }
+        // if no different account can proceed with username swap, need to update session as well so it doesn't log them out
+        req.session.passport.user = username;
+    }
+
+    // pull current profile photo incase swap needed
+    let profilePhoto = req.user.profilePhoto;
+    if (req.file) {
+        // first can delete previous pfp from DB as new one is uploaded
+        await cloudinary.uploader.destroy(profilePhoto.filename);
+
+        // pull url and filename from multer
+        const url = req.file.path;
+        const filename = req.file.filename;
+
+        // setup as new picture object for mongo schema
+        let newProfilePicture = {
+            url,
+            filename
+        }
+
+        // update profilePhoto variable to be updated in mongo call
+        profilePhoto = newProfilePicture;
+    }
+
+    // Update profile based on id with the saved fields
+    await UserAccount.updateOne(
+        {username: currentUsername},
+        {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref, profilePhoto: profilePhoto}}
+    );
+
+    res.send('success')
+}
 
 // DESTORY ROUTE - "/deleteAccount"
 // Purpose: Receive request from user to delete their account, remove from DB as well as corresponding reports &

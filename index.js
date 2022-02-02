@@ -243,6 +243,7 @@ app.post('/changePassword', isNotLoggedIn, catchAsync(userAccounts.changePasswor
 
 app.get('/updateProfile', isNotLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
 app.put('/updateProfile', isNotLoggedIn, upload.single('photo'), catchAsync(userAccounts.updateProfile));
+app.put('/mUpdateProfile', catchAsync(userAccounts.mUpdateProfile));
 
 app.delete('/deleteAccount', isNotLoggedIn, catchAsync(userAccounts.deleteProfile));
 
