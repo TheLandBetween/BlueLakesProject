@@ -52,3 +52,9 @@
 
 <!-- Client Side Form Validation -->
 <script src="js/clientValidation.js"></script>
+<script>
+    let token = "<%= token %>"
+    if (token) {
+        document.getElementById('recoveryToken').value = token
+    }
+</script>

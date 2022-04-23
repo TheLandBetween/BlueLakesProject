@@ -35,7 +35,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet')
 const multer = require('multer') // for reading multipart html form data
 const { storage } = require('./cloudinary');
-const upload = multer({ storage })
+const upload = multer({ storage, limits: { fieldSize: 25 * 1024 * 1024 } })
 
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
@@ -46,7 +46,8 @@ uuid();
 express.static(path.join(__dirname, "/public"));
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '30mb' }));
+app.use(bodyParser.json({ limit: '30mb' }))
 
 //MONGOOSE
 const mongoose = require('mongoose');
@@ -163,21 +164,35 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session()); // needs to be used after app.use(session())
 passport.use(new LocalStrategy(User_Account.authenticate())); // pass current users session into passport and check if still valid
-// passport.use(new AuthTokenStrategy(User_Account.authenticate()));
-passport.use(new BearerStrategy((token, done) => {
-    console.log(token);
-    let passedToken = token.replace('Bearer ', '');
-    jwt.verify(passedToken, process.env.MOBILE_KEY, async (err, payload) => {
-        if (err) {
-            return done(err);
+
+// For mobile authentication, check for JWT passed in
+var JwtStrategy = require('passport-jwt').Strategy;
+let opts = {
+    // Custom method to retrieve JWT from mobile request, being sent in req.body
+    jwtFromRequest: function(req) {
+        let token = null;
+        if (req && req.body.token) {
+            token = req.body.token
         }
-        UserAccount.findById(payload, function(err, user) {
-            if (err) {return done(null, false)}
-            if (!user) {return done(null, false)}
-            return done(null, user, { scope: 'all' })
-        })
+        return token;
+    },
+    // Use JWT secret stored in env file
+    secretOrKey: process.env.MOBILE_KEY
+}
+// Enable JWT strategy for passport
+passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+    // Search through DB for user account based on ID decoded from JWT, if found login user
+    UserAccount.findById( jwt_payload.userId, function(err, user) {
+        if (err) {
+            return done(err, false);
+        }
+        if (user) {
+            return done(null, user);
+        } else {
+            return done(null, false);
+        }
     })
-}))
+}));
 
 // define how to store + unstore user auth, which is stored in the user account (provided by passport)
 passport.serializeUser(User_Account.serializeUser());
@@ -243,24 +258,17 @@ app.post('/changePassword', isNotLoggedIn, catchAsync(userAccounts.changePasswor
 
 app.get('/updateProfile', isNotLoggedIn, catchAsync(userAccounts.renderUpdateProfile));
 app.put('/updateProfile', isNotLoggedIn, upload.single('photo'), catchAsync(userAccounts.updateProfile));
-app.put('/mUpdateProfile', catchAsync(userAccounts.mUpdateProfile));
+app.put('/mUpdateProfile', upload.single('photo'), catchAsync(userAccounts.mUpdateProfile));
 
 app.delete('/deleteAccount', isNotLoggedIn, catchAsync(userAccounts.deleteProfile));
+app.delete('/mDeleteAccount', catchAsync(userAccounts.mDeleteProfile));
 
 
 // LOGIN ROUTE
 app.get('/login', isLoggedIn, catchAsync(userAccounts.renderLoginForm));
 app.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), catchAsync(userAccounts.loginUser));
 app.post('/mLogin', passport.authenticate('local'), catchAsync(userAccounts.mobileLogin));
-app.post('/mLocalLogin', passport.authenticate('bearer'), catchAsync(userAccounts.mobileLogin))
-// app.post('/mLogin', catchAsync(userAccounts.mobileLogin));
-// app.post('/mLogin',
-//     passport.authenticate(
-//         'authtoken',
-//         {session: false, optional: false}
-//     ), function(req, res) {
-//     res.send('');
-// }, catchAsync(userAccounts.mobileLogin))
+app.post('/mLocalLogin', passport.authenticate('jwt'), catchAsync(userAccounts.mobileLogin))
 
 // LOGOUT ROUTE
 app.get('/logout', userAccounts.logoutUser);
@@ -268,6 +276,7 @@ app.get('/mLogout', userAccounts.mLogoutUser);
 
 app.get('/forgot', isLoggedIn, catchAsync(userAccounts.renderForgotForm));
 app.post('/forgot', catchAsync(userAccounts.forgotUserPassword));
+app.post('/mForgot', catchAsync(userAccounts.mForgotUserPassword));
 
 //USER ACCOUNT RECOVERY ROUTING
 app.get('/recover', isLoggedIn, catchAsync(userAccounts.renderRecoverForm));

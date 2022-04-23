@@ -21,7 +21,7 @@ router.route('/')
 
 // "/anglerReports/m" for mobile reports delivery
 router.get('/m', anglerReports.mIndex);
-router.post('/m', anglerReports.mCreateAnglerReport);
+router.post('/m', upload.array('photo'), anglerReports.mCreateAnglerReport);
 
 // "/anglerReports/new"
 router.get('/new', isNotLoggedIn, anglerReports.renderNewForm); // CREATE route

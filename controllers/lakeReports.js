@@ -276,6 +276,8 @@ module.exports.mCreateLakeReport = async (req, res) => {
             const { dissolvedOxygen, temperature, depth, location } = currDoTemp;
             const doTempEntry = new DO_Temp({ dissolvedOxygen, temperature, depth })
             // deal with location
+            let splitLocation = location.split(', ');
+            doTempEntry.location = { type: 'Point', coordinates: [splitLocation[0], splitLocation[1]]}
 
             // Parent reports ID
             doTempEntry.report_fk = newReport._id;

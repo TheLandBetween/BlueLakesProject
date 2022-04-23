@@ -108,7 +108,8 @@ function removeColons(currTime) {
 //   - startTime is a time as Str ("0:00"/"00:00")
 //   - endTime is a time as Str ("0:00"/"00:00")
 function elapsedTimeCalc(startTime, endTime) {
-    // run inputted time values through our removeColons helper function, "0:00" => "000" / "00:00" ==> "0000"
+    let returnTime = '';
+
     let strippedStart = removeColons(startTime);
     let strippedEnd = removeColons(endTime);
 
@@ -124,7 +125,8 @@ function elapsedTimeCalc(startTime, endTime) {
     }
 
     // return a formatted time string displayed as 0hrs 0min
-    return hourDiff.toString() + "hrs " + minDiff.toString() + "min";
+    returnTime = hourDiff.toString() + "hrs " + minDiff.toString() + "min";
+    return returnTime;
 }
 
 let createAnglerReportMethod = async () => {
@@ -236,49 +238,103 @@ module.exports.createAnglerReport = async (req, res) => {
     res.redirect(`/anglerReports/${newReport._id}`);
 };
 module.exports.mCreateAnglerReport = async (req, res) => {
+    // Pull uploaded photos from multer middleware
+    let fishPics = req.files.map(f => ({url: f.path, filename: f.filename}));
+
     // create new angler report based on information passed in
-    const { lakeName, municipality, date, timeIn, timeOut, fish, fishCount } = req.body;
+    const { lakeName, municipality, date, timeIn, timeOut, species, length, weight, fishCount } = req.body;
     const newReport = new AnglerReport({lake: lakeName, municipality, date, fishCount});
 
-    // TODO: timeIn & timeOut formatted differently, erroring
-    newReport.elapsedTime = elapsedTimeCalc(timeIn, timeOut);
+    // Pull generated string submitted with form indicating which fish included an uploaded photo
+    let updatedPhotos = req.body.updatedPhotos.split(',').map( Number );
+
+    // find the first colon, go back two char
+    let tIndex = timeIn.indexOf(':') - 2;
+    // let tIndex = startTime.indexOf('T' + 2);
+    let formattedStart = timeIn.substr(tIndex, 5);
+    let formattedEnd = timeOut.substr(tIndex, 5);
+
+    newReport.t_start = formattedStart;
+    newReport.t_end = formattedEnd;
+    newReport.elapsedTime = elapsedTimeCalc(formattedStart, formattedEnd);
 
     // set creator link and angler name based off of currently signed in user
     newReport.creator = req.user._id;
     newReport.angler_name = req.user.firstName + " " + req.user.lastName;
 
-    // save angler report
-    await newReport.save();
+    let reportFish = [];
 
-    // // setup
-    // let reportFish = [];
+    if (Array.isArray(species)) {
+        for (let i = 0; i < species.length; i++) {
+            //Creates a new fish object
+            const currFish = new Fish();
 
-    // check if many fish submitted or just one
-    if (fish && fish.length > 0) {
-        // if many, create new fish entry for each
-        for (const currFish of fish) {
-            const { species, length, weight } = currFish;
-            const fishEntry = new Fish({species});
+            currFish.report_fk = newReport._id; //Parent reports ID
+            currFish.creator = req.user._id; //ID of user who submitted the fish
+            currFish.species = species[i]; //Saves species field to fish
 
-            // weight conversion
-            fishEntry.weight = saveWeightConversion(req.user.weightPref, weight)
-            // length conversion
-            fishEntry.length = saveDistConversion(req.user.distPref, length)
+            // check to see if user submitted photo for this fish
+            if (updatedPhotos.indexOf(i) >= 0) {
+                currFish.photo = fishPics[updatedPhotos.indexOf(i)]
+            } else {
+                // if not assign default values
+                currFish.photo = defaultFishPhoto;
+            }
 
-            //Parent reports ID
-            fishEntry.report_fk = newReport._id;
-            //ID of user who submitted the fish
-            fishEntry.creator = req.user._id;
+            // take path + filename from each image uploaded, add to photo object and append to report
+            //currFish.photo = req.files.map(f => ({ url: f.path, filename: f.filename }));
+            if (weight[i]) {
+                currFish.weight = saveWeightConversion(req.user.weightPref, weight[i])
+            }
 
-            await fishEntry.save()
-            //
-            // // append to final fish array for report entry
-            // reportFish.push(currFish);
+            //Length conversion based on user input, saves metric in database
+            if (length[i]) {
+                currFish.length = saveDistConversion(req.user.distPref, length[i])
+            }
+
+            //Saves the fish object to the database
+            await currFish.save();
+
+            // append to final fish array for report entry
+            reportFish.push(currFish);
         }
+    } else {
+        // create a new Fish object
+        const currFish = new Fish();
+
+        // Assign parents report ID, parent users ID, and species of the fish caught
+        currFish.report_fk = newReport._id;
+        currFish.creator = req.user._id;
+        currFish.species = species;
+
+        // check if user uploaded a photo for fish
+        if (fishPics.length > 0) {
+        //     // if they did, assign it to the current fish
+            currFish.photo = fishPics[0]
+        } else {
+            // if they didn't upload a photo, assign this fish to the default fish photo
+            currFish.photo = defaultFishPhoto;
+        }
+
+        // if a weight was inputted (which has to be anyway client side, just server validation)
+        if (weight) {
+            // convert it using our weight conversion helper function based off the current user's preference & save to fish
+            currFish.weight = saveWeightConversion(req.user.weightPref, weight)
+        }
+        // same as above for length, using our length conversion helper function
+        if (length) {
+            currFish.length = saveDistConversion(req.user.distPref, length)
+        }
+
+        //Saves the fish to the database
+        await currFish.save();
+
+        // append to final fish array for report entry
+        reportFish.push(currFish);
     }
 
-    // newReport.fish = reportFish;
-    // await newReport.save();
+    newReport.fish = reportFish;
+    await newReport.save();
 
     res.send('success');
 }

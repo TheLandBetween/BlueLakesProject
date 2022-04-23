@@ -224,6 +224,8 @@ module.exports.forgotUserPassword = async (req, res) => {
                     resetPasswordToken: token,
                     resetPasswordExpires: Date.now() + 3600000
                 }});
+        // TODO: Change with live site link
+        let tokenLink = 'http://localhost:3000/recover?token=' + token
         //Generate a email to send to the client
         const resetEmail = {
             to: username, //Sends to the email address that is within the database
@@ -231,7 +233,8 @@ module.exports.forgotUserPassword = async (req, res) => {
             subject: 'Angler Diaries Password Reset',
             text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.\n' +
                 'Please click on the following link, or paste into your web browser to complete this process:\n' +
-                'Token: ' + token +
+                'Token: ' + token + '\n' +
+                "Link: " + tokenLink +
                 '\n\nIf you did not request this, please ignore this email and your password will remain unchanged.'
         };
 
@@ -242,11 +245,50 @@ module.exports.forgotUserPassword = async (req, res) => {
         res.redirect('/recover');
     }
 };
+module.exports.mForgotUserPassword = async (req, res) => {
+    //Creates a random string of characters to serve as a recovery key
+    const token = (await promisify(crypto.randomBytes)(10)).toString('hex');
+    //Acquires user email from form input
+    const username = req.body.username;
+
+    //Checks if the email is associated with a user in the database
+    const user = (await UserAccount.findOne({username : username},{}));
+
+    if (!user) {
+        res.send({ 'error': 1, 'message': 'No user found with email' })
+    } else {
+        //Update the users DB entry with the randomized token, which is good for 1 hour
+        await UserAccount.updateOne({username: username},
+            {$set: {
+                    resetPasswordToken: token,
+                    resetPasswordExpires: Date.now() + 3600000
+                }});
+        // TODO: Change with live site link
+        let tokenLink = 'http://localhost:3000/recover?token=' + token
+        //Generate a email to send to the client
+        const resetEmail = {
+            to: username, //Sends to the email address that is within the database
+            from: 'passwordreset@example.com',
+            subject: 'Angler Diaries Password Reset',
+            text: 'You are receiving this email because there was a request to reset a password for anglerdiaries.com associated with this email address.\n' +
+                'Please click on the following link, or paste into your web browser to complete this process:\n' +
+                'Token: ' + token + '\n' +
+                "Link: " + tokenLink +
+                '\n\nIf you did not request this, please ignore this email and your password will remain unchanged.'
+        };
+
+        //Sends the email over SMTP through gmail
+        await transport.sendMail(resetEmail);
+
+        res.send({ error: 0 })
+    }
+}
 
 // GET ROUTE - "/recover"
 // Purpose: Provide user with recover password form, should be here after submitted a forgotPassword request
 module.exports.renderRecoverForm = async (req, res) => {
-    res.render('userAccounts/recover');
+    const token = req.query.token;
+    res.render('userAccounts/recover', {token});
 };
 // CREATE ROUTE - "/recover"
 // Purpose: Receive personalized token from user form sent over email, and allow them to enter newly created password
@@ -370,7 +412,6 @@ module.exports.updateProfile = async(req, res) => {
     res.redirect('/profile');
 }
 module.exports.mUpdateProfile = async (req, res) => {
-    console.log('Mobile Update Request');
     const { currentUsername, username, firstName, lastName, organization, distPref, weightPref } = req.body;
 
     // updated username (email) check
@@ -410,13 +451,15 @@ module.exports.mUpdateProfile = async (req, res) => {
         {$set: {username: username, firstName: firstName, lastName: lastName, organization: organization, distPref: distPref, weightPref: weightPref, profilePhoto: profilePhoto}}
     );
 
-    res.send('success')
+    // const updatedUser = req.user;
+    let updatedUser = await UserAccount.findOne({username: currentUsername})
+    res.send({'error': 0, user: updatedUser})
 }
 
 // DESTORY ROUTE - "/deleteAccount"
 // Purpose: Receive request from user to delete their account, remove from DB as well as corresponding reports &
 // images associated to cloudinary under this account as well.
-module.exports.deleteProfile = async(req, res) => {
+let deleteAccountMethod = async(req) => {
     // get current user from session
     const userEmail  = req.session.passport.user;
     // lookup the user in the DB
@@ -457,8 +500,26 @@ module.exports.deleteProfile = async(req, res) => {
         // if user has changed their pfp, delete it
         await cloudinary.uploader.destroy(profilePhoto.filename);
     }
+    return {'error': 0}
+}
+module.exports.deleteProfile = async(req, res) => {
+   let response = await deleteAccountMethod(req);
 
-    // Redirect to login page
-    req.flash('success', "Successfully deleted Account"); //Redirect user
-    res.redirect('/login');
+   if (response.error === 0) {
+       // Redirect to login page
+       req.flash('success', "Successfully deleted Account"); //Redirect user
+       res.redirect('/login');
+   } else {
+       console.log('error deleting account')
+   }
+
+}
+module.exports.mDeleteProfile = async (req, res) => {
+    let response = await deleteAccountMethod(req);
+
+    if (response.error === 0) {
+        res.send({'error': 0})
+    } else {
+        res.send({'error': 1})
+    }
 }
