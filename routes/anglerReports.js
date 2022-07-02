@@ -20,8 +20,9 @@ router.route('/')
     .post(isNotLoggedIn, upload.array('photo'), validateAnglerReport, catchAsync(anglerReports.createAnglerReport)) // CREATE route
 
 // "/anglerReports/m" for mobile reports delivery
-router.get('/m', anglerReports.mIndex);
-router.post('/m', upload.array('photo'), anglerReports.mCreateAnglerReport);
+router.get('/m', isNotLoggedIn, anglerReports.mIndex);
+router.post('/m', isNotLoggedIn, upload.array('photo'), anglerReports.mCreateAnglerReport);
+// router.post('/m', isNotLoggedIn, function(req, res, next) {uploadTest(req, res, next)}, anglerReports.mCreateAnglerReport);
 
 // "/anglerReports/new"
 router.get('/new', isNotLoggedIn, anglerReports.renderNewForm); // CREATE route

@@ -265,6 +265,11 @@ module.exports.mCreateLakeReport = async (req, res) => {
     const newReport = new LakeHealthReport({ date_generated: date, notes, perc_shore_devd })
     newReport.creator = req.user._id;
 
+    console.log('DoTemp: ');
+    console.log(doTemp);
+    console.log('Secchi: ');
+    console.log(secchi);
+
     // Place to save created readings and link them to our final report
     let doTempReadings = [];
     let secchiReadings = [];
@@ -295,6 +300,8 @@ module.exports.mCreateLakeReport = async (req, res) => {
             const { secchi, depth, location } = currSecchi;
             const secchiEntry = new Secchi({ secchi, depth })
             // deal with location
+            let splitLocation = location.split(', ');
+            secchiEntry.location = { type: 'Point', coordinates: [splitLocation[0], splitLocation[1]]}
 
             // Parent reports ID
             secchiEntry.report_fk = newReport._id;
@@ -312,6 +319,8 @@ module.exports.mCreateLakeReport = async (req, res) => {
             const { phosph, location } = currPhosph;
             const phosphEntry = new Phosphorus({ phosphorus: phosph })
             // deal with location
+            let splitLocation = location.split(', ');
+            phosphEntry.location = { type: 'Point', coordinates: [splitLocation[0], splitLocation[1]]}
 
             // Parent reports ID
             phosphEntry.report_fk = newReport._id;
@@ -329,6 +338,8 @@ module.exports.mCreateLakeReport = async (req, res) => {
             const { calcium, location } = currCalcium;
             const calciumEntry = new Calcium({ calcium })
             // deal with location
+            let splitLocation = location.split(', ');
+            calciumEntry.location = { type: 'Point', coordinates: [splitLocation[0], splitLocation[1]]}
 
             // Parent reports ID
             calciumEntry.report_fk = newReport._id;
@@ -461,6 +472,7 @@ module.exports.updateLakeReport = async (req, res) => {
                     //Save the new dissolved oxygen object to the DB
                     await newDoTemp.save();
                 } else { //If not a new part of the report, update existing report using associated ID
+
                     const doTempReport = await DO_Temp.findByIdAndUpdate(doTemp_id[i], {
                         dissolvedOxygen: dissolved_oxygen[i],
                         temperature: temperature[i],
@@ -660,6 +672,155 @@ module.exports.updateLakeReport = async (req, res) => {
     req.flash('success', "Successfully updated Lake Report");
     res.redirect(`/lakeReports/${lakeReport._id}`);
 };
+module.exports.mUpdateLakeReport = async (req, res) => {
+    const { date, notes, perc_shore_devd, doTemp, secchi, phosph, calcium } = req.body;
+
+    // find lake report with given id
+    const { id } = req.params;
+
+    //Update the object itself
+    const lakeReport = await LakeHealthReport.findByIdAndUpdate(
+        id,
+        { date_generated: date, notes: notes, perc_shore_devd: perc_shore_devd}
+    );
+
+    console.log(lakeReport);
+
+    let newDoTemps = [];
+    let changedDoTempIds = [];
+    let finishedDoTemps = [];
+    // iterate over each
+    doTemp.forEach(currReading => {
+        console.log('curr dotemp reading: ');
+        console.log(currReading);
+        if (currReading.doTempId === '?') {
+            newDoTemps.push(currReading);
+            doTemp.pop(currReading);
+        } else {
+            // create list of all entered reading _id's
+            changedDoTempIds.push(currReading.doTempId);
+        }
+    })
+
+    console.log(changedDoTempIds);
+    // iterate over lakeReport.doTemp's
+    for (let i = 0; i < lakeReport.doTemp.length; i++) {
+        let match = false;
+        changedDoTempIds.forEach(currId => {
+            if (currId == lakeReport.doTemp[i]._id) {
+                match = true;
+            }
+        })
+        // console.log(lakeReport.doTemp[i]._id);
+        if (match) {
+            console.log('its a match');
+            // Filter entered doTemps and pull result
+            let submittedReading = doTemp.filter(obj => {
+                console.log(obj);
+                return obj.doTempId == lakeReport.doTemp[i]._id
+            });
+            submittedReading = submittedReading[0];
+
+            console.log('submitted reading: ');
+            console.log(submittedReading);
+
+            let location = submittedReading.location;
+            console.log('location: ', location);
+            console.log('type: ', typeof location);
+
+            // format location
+            let xCoord = parseFloat(location.slice(0, location.indexOf(',')));
+            let yCoord = parseFloat(location.slice(location.indexOf(',') + 1,).trim());
+            console.log('x: ', xCoord, ' y: ', yCoord);
+
+            let doTempReport = await DO_Temp.findByIdAndUpdate(lakeReport.doTemp[i]._id, {
+                dissolvedOxygen: parseInt(submittedReading.dissolvedOxygen),
+                temperature: parseInt(submittedReading.temperature),
+                depth: parseInt(submittedReading.depth),
+                'location.coordinates': [xCoord, yCoord]
+            }, {new: true});
+
+            console.log('FindByIdAndUpdate Response: ');
+            console.log(doTempReport);
+            finishedDoTemps.push(doTempReport);
+        } else {
+            console.log(lakeReport.doTemp[i]._id + ' was not found in above list');
+            const response = await DO_Temp.findByIdAndDelete(lakeReport.doTemp[i]._id)
+            console.log('FindByIdAndDelete Response: ');
+            console.log(response);
+        }
+    }
+
+    for (let i = 0; i < newDoTemps.length; i++) {
+        // create new dissolved oxygen object
+        const newDoTemp = new DO_Temp();
+
+        console.log('new do temp:');
+        console.log(newDoTemps[i]);
+
+        // assign corresponding values
+        newDoTemp.report_fk = lakeReport._id; //Assign parent report foreign key
+        newDoTemp.creator = req.user._id; //Assign user ID
+        newDoTemp.dissolvedOxygen = parseInt(newDoTemps[i].dissolvedOxygen); //Assign rest of attributes to the DoTemp report
+        // TODO: Unit conversions
+
+        newDoTemp.temperature = parseInt(newDoTemps[i].temperature);
+        newDoTemp.depth = parseInt(newDoTemps[i].depth);
+        // format location
+        let location = newDoTemps[i].location;
+        let xCoord = location.slice(0, location.indexOf(','));
+        let yCoord = location.slice(location.indexOf(',') + 1,).trim();
+        newDoTemp.location = { type: 'Point', coordinates: [parseFloat(xCoord), parseFloat(yCoord)]}
+
+
+        //Save the new dissolved oxygen object
+        const newReport = await newDoTemp.save();
+
+        finishedDoTemps.push(newReport);
+    }
+
+    // let readingUpdateResponse = await LakeHealthReport.findByIdAndUpdate(
+    //     id,
+    //     { doTemp: finishedDoTemps }
+    // );
+
+
+    // lakeReport.doTemp.forEach(currDoTemp => {
+    //     // if curr doTempId is in our id list
+    //     if (changedDoTempIds.includes(currDoTemp._id)) {
+    //         // mongoose findbyid and update with submitted values (could check to see if changed)
+    //         const doTempReport = await DO_Temp.findByIdAndUpdate(currDoTemp._id, {
+    //             dissolvedOxygen: dissolved_oxygen,
+    //             temperature: temperature,
+    //             depth: doTempDepth,
+    //             location: { type: 'Point', coordinates: [doTempCoordinateX, doTempCoordinateY]
+    //             }});
+    //     }
+    //     // if not in list
+    //         // delete from mongoose and maybe from the report? fish is gone
+    // })
+
+
+    // doTemp.forEach(currReading => {
+    //     if (currReading.doTempId === '?') {
+    //         // New entry to the report, create doTemp
+    //         const newDoTemp = new DO_Temp();
+    //
+    //         newDoTemp.dissolvedOxygen = currReading.dissolvedOxygen;
+    //         newDoTemp.temperature = currReading.temperature;
+    //         newDoTemp.depth = currReading.depth;
+    //
+    //         // split location
+    //         let xCoord = location.splice(0, location.indexOf(','));
+    //         let yCoord = location.splice(location.indexOf(',') + 1,).trim();
+    //         console.log(xCoord, yCoord);
+    //         newDoTemp.location = { type: 'Point', coordinates: [xCoord, yCoord] }
+    //     }
+    // })
+
+    // console.log(req.body);
+    res.send({ 'error': 0, 'message': 'Successfully Updated Report!' })
+}
 
 // DELETE ROUTE - Lake Report
 // Purpose: Delete a lake report from the DB
@@ -680,3 +841,14 @@ module.exports.deleteLakeReport = async (req, res) => {
     req.flash('success', "Successfully deleted Lake Report");
     res.redirect('/lakeReports');
 };
+module.exports.mDeleteLakeReport = async (req, res) => {
+    const { id } = req.body;
+
+    await LakeHealthReport.findByIdAndDelete(id);
+
+    let creator = req.user.rank < 3 ? req.user._id : null;
+    let { healthReports } = await indexMethod(creator);
+    console.log(healthReports);
+
+    res.send({ 'error': 0, 'message': 'Successfully deleted!', 'data': healthReports });
+}

@@ -419,7 +419,7 @@ module.exports.mUpdateProfile = async (req, res) => {
         const matchingAccount = await UserAccount.findOne({username: username});
         // if the email is already in use, alert the user accordingly
         if (matchingAccount) {
-            res.send('error')
+            res.send({'error': 1, message: 'Email address already in use.'})
         }
         // if no different account can proceed with username swap, need to update session as well so it doesn't log them out
         req.session.passport.user = username;
@@ -484,7 +484,6 @@ let deleteAccountMethod = async(req) => {
 
     // if photos found, pass that list into delete_resources to delete from cloudinary
     if (photoIdList.length > 0){
-        console.log('deleting photos')
         await cloudinary.api.delete_resources(photoIdList, function (error, result) {console.log(result, error)})
         // delete now empty cloudinary folder with delete_folder
         await cloudinary.api.delete_folder('BlueLakes/' + currentUser.id, function(error, result) {console.log(result, error)});

@@ -207,7 +207,8 @@ module.exports.createAnglerReport = async (req, res) => {
             currFish.photo = fishPics[0]
         } else {
             // if they didn't upload a photo, assign this fish to the default fish photo
-            currFish.photo = defaultFishPhoto;
+
+
         }
 
         // if a weight was inputted (which has to be anyway client side, just server validation)
@@ -522,3 +523,4 @@ module.exports.deleteAnglerReport = async (req, res) => {
     req.flash('success', "Successfully deleted Angler Report");
     res.redirect('/anglerReports');
 };
+
