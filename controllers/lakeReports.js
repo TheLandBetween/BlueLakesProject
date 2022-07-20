@@ -261,14 +261,9 @@ module.exports.createLakeReport = async (req, res) => {
     res.redirect(`/lakeReports/${newReport._id}`); // redirect to avoid form resubmission on refresh
 };
 module.exports.mCreateLakeReport = async (req, res) => {
-    const { date, notes, perc_shore_devd, doTemp, secchi, phosph, calcium } = req.body;
-    const newReport = new LakeHealthReport({ date_generated: date, notes, perc_shore_devd })
+    const { lake_name, date, notes, perc_shore_devd, doTemp, secchi, phosph, calcium } = req.body;
+    const newReport = new LakeHealthReport({ lake_name, date_generated: date, notes, perc_shore_devd })
     newReport.creator = req.user._id;
-
-    console.log('DoTemp: ');
-    console.log(doTemp);
-    console.log('Secchi: ');
-    console.log(secchi);
 
     // Place to save created readings and link them to our final report
     let doTempReadings = [];

@@ -6,8 +6,8 @@
     <div class="container login-bg d-flex flex-column align-items-center justify-content-between bg-light">
         <%- include('../partials/flash') %>
         <div class="row header d-flex">
-            <div class="col-md-12 col-lg-6 d-flex justify-content-center"><img src="https://res.cloudinary.com/the-land-between/image/upload/v1622661876/BlueLakes/banner_qj6yhr_glp2wv.png" class="img-fluid mx-auto d-block header" alt="Blue Lakes Banner"></div>
-            <div class="col-md-12 col-lg-6 d-flex justify-content-center"><h1 class="display-2">Login</h1></div>
+            <div class="col-12 d-flex justify-content-center"><img src="https://res.cloudinary.com/the-land-between/image/upload/v1622661876/BlueLakes/banner_qj6yhr_glp2wv.png" class="img-fluid mx-auto d-block header" alt="Blue Lakes Banner"></div>
+<!--            <div class="col-md-12 col-lg-6 d-flex justify-content-center"><h1 class="display-2">Login</h1></div>-->
         </div>
         <div class="row header">
             <form action="/login" method="POST" class="needs-validation" name="login" novalidate>
@@ -22,7 +22,10 @@
                 </div>
                 <div class="mb-3">
                     <!-- date input, sent under 'date' label-->
-                    <label class='form-label' for="password">Password</label> <!-- User inputs their accounts password -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label class='form-label' for="password">Password</label> <!-- User inputs their accounts password -->
+                        <a href="/forgot" style="color: #575757">Forgot Password?</a>
+                    </div>
                     <input type="password" id="password" placeholder="Password" name="password" class="form-control" required>
                     <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                     <div class="valid-feedback">
@@ -31,25 +34,23 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-lg-3"></div>
-                    <div class="col-md-11 col-lg-6">
-                        <div class="row">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="row" style="padding-top: 4%;">
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-outline-primary">Login </button> <!-- Login, user is authenticated by PassportJS in controllers -->
                             </div>
 
                         </div>
                     </div>
-                    <div class="col-md-1 col-lg-1">
-                        <a href="/forgot"><i class="fa fa-question-circle-o fa-2x text-muted forgotPassword"></i></a>
-                    </div>
-                    <div class="col-md-12 col-lg-2"></div>
+
+                    <div class="col-md-12 col-lg-3"></div>
                 </div>
             </form>
         </div>
         <div class="row"> <!-- If user doesn't have an account, or forgot their password -->
             <div class="col-md-12 col-lg-3"></div>
             <div class="col-md-12 col-lg-6">
-                <div class="d-grid gap-2 header">
+                <div class="d-grid gap-2 header" style="padding-top: 0">
                     <a href="/register" class="btn btn-outline-success">Register</a>
                 </div>
             </div>

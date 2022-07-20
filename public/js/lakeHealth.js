@@ -20,16 +20,16 @@ $("#addtemp_DO").click(function() { //Add a card to the TempDO container
                         <label class='form-label' for="dissolved_oxygen">Do Conc: </label>
                         <input type="number" min="0" inputmode="decimal" id="dissolved_oxygen" step="any" placeholder="Dissolved Oxygen" name="dissolved_oxygen" class="form-control" required>
                     </div>
-                    <div class="form-inline">
-                        <div class="mb-3">
-                            <label class='form-label' for="doTempCoordinateX">X-Coordinate: </label>
-                            <input type="number" inputmode="decimal" step="0.000001" id="doTempCoordinateX" placeholder="X" name="doTempCoordinateX" class="form-control" required>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12 mb-3">
+                            <label class='form-label' for="doTempCoordinateX">Longitude: </label>
+                            <input type="number" inputmode="decimal" step="0.000001" id="doTempCoordinateX" placeholder="Longitude" name="doTempCoordinateX" class="form-control" required>
                         </div>
-                        <div class="mb-3">
-                            <label class='form-label' for="doTempCoordinateY">Y-Coordinate: </label>
-                            <input type="number" inputmode="decimal" step="0.000001" id="doTempCoordinateY" placeholder="Y" name="doTempCoordinateY" class="form-control" required>
+                        <div class="col-lg-6 col-md-12 mb-3">
+                            <label class='form-label' for="doTempCoordinateY">Latitude: </label>
+                            <input type="number" inputmode="decimal" step="0.000001" id="doTempCoordinateY" placeholder="Latitude" name="doTempCoordinateY" class="form-control" required>
                         </div>
-                        <div class="mb-3">
+                        <div class="col-12 mb-3">
                             <label class='form-label' for="doTempDepth">Depth: </label>
                             <input type="number" min="0" inputmode="decimal" step="0.01" id="doTempDepth" placeholder="Depth" name="doTempDepth" class="form-control" required>
                         </div>
@@ -55,18 +55,18 @@ $("#addSecchi").click(function() { //Add a secchi card to the secchi container
                         <input class="form-control" value="?" type="hidden" id="secchi_id" name="secchi_id">
                         <div class="mb-3">
                             <label class='form-label' for="secchi_depth">Secchi Depth: </label>
-                            <input type="number" min="0" inputmode="decimal" step='any' id="secchi_depth" placeholder="Water Clarity" name="secchi_depth" class="form-control" required>
+                            <input type="number" min="0" inputmode="decimal" step='any' id="secchi_depth" placeholder="Secchi Depth" name="secchi_depth" class="form-control" required>
                         </div>
-                        <div class="form-inline">
-                            <div class="mb-3">
-                                <label class='form-label' for="secchiCoordinateX">X-Coordinate: </label>
-                                <input type="number" inputmode="decimal" step="0.000001" id="secchiCoordinateX" placeholder="X" name="secchiCoordinateX" class="form-control" required>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <label class='form-label' for="secchiCoordinateX">Longitude: </label>
+                                <input type="number" inputmode="decimal" step="0.000001" id="secchiCoordinateX" placeholder="Longitude" name="secchiCoordinateX" class="form-control" required>
                             </div>
-                            <div class="mb-3">
-                                <label class='form-label' for="secchiCoordinateY">Y-Coordinate: </label>
-                                <input type="number" inputmode="decimal" step="0.000001" id="secchiCoordinateY" placeholder="Y" name="secchiCoordinateY" class="form-control" required>
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <label class='form-label' for="secchiCoordinateY">Latitude: </label>
+                                <input type="number" inputmode="decimal" step="0.000001" id="secchiCoordinateY" placeholder="Latitude" name="secchiCoordinateY" class="form-control" required>
                             </div>
-                            <div class="mb-3">
+                            <div class="col-12 mb-3">
                                 <label class='form-label' for="secchiDepth">Depth: </label>
                                 <input type="number" min="0" inputmode="decimal" step="0.01" id="secchiDepth" placeholder="Depth" name="secchiDepth" class="form-control" required>
                             </div>
@@ -94,14 +94,14 @@ $("#addPhosphorus").click(function() { //Add a phosphorus card to the phosphorus
                             <label class='form-label' for="phosphorus">Phosphorus: </label>
                             <input type="number" min="0" inputmode="decimal" step="any" id="phosphorus" placeholder="Phosphorus in PPM" name="phosphorus" class="form-control" required>
                         </div>
-                        <div class="form-inline">
-                            <div class="mb-3">
-                                <label class='form-label' for="phosphorusCoordinateX">X-Coordinate: </label>
-                                <input type="number" inputmode="decimal" step="0.000001" id="phosphorusCoordinateX" placeholder="X" name="phosphorusCoordinateX" class="form-control" required>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <label class='form-label' for="phosphorusCoordinateX">Longitude: </label>
+                                <input type="number" inputmode="decimal" step="0.000001" id="phosphorusCoordinateX" placeholder="Longitude" name="phosphorusCoordinateX" class="form-control" required>
                             </div>
-                            <div class="mb-3">
-                                <label class='form-label' for="phosphorusCoordinateY">Y-Coordinate: </label>
-                                <input type="number" inputmode="decimal" step="0.000001" id="phosphorusCoordinateY" placeholder="Y" name="phosphorusCoordinateY" class="form-control" required>
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <label class='form-label' for="phosphorusCoordinateY">Latitude: </label>
+                                <input type="number" inputmode="decimal" step="0.000001" id="phosphorusCoordinateY" placeholder="Latitude" name="phosphorusCoordinateY" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -127,14 +127,14 @@ $("#addCalcium").click(function() { //Add a calcium card to the calcium containe
                             <label class='form-label' for="calcium">Calcium: </label>
                             <input type="number" min="0" inputmode="decimal" id="calcium" step='any' placeholder="Calcium in PPM" name="calcium" class="form-control" required>
                         </div>
-                        <div class="form-inline">
-                            <div class="mb-3">
-                                <label class='form-label' for="calciumCoordinateX">X-Coordinate: </label>
-                                <input type="number" inputmode="decimal" step="0.000001" id="calciumCoordinateX" placeholder="X" name="calciumCoordinateX" class="form-control" required>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <label class='form-label' for="calciumCoordinateX">Longitude: </label>
+                                <input type="number" inputmode="decimal" step="0.000001" id="calciumCoordinateX" placeholder="Longitude" name="calciumCoordinateX" class="form-control" required>
                             </div>
-                            <div class="mb-3">
-                                <label class='form-label' for="calciumCoordinateY">Y-Coordinate: </label>
-                                <input type="number" inputmode="decimal" step="0.000001" id="calciumCoordinateY" placeholder="Y" name="calciumCoordinateY" class="form-control" required>
+                            <div class="col-lg-6 col-md-12 mb-3">
+                                <label class='form-label' for="calciumCoordinateY">Latitude: </label>
+                                <input type="number" inputmode="decimal" step="0.000001" id="calciumCoordinateY" placeholder="Latitude" name="calciumCoordinateY" class="form-control" required>
                             </div>
                         </div>
                     </div>

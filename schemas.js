@@ -26,6 +26,7 @@ const extension = (joi) => ({
 const Joi = BaseJoi.extend(extension)
 
 module.exports.lakeReportSchema = Joi.object({
+    lake_name: Joi.string().required(),
     date_generated: Joi.date().required(), // says this must be a string and is required
     notes: Joi.string().required().escapeHTML(),
     perc_shore_devd: Joi.number().required(),

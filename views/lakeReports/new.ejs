@@ -18,9 +18,13 @@
                 <!-- Initial Entry Fields -->
                 <div class="text-left">
                     <div class="mb-3">
+                        <label class="form-label" for="lake_name">Lake Name: </label>
+                        <input type="text" id="lake_name" placeholder="Lake Name" name="lake_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
                         <!-- date input, sent under 'date' label-->
                         <label class='form-label' for="date_generated">Date Recorded: </label>
-                        <input type="date" id="date_generated" placeholder="yyyy-mm-dd" name="date_generated" class="form-control" required>
+                        <input type="date" id="date_generated" placeholder="YYYY-MM-DD" name="date_generated" class="form-control" required>
                         <!-- Option to have, can also give negative feedback to suggest formatting or smth -->
                         <div class="valid-feedback">
                             Looks good!
@@ -28,18 +32,22 @@
                     </div>
                     <div class="mb-3">
                         <!-- health input, sent under 'health' label-->
-                        <label class='form-label' for="notes">Notes: </label>
-                        <input type="text" id="notes" placeholder="Additional Notes" name="notes" class="form-control" required>
+                        <label class='form-label' for="perc_shore_devd">Shore Development Percentage: </label>
+                        <input type="Number" step='.01' inputmode="decimal" id="perc_shore_devd" placeholder="Shore Development Percentage" name="perc_shore_devd" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <!-- health input, sent under 'health' label-->
-                        <label class='form-label' for="perc_shore_devd">Perc Shore Devd: </label>
-                        <input type="Number" inputmode="decimal" id="perc_shore_devd" placeholder="perc shore devd" name="perc_shore_devd" class="form-control" required>
+                        <label class='form-label' for="notes">Notes: </label>
+                        <textarea name="notes" id="notes" placeholder="Additional Notes" class="form-control" cols="30" rows="5"></textarea>
+                        <!--                        <input type="text" id="notes" placeholder="Additional Notes" name="notes" class="form-control" required>-->
                     </div>
                 </div>
             </div>
             <!--  Extra Entries (Temp, Secchi, Phosp, Calcium -->
             <div class="row">
+                <div class="d-flex justify-content-center mb-3 mt-3">
+                    <p class="h2 text-center">Readings</p>
+                </div>
                 <div class="container d-flex flex-column">
                     <!-- DISSOLVED OXYGEN AND TEMPERATURE READING -->
                     <div class="row">
@@ -97,8 +105,8 @@
             <div class="row">
                 <div class="col-md-12 col-lg-3"></div>
                 <div class="col-md-12 col-lg-6">
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-outline-primary">Submit</button>
+                    <div class="d-grid gap-2 mb-3 mt-3">
+                        <button type="submit" class="btn btn-primary" style="padding: 2%">Submit</button>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-3"></div>

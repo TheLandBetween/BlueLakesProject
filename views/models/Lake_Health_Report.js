@@ -36,8 +36,13 @@ const lakeHealthReportSchema = new Schema({
         required: true,
         ref: 'User_Account'
     },
+    lake_name: {
+        type: String,
+        required: true
+    },
     date_generated: {
-        type: Date
+        type: Date,
+        required: true
     },
     notes: {
         type: String

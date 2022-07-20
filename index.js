@@ -92,7 +92,8 @@ app.use(methodOverride('_method'));
 // assign ejs as the templating language
 app.set('view engine', 'ejs');
 //serve public directory for css & js files
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/public")));
+// app.use('/asset', express.static(path.join(__dirname, "public/assets")));
 // take current dir name, join it with /views to navigate to views folder
 app.set('views', path.join(__dirname, "/views"));
 
@@ -119,12 +120,14 @@ const styleSrcUrls = [
 const connectSrcUrls = [
 ];
 // Accepted font sources
-const fontSrcUrls = [];
+const fontSrcUrls = [
+    "https://fonts.gstatic.com/"
+];
 // helmet custom configuration for content security policy.
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: [],
+            defaultSrc: ["'self'"],
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
