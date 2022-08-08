@@ -65,6 +65,8 @@ const AnglerReport = require(path.join(__dirname, "./views/models/Angler_Report"
 
 const userAccounts = require('./controllers/userAccounts');
 
+const policyRoutes = require('./routes/policies');
+
 
 // JOI Validation Schemas
 const { userAccountSchema } = require('./schemas');
@@ -233,6 +235,9 @@ app.get('/lakeReports/:id/edit',isNotLoggedIn , (req, res) => {
 app.use('/anglerReports', anglerReportRoutes);
 app.get('/anglerReports/:id/edit', isNotLoggedIn, (req, res) => {
 });
+
+// POLICY ROUTING
+app.use('/policies', policyRoutes);
 
 app.get('/identifyFish', function (req, res) { //Delivers a PDF of all fish accepted by the application, with visuals
     let filePath = "/resources/Identify_Fish.pdf";
